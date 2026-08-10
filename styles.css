@@ -115,14 +115,14 @@ a,
   height: 100%;
 }
 
-/* ponytail: bezel + pins ride currentColor, so the footer's `color: white` flips the
-   mark on dark ground with no separate dark-mode rule. --mark-well is the circle interior. */
-.mark-circle { fill: var(--mark-well, var(--paper-bright)); stroke: currentColor; stroke-width: 3; }
-.mark-half { fill: var(--purple); }
-/* pins are dark recesses, matching the hero port art's polarity */
-.mark-dots circle { fill: currentColor; }
+/* Controller-port logomark: solid disc, light arch insert, three pin contacts.
+   ponytail: disc + pins ride currentColor and the arch takes the local background,
+   so the footer's `color: white` inverts the whole mark with no dark-mode rule. */
+.mark-disc { fill: currentColor; }
+.mark-arch { fill: var(--mark-arch, var(--paper-bright)); }
+.mark-pins circle { fill: currentColor; }
 
-.footer-brand .brand-mark { --mark-well: var(--ink); }
+.footer-brand .brand-mark { --mark-arch: var(--ink); }
 
 .brand-word {
   display: inline-flex;
