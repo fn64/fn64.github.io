@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#17131f">
+    <meta
+      name="description"
+      content="See how fn64 connects ROM discovery, static recompilation, a typed Rust runtime, rendering, and executable evidence for N64 port projects."
+    >
+    <meta property="og:title" content="How fn64 works — From local ROM to native port">
+    <meta
+      property="og:description"
+      content="A visual tour of fn64’s clean-room Rust stack for Nintendo 64 static recompilation."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fn64.github.io/how-it-works.html">
+    <title>How fn64 works — From local ROM to native port</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="fn64 home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <circle class="mark-circle" cx="24" cy="24" r="21"/>
+            <path class="mark-half" d="M3 24a21 21 0 0 1 42 0z"/>
+            <g class="mark-dots"><circle cx="13" cy="18" r="4.4"/><circle cx="24" cy="18" r="4.4"/><circle cx="35" cy="18" r="4.4"/></g>
+          </svg>
+        </span>
+        <span class="brand-word" translate="no"><b>f</b><span>n64</span></span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="index.html#builders">For port builders</a>
+        <a href="index.html#discover">ROM discovery</a>
+        <a href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md">Design docs</a>
+        <a class="nav-github" href="https://github.com/fn64/fn64">GitHub ↗</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="page-hero">
+        <p class="eyebrow"><span></span> How it works</p>
+        <h1>One foundation.<br><em>Two ways in.</em></h1>
+        <div class="page-hero-lead">
+          <p>
+            Already have N64Recomp-generated C? fn64 can compile and link it
+            against the fn64 ABI. Otherwise, fn64 can emit typed Rust runners
+            from your locally supplied ROM. Both lanes keep game content and
+            title-specific work in your project.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#routes">Choose your starting point <span>↓</span></a>
+            <a class="button button-secondary" href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md">Read the architecture <span>↗</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="signal-map" aria-labelledby="stack-heading">
+        <div class="signal-heading">
+          <div>
+            <p class="eyebrow eyebrow-light"><span></span> The stack</p>
+            <h2 id="stack-heading">From evidence<br>to execution.</h2>
+          </div>
+          <p>
+            Each stage has a concrete job and a visible output. That makes the
+            pipeline easier to replace, test, and improve without hiding
+            uncertainty in a monolithic tool.
+          </p>
+        </div>
+
+        <ol class="signal-flow">
+          <li class="signal-step">
+            <span class="signal-index">01 / DISCOVER</span>
+            <h3>Recover the map</h3>
+            <p>Analyze a local ROM, retain proven facts, and name unresolved ownership instead of guessing.</p>
+            <span class="signal-output">OUT → content-free metadata</span>
+          </li>
+          <li class="signal-step">
+            <span class="signal-index">02 / RECOMPILE</span>
+            <h3>Translate the code</h3>
+            <p>Turn MIPS functions into native callable bodies with typed Rust runners.</p>
+            <span class="signal-output">OUT → host-native code</span>
+          </li>
+          <li class="signal-step">
+            <span class="signal-index">03 / EXECUTE</span>
+            <h3>Serve the ABI</h3>
+            <p>Link recompiled code to a clean-room Rust implementation of its expected runtime surface.</p>
+            <span class="signal-output">OUT → running game logic</span>
+          </li>
+          <li class="signal-step">
+            <span class="signal-index">04 / PRESENT</span>
+            <h3>Render and play</h3>
+            <p>Connect graphics, audio, input, and platform integration through explicit backend seams.</p>
+            <span class="signal-output">OUT → native application</span>
+          </li>
+          <li class="signal-step">
+            <span class="signal-index">05 / PROVE</span>
+            <h3>Keep the receipts</h3>
+            <p>Grade ABI shape, code generation, deterministic behavior, and release gates with executable checks.</p>
+            <span class="signal-output">OUT → reviewable evidence</span>
+          </li>
+        </ol>
+      </section>
+
+      <section class="route-section" id="routes">
+        <p class="eyebrow"><span></span> Pick a route</p>
+        <h2>Meet your project<br>where it is.</h2>
+        <div class="route-grid">
+          <article class="route-card">
+            <span class="route-label">ROUTE A / GENERATED CODE</span>
+            <h3>You already use N64Recomp.</h3>
+            <p>
+              Keep its generated <code>RecompiledFuncs/*.c</code>. fn64’s build
+              harness prepares and compiles those functions, registers their
+              sections, and links their <code>_recomp</code> calls to the Rust
+              ABI implementation.
+            </p>
+            <ul>
+              <li>The generated game code remains the N64Recomp C lane</li>
+              <li>A real C caller validates the external ABI</li>
+              <li>Your local ROM still supplies game data at runtime</li>
+            </ul>
+          </article>
+          <article class="route-card">
+            <span class="route-label">ROUTE B / LOCAL ROM</span>
+            <h3>You do not have a finished decomp.</h3>
+            <p>
+              fn64’s Rust lane recompiles the locally supplied ROM into typed
+              runners. fn64-discover can recover supporting function and
+              section metadata without treating incomplete evidence as
+              certainty.
+            </p>
+            <ul>
+              <li>ROM-derived data stays local and out of git</li>
+              <li>Unresolved sites remain visible as named blockers</li>
+              <li>Generated runners link directly to the Rust execution runtime</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="evidence-band">
+        <div class="evidence-band-copy">
+          <p class="eyebrow eyebrow-light"><span></span> Faithful by mechanism</p>
+          <h2>Trust is part<br>of the pipeline.</h2>
+          <p>
+            fn64 does not ask a port team to trust a rewrite on taste alone.
+            The codebase keeps the tests and provenance needed to challenge
+            its claims.
+          </p>
+        </div>
+        <ol class="evidence-list">
+          <li><span>01</span><div><strong>ABI smoke tests</strong><small>A real C caller links against the static library and runs.</small></div></li>
+          <li><span>02</span><div><strong>Instruction oracles</strong><small>Generated callable bodies are compared against N64Recomp output.</small></div></li>
+          <li><span>03</span><div><strong>Clean-room provenance</strong><small>Design claims cite allowed sources and behavioral evidence.</small></div></li>
+          <li><span>04</span><div><strong>Loud frontiers</strong><small>Unknown behavior traps; incomplete discovery stays incomplete.</small></div></li>
+        </ol>
+      </section>
+
+      <section class="cta">
+        <p class="eyebrow eyebrow-light"><span></span> Build on the foundation</p>
+        <h2>Bring the game.<br>Improve the stack.</h2>
+        <p>Project code is MIT OR Apache-2.0. Human and agentic contributors follow the same evidence contract.</p>
+        <a class="button button-light" href="https://github.com/fn64/fn64">Explore fn64 on GitHub <span>↗</span></a>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <circle class="mark-circle" cx="24" cy="24" r="21"/>
+            <path class="mark-half" d="M3 24a21 21 0 0 1 42 0z"/>
+            <g class="mark-dots"><circle cx="13" cy="18" r="4.4"/><circle cx="24" cy="18" r="4.4"/><circle cx="35" cy="18" r="4.4"/></g>
+          </svg>
+        </span>
+        <span class="brand-word" translate="no"><b>f</b><span>n64</span></span>
+      </a>
+      <p>Clean-room N64 static recompilation in Rust.</p>
+      <div>
+        <a href="index.html">Home</a>
+        <a href="https://github.com/fn64/fn64">GitHub</a>
+        <a href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md">Docs</a>
+        <a href="https://github.com/fn64/fn64#license">License</a>
+      </div>
+    </footer>
+  </body>
+</html>

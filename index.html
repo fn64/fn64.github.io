@@ -24,13 +24,19 @@
 
     <header class="site-header">
       <a class="brand" href="#top" aria-label="fn64 home">
-        <span class="brand-mark" aria-hidden="true">f</span>
-        <span>fn64</span>
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <circle class="mark-circle" cx="24" cy="24" r="21"/>
+            <path class="mark-half" d="M3 24a21 21 0 0 1 42 0z"/>
+            <g class="mark-dots"><circle cx="13" cy="18" r="4.4"/><circle cx="24" cy="18" r="4.4"/><circle cx="35" cy="18" r="4.4"/></g>
+          </svg>
+        </span>
+        <span class="brand-word" translate="no"><b>f</b><span>n64</span></span>
       </a>
       <nav aria-label="Primary navigation">
+        <a href="how-it-works.html">How it works</a>
         <a href="#builders">For port builders</a>
         <a href="#discover">ROM discovery</a>
-        <a href="#contribute">Contribute</a>
         <a class="nav-github" href="https://github.com/fn64/fn64">GitHub ↗</a>
       </nav>
     </header>
@@ -39,32 +45,59 @@
       <section class="hero" id="top">
         <div class="hero-copy">
           <p class="eyebrow"><span></span> Rust-native N64 recompilation</p>
-          <h1>A better foundation<br><em>for N64 ports.</em></h1>
+          <h1 class="hero-lockup">
+            <span class="sr-only">Future. Faithful. Friendly. Fast. fn64.</span>
+            <span class="word-cycle" aria-hidden="true" translate="no">
+              <span class="word-core">f</span><span class="insert-stack">
+                <span class="word-insert" style="--delay: 0s; --accent: var(--purple)">uture</span>
+                <span class="word-insert" style="--delay: 4s; --accent: var(--coral)">aithful</span>
+                <span class="word-insert" style="--delay: 8s; --accent: var(--cyan-dark)">riendly</span>
+                <span class="word-insert" style="--delay: 12s; --accent: var(--green-dark)">ast</span>
+              </span><span class="word-core word-tail">n64</span>
+            </span>
+            <span class="hero-promise">A better foundation for N64 ports.</span>
+          </h1>
           <p class="hero-intro">
-            Go from a local ROM or N64Recomp-generated code to a typed native
-            runtime, rendering, and retained evidence in one clean-room,
-            permissively licensed Rust stack.
+            Bring N64Recomp-generated C, or let fn64 emit typed Rust from your
+            local ROM. Both recompilation lanes connect to the same clean-room
+            Rust runtime, rendering seams, and executable evidence gates.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="https://github.com/fn64/fn64">Explore the source <span>↗</span></a>
-            <a class="button button-secondary" href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md">See how fn64 works</a>
+            <a class="button button-primary" href="how-it-works.html">See how it works <span>→</span></a>
+            <a class="button button-secondary" href="https://github.com/fn64/fn64">Explore the source <span>↗</span></a>
           </div>
           <p class="license-note">Project code licensed MIT OR Apache-2.0 · Pre-alpha</p>
         </div>
 
-        <div class="hero-visual" role="img" aria-label="A ROM moves through Rust to become a native application">
-          <div class="orbit orbit-one"></div>
-          <div class="orbit orbit-two"></div>
-          <div class="core">
-            <span class="core-f">f</span>
-            <span class="core-n64">n64</span>
-          </div>
-          <span class="orbit-label label-rom">ROM</span>
-          <span class="orbit-label label-rust">RUST</span>
-          <span class="orbit-label label-native">NATIVE</span>
-          <span class="spark spark-one"></span>
-          <span class="spark spark-two"></span>
-          <span class="spark spark-three"></span>
+        <div class="hero-visual" role="img" aria-label="An abstract N64 console face with four controller ports">
+          <svg class="console-art" viewBox="0 0 620 440" aria-hidden="true">
+            <path class="console-shadow" d="M34 137C132 88 207 67 310 67s178 21 276 70l25 239H9z"/>
+            <path class="console-shell" d="M25 117C126 67 204 46 310 46s184 21 285 71l16 239H9z"/>
+            <path class="console-seam" d="M27 208h566"/>
+            <path class="console-badge" d="M242 84h136l-12 63H254z"/>
+            <text class="console-word" x="274" y="126">fn64</text>
+
+            <g class="controller-port" transform="translate(91 270)">
+              <circle class="port-bezel" r="57"/><circle class="port-well" r="43"/>
+              <path class="port-insert" d="M0-33c-26 0-37 18-37 45v15h74V12C37-15 26-33 0-33z"/>
+              <circle class="port-hole" cx="-23" cy="9" r="8"/><circle class="port-hole" cy="9" r="8"/><circle class="port-hole" cx="23" cy="9" r="8"/>
+            </g>
+            <g class="controller-port" transform="translate(237 270)">
+              <circle class="port-bezel" r="57"/><circle class="port-well" r="43"/>
+              <path class="port-insert" d="M0-33c-26 0-37 18-37 45v15h74V12C37-15 26-33 0-33z"/>
+              <circle class="port-hole" cx="-23" cy="9" r="8"/><circle class="port-hole" cy="9" r="8"/><circle class="port-hole" cx="23" cy="9" r="8"/>
+            </g>
+            <g class="controller-port" transform="translate(383 270)">
+              <circle class="port-bezel" r="57"/><circle class="port-well" r="43"/>
+              <path class="port-insert" d="M0-33c-26 0-37 18-37 45v15h74V12C37-15 26-33 0-33z"/>
+              <circle class="port-hole" cx="-23" cy="9" r="8"/><circle class="port-hole" cy="9" r="8"/><circle class="port-hole" cx="23" cy="9" r="8"/>
+            </g>
+            <g class="controller-port" transform="translate(529 270)">
+              <circle class="port-bezel" r="57"/><circle class="port-well" r="43"/>
+              <path class="port-insert" d="M0-33c-26 0-37 18-37 45v15h74V12C37-15 26-33 0-33z"/>
+              <circle class="port-hole" cx="-23" cy="9" r="8"/><circle class="port-hole" cy="9" r="8"/><circle class="port-hole" cx="23" cy="9" r="8"/>
+            </g>
+          </svg>
         </div>
       </section>
 
@@ -74,7 +107,7 @@
           <strong>Pre-alpha, with working code.</strong>
           <span>OoT boots through native recompiled code with RT64 rendering, audio ucode execution, and input.</span>
         </div>
-        <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">See every open gate →</a>
+        <a href="how-it-works.html">See how the stack fits together →</a>
       </section>
 
       <section class="section mechanism audience" id="builders">
@@ -246,6 +279,7 @@
           Your ROM and all ROM-derived artifacts stay local. fn64 contains
           tooling and runtime code—never game content.
         </p>
+        <a class="button button-outline-light pipeline-cta" href="how-it-works.html">Walk through the pipeline <span>→</span></a>
       </section>
 
       <section class="section contribute" id="contribute">
@@ -277,10 +311,20 @@
     </main>
 
     <footer>
-      <a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true">f</span><span>fn64</span></a>
+      <a class="brand footer-brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <circle class="mark-circle" cx="24" cy="24" r="21"/>
+            <path class="mark-half" d="M3 24a21 21 0 0 1 42 0z"/>
+            <g class="mark-dots"><circle cx="13" cy="18" r="4.4"/><circle cx="24" cy="18" r="4.4"/><circle cx="35" cy="18" r="4.4"/></g>
+          </svg>
+        </span>
+        <span class="brand-word" translate="no"><b>f</b><span>n64</span></span>
+      </a>
       <p>Clean-room N64 static recompilation in Rust.</p>
       <div>
         <a href="https://github.com/fn64/fn64">GitHub</a>
+        <a href="how-it-works.html">How it works</a>
         <a href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md">Docs</a>
         <a href="https://github.com/fn64/fn64#license">License</a>
       </div>

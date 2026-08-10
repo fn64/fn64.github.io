@@ -8,7 +8,6 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT
-INDEX = SITE / "index.html"
 
 
 class SiteParser(HTMLParser):
@@ -56,38 +55,43 @@ class SiteParser(HTMLParser):
 
 def main() -> int:
     errors: list[str] = []
-    parser = SiteParser()
-    parser.feed(INDEX.read_text())
-    parser.close()
+    pages: dict[Path, SiteParser] = {}
+    for page in sorted(SITE.glob("*.html")):
+        parser = SiteParser()
+        parser.feed(page.read_text())
+        parser.close()
+        pages[page.resolve()] = parser
 
-    if parser.duplicate_ids:
-        errors.append(f"duplicate ids: {sorted(parser.duplicate_ids)}")
-    if parser.html_lang != "en":
-        errors.append("index.html must declare lang=en")
-    if parser.h1_count != 1:
-        errors.append(f"index.html must contain exactly one h1, found {parser.h1_count}")
-    if not parser.title.strip():
-        errors.append("index.html has no document title")
-    if not parser.description:
-        errors.append("index.html has no meta description")
+        prefix = f"{page.name}: "
+        if parser.duplicate_ids:
+            errors.append(f"{prefix}duplicate ids: {sorted(parser.duplicate_ids)}")
+        if parser.html_lang != "en":
+            errors.append(f"{prefix}must declare lang=en")
+        if parser.h1_count != 1:
+            errors.append(f"{prefix}must contain exactly one h1, found {parser.h1_count}")
+        if not parser.title.strip():
+            errors.append(f"{prefix}has no document title")
+        if not parser.description:
+            errors.append(f"{prefix}has no meta description")
 
-    for tag, reference in parser.references:
-        parsed = urlparse(reference)
-        if parsed.scheme or reference.startswith("//"):
-            continue
-        if reference.startswith("/"):
-            errors.append(
-                f"{tag} reference {reference!r} is root-relative and will break under /fn64/"
-            )
-            continue
-        if reference.startswith("#"):
-            if reference[1:] not in parser.ids:
-                errors.append(f"{tag} reference {reference!r} has no matching id")
-            continue
+    for page, parser in pages.items():
+        for tag, reference in parser.references:
+            parsed = urlparse(reference)
+            if parsed.scheme or reference.startswith("//"):
+                continue
+            prefix = f"{page.name}: {tag} reference {reference!r}"
+            if reference.startswith("/"):
+                errors.append(f"{prefix} is root-relative and not preview-portable")
+                continue
 
-        target = SITE / parsed.path
-        if not target.is_file():
-            errors.append(f"{tag} reference {reference!r} does not exist under site/")
+            target = page if not parsed.path else (page.parent / parsed.path).resolve()
+            if not target.is_file():
+                errors.append(f"{prefix} does not exist")
+                continue
+            if parsed.fragment and target.suffix == ".html":
+                target_parser = pages.get(target)
+                if not target_parser or parsed.fragment not in target_parser.ids:
+                    errors.append(f"{prefix} has no matching id")
 
     css = (SITE / "styles.css").read_text()
     if css.count("{") != css.count("}"):
@@ -99,8 +103,8 @@ def main() -> int:
         return 1
 
     print(
-        f"site lint: clean ({len(parser.ids)} ids, "
-        f"{len(parser.references)} links/assets)"
+        f"site lint: clean ({len(pages)} pages, "
+        f"{sum(len(parser.references) for parser in pages.values())} links/assets)"
     )
     return 0
 
