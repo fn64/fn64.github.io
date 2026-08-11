@@ -409,10 +409,11 @@ h2 em {
 
 .console-badge { fill: var(--purple); }
 .console-word { fill: white; font: 900 27px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: -3px; }
+/* Ports reuse the logomark geometry: light bezel, D-shaped socket recessed into
+   it, three pin contacts. Same three layers as .mark-body / .mark-pins. */
 .port-bezel { fill: #d8d2c8; stroke: #09070d; stroke-width: 4; }
-.port-well { fill: #29232f; }
-.port-insert { fill: #e9e3d9; }
-.port-hole { fill: #17131f; }
+.port-insert { fill: #29232f; }
+.port-hole { fill: #d8d2c8; }
 
 .status-strip {
   display: flex;
