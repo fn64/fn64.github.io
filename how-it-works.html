@@ -43,13 +43,12 @@
     <main id="main">
       <section class="page-hero">
         <p class="eyebrow"><span></span> How it works</p>
-        <h1>One foundation.<br><em>Two ways in.</em></h1>
+        <h1>One runtime.<br><em>Two ways in.</em></h1>
         <div class="page-hero-lead">
           <p>
-            Already have N64Recomp-generated C? fn64 can compile and link it
-            against the fn64 ABI. Otherwise, fn64 can emit typed Rust runners
-            from your locally supplied ROM. Both lanes keep game content and
-            title-specific work in your project.
+            A port needs two things fn64 provides and your game does not:
+            native code for the game’s functions, and a runtime for everything
+            those functions call. Here is what each stage produces.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#routes">Choose your starting point <span>↓</span></a>
@@ -81,7 +80,7 @@
           <li class="signal-step">
             <span class="signal-index">02 / RECOMPILE</span>
             <h3>Translate the code</h3>
-            <p>Turn MIPS functions into native callable bodies with typed Rust runners.</p>
+            <p>Turn MIPS functions into native callable bodies with typed Rust runners—one native function per MIPS function.</p>
             <span class="signal-output">OUT → host-native code</span>
           </li>
           <li class="signal-step">
@@ -134,7 +133,7 @@
               certainty.
             </p>
             <ul>
-              <li>ROM-derived data stays local and out of git</li>
+              <li>You can start before the decomp is finished, and see exactly what is still unproven</li>
               <li>Unresolved sites remain visible as named blockers</li>
               <li>Generated runners link directly to the Rust execution runtime</li>
             </ul>
@@ -161,7 +160,7 @@
       </section>
 
       <section class="cta">
-        <p class="eyebrow eyebrow-light"><span></span> Build on the foundation</p>
+        <p class="eyebrow eyebrow-light"><span></span> Build on the runtime</p>
         <h2>Bring the game.<br>Improve the stack.</h2>
         <p>Project code is MIT OR Apache-2.0. Human and agentic contributors follow the same evidence contract.</p>
         <a class="button button-light" href="https://github.com/fn64/fn64">Explore fn64 on GitHub <span>↗</span></a>

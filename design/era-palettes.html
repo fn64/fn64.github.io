@@ -1,0 +1,169 @@
+<meta charset="utf-8">
+<title>fn64 — era palettes</title>
+<style>
+  *{box-sizing:border-box}
+  body{background:#e8e4dc;color:#17131f;margin:0;padding:36px;font:15px/1.55 Inter,ui-sans-serif,system-ui}
+  h1{font:500 29px/1 Georgia,serif;margin:0 0 5px;letter-spacing:-.03em}
+  .lede{color:#6c6674;font-size:13px;max-width:860px;margin:0 0 10px}
+  .found{background:#fff;border-left:3px solid #7651d6;padding:11px 14px;max-width:860px;font-size:12.5px;margin:0 0 26px}
+  .found b{color:#17131f}
+  h2.s{font:500 19px/1 Georgia,serif;margin:30px 0 3px}
+  p.n{color:#6c6674;font-size:12.5px;max-width:880px;margin:0 0 13px}
+  .pal{border:2px solid #17131f;margin-bottom:20px;background:#fff}
+  .head{background:#17131f;color:#fff;padding:7px 12px;display:flex;justify-content:space-between;
+        font:700 10px ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase}
+  .head .ok{color:#c8f05b}.head .no{color:#ff9b85}
+  .chips{display:flex;flex-wrap:wrap}
+  .chip{flex:1 1 90px;min-height:64px;padding:7px 9px;font:700 9px ui-monospace,monospace;letter-spacing:.04em}
+  .chip small{display:block;font-weight:400;opacity:.8;margin-top:2px;font-size:8.5px;letter-spacing:0}
+  .demo{padding:0;border-top:2px solid #17131f}
+  .verdict{font-size:12px;color:#6c6674;padding:9px 12px;border-top:1px solid rgba(23,19,31,.14)}
+  .verdict b{color:#17131f}
+
+  /* demo blocks */
+  .d{padding:20px 22px}
+  .d .kick{font:700 9px ui-monospace,monospace;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+  .d h3{margin:0 0 9px;letter-spacing:-.03em}
+  .d p{font-size:12.5px;margin:0 0 12px;max-width:44ch}
+  .d .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{font:700 10px ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;padding:8px 13px;
+       border:1.5px solid currentColor;text-decoration:none;display:inline-block}
+  .rate{font:12px ui-monospace,monospace;margin-top:13px;padding-top:9px;border-top:1px solid rgba(0,0,0,.15)}
+  table{width:100%;border-collapse:collapse;font:11.5px ui-monospace,monospace;margin-top:6px}
+  td,th{padding:5px 9px;text-align:left;border-top:1px solid rgba(0,0,0,.15)}
+  th{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+  td.n{text-align:right}
+</style>
+
+<h1>Era palettes</h1>
+<p class="lede">Built from what the research actually confirmed, not vibes. Each palette shows a hero block, a button pair, a data table, and an Edge-style rating line.</p>
+<div class="found">
+  <b>Two confirmed findings driving these:</b> (1) Edge printed its typefaces in every colophon — <b>ITC Franklin Gothic Heavy / Gill Sans Bold / Bell Gothic</b> — plus a literal <b>“Fifth colour: Pantone 8303c”</b> spot plate beyond CMYK. Not the Eurostile/Bank Gothic I'd guessed. (2) <b>Edge had no score box.</b> The rating was one line at the foot of the last column, spelled as words — “Eight out of ten” — never a big numeral. That's the model for the recall figures: refuse to monumentalise the number.
+</div>
+
+<h2 class="s">1 · Edge fifth-colour (Pantone 8303c)</h2>
+<p class="n">The confirmed anomaly: a metallic teal-grey spot ink printed alongside CMYK. Restrained, editorial, and almost nobody revives it — so it reads as specific rather than generic-retro. Paper is warm uncoated stock.</p>
+<div class="pal">
+  <div class="head"><span>Edge · fifth colour</span><span class="ok">★ recommended</span></div>
+  <div class="chips">
+    <div class="chip" style="background:#f2efe6">STOCK<small>#f2efe6</small></div>
+    <div class="chip" style="background:#1b1b1e;color:#fff">INK<small>#1b1b1e</small></div>
+    <div class="chip" style="background:#5f7d78;color:#fff">8303c<small>#5f7d78 spot</small></div>
+    <div class="chip" style="background:#b8402a;color:#fff">RATING RED<small>#b8402a</small></div>
+    <div class="chip" style="background:#8c8f93;color:#fff">RULE<small>#8c8f93</small></div>
+  </div>
+  <div class="demo"><div class="d" style="background:#f2efe6;color:#1b1b1e">
+    <div class="kick" style="color:#5f7d78">test<span style="color:#8c8f93">screen</span> · runtime</div>
+    <h3 style="font:700 30px/1.05 'Franklin Gothic Medium','Arial Narrow',Helvetica,sans-serif">The layer under the game.</h3>
+    <p style="color:#3d3d42">Scheduler, message queues, timers, DMA and overlay lifecycle, save, input, audio — rebuilt clean-room in Rust.</p>
+    <div class="row">
+      <a class="btn" href="#" style="background:#1b1b1e;color:#f2efe6;border-color:#1b1b1e">See the pipeline</a>
+      <a class="btn" href="#" style="color:#1b1b1e">Read the source</a>
+    </div>
+    <table>
+      <tr><th>Title</th><th>Matched</th><th>Recall</th><th>Wrong</th></tr>
+      <tr><td>Super Mario 64</td><td class="n">2816 / 3030</td><td class="n">92.9%</td><td class="n" style="color:#5f7d78;font-weight:700">0</td></tr>
+      <tr><td>Ocarina of Time</td><td class="n">119 / 137</td><td class="n">86.9%</td><td class="n" style="color:#5f7d78;font-weight:700">0</td></tr>
+    </table>
+    <div class="rate">Wrong boundaries claimed: <b style="color:#b8402a">zero out of six titles</b></div>
+  </div></div>
+  <div class="verdict"><b>Verdict:</b> the most sophisticated option and the least revived. The spot colour does the era signalling; everything else stays quiet. Spelled-out rating is straight from Edge.</div>
+</div>
+
+<h2 class="s">2 · Next Generation editorial</h2>
+<p class="n">Confirmed devices: zero-padded folios, drop-cap reversed out of a coloured square, red ragged pull-quotes in a narrow outer column, red/blue heads on a rule, lowercase <b>ng</b> department heads.</p>
+<div class="pal">
+  <div class="head"><span>Next Generation · editorial</span><span class="ok">strong</span></div>
+  <div class="chips">
+    <div class="chip" style="background:#fff">PAPER<small>#ffffff</small></div>
+    <div class="chip" style="background:#111114;color:#fff">INK<small>#111114</small></div>
+    <div class="chip" style="background:#e0301e;color:#fff">NG RED<small>#e0301e</small></div>
+    <div class="chip" style="background:#1c4fa1;color:#fff">NG BLUE<small>#1c4fa1</small></div>
+    <div class="chip" style="background:#f0eeea">TINT<small>#f0eeea</small></div>
+  </div>
+  <div class="demo"><div class="d" style="background:#fff;color:#111114">
+    <div class="kick"><span style="background:#e0301e;color:#fff;padding:2px 6px">ng</span> <span style="color:#1c4fa1">runtime</span></div>
+    <h3 style="font:700 29px/1.04 'Franklin Gothic Medium','Arial Narrow',Helvetica,sans-serif;border-bottom:2px solid #111114;padding-bottom:7px">Everything but the game.</h3>
+    <p style="color:#3a3a40">You bring the ROM. fn64 brings the scheduler, queues, timers, DMA, overlays, save, input, audio.</p>
+    <div class="row">
+      <a class="btn" href="#" style="background:#e0301e;color:#fff;border-color:#e0301e">See the pipeline</a>
+      <a class="btn" href="#" style="color:#1c4fa1;border-color:#1c4fa1">Read the source</a>
+      <span style="font:700 11px ui-monospace,monospace;color:#8a8a90;margin-left:auto">07</span>
+    </div>
+    <div class="rate" style="color:#e0301e">“Unknown behavior traps and names itself. No silent shrugs.”</div>
+  </div></div>
+  <div class="verdict"><b>Verdict:</b> clean and credible, closest to the current site so the cheapest migration. Risk — restraint alone won't read as a reference; it needs one period signal (the folio, the <b>ng</b> tab) doing visible work.</div>
+</div>
+
+<h2 class="s">3 · N64 hardware / controller colourways</h2>
+<p class="n">The console's own palette. Already almost exactly your existing accents, which is why this is the safest pick — but it is also the most-revived N64 look, so it risks reading as generic nostalgia.</p>
+<div class="pal">
+  <div class="head"><span>N64 hardware</span><span>safe, familiar</span></div>
+  <div class="chips">
+    <div class="chip" style="background:#29232f;color:#fff">CHARCOAL<small>#29232f</small></div>
+    <div class="chip" style="background:#7651d6;color:#fff">GRAPE<small>#7651d6</small></div>
+    <div class="chip" style="background:#5b7620;color:#fff">JUNGLE<small>#5b7620</small></div>
+    <div class="chip" style="background:#ff795f;color:#2a0f08">WATERMELON<small>#ff795f</small></div>
+    <div class="chip" style="background:#68d9df;color:#08282a">ICE<small>#68d9df</small></div>
+  </div>
+  <div class="demo"><div class="d" style="background:#29232f;color:#f5f0e7">
+    <div class="kick" style="color:#c8f05b">runtime · pre-alpha</div>
+    <h3 style="font:700 29px/1.04 'Franklin Gothic Medium','Arial Narrow',Helvetica,sans-serif">Your cart, running native.</h3>
+    <p style="color:#b2a8bd">The layer under the game, rebuilt clean-room in Rust. You supply the ROM.</p>
+    <div class="row">
+      <a class="btn" href="#" style="background:#7651d6;color:#fff;border-color:#7651d6">See the pipeline</a>
+      <a class="btn" href="#" style="color:#68d9df;border-color:#68d9df">Read the source</a>
+    </div>
+    <div class="rate" style="border-color:rgba(255,255,255,.18);color:#c8f05b">Wrong boundaries claimed: <b>zero out of six titles</b></div>
+  </div></div>
+  <div class="verdict"><b>Verdict:</b> zero migration cost — these are your current tokens renamed. But five accents is a lot to govern, and dark-charcoal-plus-neon is the most predictable N64 revival.</div>
+</div>
+
+<h2 class="s">4 · Newsprint / dev-doc</h2>
+<p class="n">The other end: SGI dev-kit manuals and trade press on cheap uncoated stock. Two inks plus one accent. Maximum credibility for a technical audience, minimum decoration.</p>
+<div class="pal">
+  <div class="head"><span>Dev-doc · two-colour</span><span class="ok">strong for data</span></div>
+  <div class="chips">
+    <div class="chip" style="background:#eae6dc">NEWSPRINT<small>#eae6dc</small></div>
+    <div class="chip" style="background:#232326;color:#fff">INK<small>#232326</small></div>
+    <div class="chip" style="background:#0d5c63;color:#fff">SPOT TEAL<small>#0d5c63</small></div>
+    <div class="chip" style="background:#a8321c;color:#fff">SPOT RED<small>#a8321c</small></div>
+    <div class="chip" style="background:#c9c3b4">HALFTONE<small>#c9c3b4</small></div>
+  </div>
+  <div class="demo"><div class="d" style="background:#eae6dc;color:#232326">
+    <div class="kick" style="color:#0d5c63">Fig. 1 — runtime surface</div>
+    <h3 style="font:700 27px/1.05 'Franklin Gothic Medium','Arial Narrow',Helvetica,sans-serif">Somebody has to write the boring part.</h3>
+    <p style="color:#3f3f43">Scheduler, queues, timers, DMA, overlay lifecycle, save, input, audio. We did, in Rust.</p>
+    <div class="row">
+      <a class="btn" href="#" style="background:#232326;color:#eae6dc;border-color:#232326">See the pipeline</a>
+      <a class="btn" href="#" style="color:#0d5c63;border-color:#0d5c63">Read the source</a>
+    </div>
+    <table>
+      <tr><th>Title</th><th>Matched</th><th>Recall</th><th>Wrong</th></tr>
+      <tr style="background:#c9c3b4"><td>Super Mario 64</td><td class="n">2816 / 3030</td><td class="n">92.9%</td><td class="n">0</td></tr>
+      <tr><td>Kirby 64</td><td class="n">402 / 531</td><td class="n">75.7%</td><td class="n">0</td></tr>
+    </table>
+    <div class="rate">Wrong boundaries claimed: <b style="color:#a8321c">zero out of six titles</b></div>
+  </div></div>
+  <div class="verdict"><b>Verdict:</b> best of the four for presenting the recall table. Halftone row-tint instead of a colour fill is period-correct and cheap. Least "designed" — which for this audience is a feature.</div>
+</div>
+
+<h2 class="s">5 · EGM saturated (calibration)</h2>
+<p class="n">The loud end — high-sat CMYK primaries, knockout yellow on black. Included so the range is visible; I do not recommend it.</p>
+<div class="pal">
+  <div class="head"><span>EGM · saturated</span><span class="no">not recommended</span></div>
+  <div class="chips">
+    <div class="chip" style="background:#000;color:#fff">BLACK<small>#000000</small></div>
+    <div class="chip" style="background:#ffe800;color:#000">PROCESS YEL<small>#ffe800</small></div>
+    <div class="chip" style="background:#ec008c;color:#fff">MAGENTA<small>#ec008c</small></div>
+    <div class="chip" style="background:#00aeef;color:#000">CYAN<small>#00aeef</small></div>
+    <div class="chip" style="background:#ed1c24;color:#fff">RED<small>#ed1c24</small></div>
+  </div>
+  <div class="demo"><div class="d" style="background:#000;color:#fff">
+    <div class="kick" style="color:#ffe800">exclusive · first look</div>
+    <h3 style="font:800 30px/1 Impact,'Arial Narrow',sans-serif;text-transform:uppercase;color:#ffe800">Runtime underneath</h3>
+    <p style="color:#c8c8cf">Reads as a games-press cover, not a developer tool.</p>
+    <div class="row"><a class="btn" href="#" style="background:#ec008c;color:#fff;border-color:#ec008c">See the pipeline</a></div>
+  </div></div>
+  <div class="verdict"><b>Verdict:</b> wrong register. Undermines the honest-hedging voice the copy depends on, and the type does the work a benchmark badge would. Keep for reference only.</div>
+</div>

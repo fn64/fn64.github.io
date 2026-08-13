@@ -1,0 +1,131 @@
+<title>fn64 logomark — round 16 (H3 + shell)</title>
+<style>
+  :root{--ink:#17131f;--paper:#f5f0e7;--paper-bright:#fffdf7;--purple:#7651d6;}
+  body{background:var(--paper);color:var(--ink);font:14px/1.5 ui-sans-serif,system-ui;margin:0;padding:28px}
+  h2{font:500 21px/1 Georgia,serif;margin:0 0 4px}
+  .cap{color:#6c6674;font-size:12px;margin:0 0 16px;max-width:880px}
+  .ref{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px;flex-wrap:wrap}
+  .ref img{border:2px solid var(--ink);border-radius:8px;width:126px;image-rendering:pixelated}
+  table.m{border-collapse:collapse;font:11.5px ui-monospace,Menlo,monospace}
+  table.m td,table.m th{border:1px solid rgba(23,19,31,.2);padding:3px 8px;text-align:left}
+  table.m th{background:#fffdf7}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-bottom:30px}
+  .card{background:var(--paper-bright);border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+  .card.pick{border-color:var(--purple);border-width:3px}
+  .pad{padding:13px}
+  .row{display:flex;align-items:center;gap:13px}
+  .dark{background:var(--ink);padding:10px 13px}
+  .dark .word{color:var(--paper-bright)}
+  svg{display:block}
+  .big{width:118px;height:118px}.mid{width:36px;height:36px}.sm{width:18px;height:18px}.xs{width:14px;height:14px}
+  .lbl{font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px}
+  .note{font-size:11px;color:#6c6674;margin-bottom:9px}
+  .word{font:800 19px ui-monospace,Menlo,monospace;letter-spacing:-.04em}
+</style>
+
+<h2>H3, and the same element inside an outer shell</h2>
+<div class="ref">
+  <img src="port1.png" alt="reference">
+  <table class="m">
+    <tr><th>shell ratio from the photo</th><th></th></tr>
+    <tr><td>bezel r / insert r</td><td>1.308</td></tr>
+    <tr><td>insert dia / bezel dia</td><td>0.765</td></tr>
+    <tr><td>insert centre vs bezel centre</td><td>≈ same (+0.015)</td></tr>
+    <tr><td>pins</td><td>r 0.24·insertR, all 4 gaps equal</td></tr>
+  </table>
+</div>
+<p class="cap">J1 is H3 exactly as you picked it. J2–J4 place that same element inside the shell at the measured 1.308 ratio — as a knocked-out negative (J2), as an outlined ring like the real port (J3), and with a heavier ring (J4).</p>
+<div class="grid" id="g"></div>
+
+<script>
+const f=v=>{const s=(+v).toFixed(3).replace(/(\.\d*?)0+$/,'$1').replace(/\.$/,''); return s==='-0'?'0':s;};
+const CUT=0.423, FILLET_REL=0.10;   // fillet 2 at Rr 20 => 0.10 of radius
+const PIN_REL=0.24;                 // H3: r4.8 at Rr20
+const BEZEL_REL=1.308;
+
+function cutCircle(cx,cy,R,cr){
+  const c=CUT*R, yf=c-cr, xf=Math.sqrt((R-cr)**2-yf*yf), d=Math.hypot(xf,yf);
+  const tax=xf*R/d, tay=yf*R/d;
+  return `M${f(cx-xf)} ${f(cy+c)} A${f(cr)} ${f(cr)} 0 0 1 ${f(cx-tax)} ${f(cy+tay)} `
+       + `A${f(R)} ${f(R)} 0 1 1 ${f(cx+tax)} ${f(cy+tay)} `
+       + `A${f(cr)} ${f(cr)} 0 0 1 ${f(cx+xf)} ${f(cy+c)} Z`;
+}
+// equal-gap pin placement
+function pinPath(cx,cy,R,r){
+  const xe=R, s=(xe+r)/2;
+  const mk=x=>`M${f(x-r)} ${f(cy)}a${f(r)} ${f(r)} 0 1 0 ${f(2*r)} 0a${f(r)} ${f(r)} 0 1 0 ${f(-2*r)} 0`;
+  return [mk(cx-s),mk(cx),mk(cx+s)].join(' ');
+}
+// inset a cut-circle path by t (for the outlined-ring look)
+function ring(cx,cy,R,t){
+  const outer=cutCircle(cx,cy,R,FILLET_REL*R);
+  const Ri=R-t;
+  const inner=cutCircle(cx,cy,Ri,FILLET_REL*Ri);
+  return outer+' '+inner;
+}
+
+const CARDS = {};
+
+// J1 — standalone H3
+{
+  const Rr=20, cy=24+(Rr-CUT*Rr)/2;
+  const d=cutCircle(24,cy,Rr,FILLET_REL*Rr), p=pinPath(24,cy,Rr,PIN_REL*Rr);
+  CARDS["J1 · H3 standalone (your pick)"] = {
+    note:`insert r=${Rr} · pin r=${f(PIN_REL*Rr)}`,
+    pick:true,
+    mk:c=>`<path d="${d} ${p}" fill="${c}" fill-rule="evenodd"/>`
+  };
+}
+// J2 — solid bezel, element knocked out
+{
+  const Rb=23, Rr=Rb/BEZEL_REL, cy=24;
+  const d=cutCircle(24,cy,Rr,FILLET_REL*Rr), p=pinPath(24,cy,Rr,PIN_REL*Rr);
+  CARDS["J2 · inside solid shell"] = {
+    note:`bezel r=${Rb} · insert r=${f(Rr)} · knocked out`,
+    mk:c=>`<path d="M24 ${f(24-Rb)}a${Rb} ${Rb} 0 1 0 0 ${f(2*Rb)}a${Rb} ${Rb} 0 1 0 0 ${f(-2*Rb)}Z ${d}" fill="${c}" fill-rule="evenodd"/>
+           <path d="${p}" fill="${c}"/>`
+  };
+}
+// J3 — outlined ring bezel + outlined insert, like the real port
+{
+  const Rb=23, Rr=Rb/BEZEL_REL, cy=24, t=2.2;
+  const p=pinPath(24,cy,Rr,PIN_REL*Rr);
+  CARDS["J3 · outlined, like the port"] = {
+    note:`bezel ring t=${t} · insert ring t=${t} · pins solid`,
+    mk:c=>`
+      <path d="M24 ${f(24-Rb)}a${Rb} ${Rb} 0 1 0 0 ${f(2*Rb)}a${Rb} ${Rb} 0 1 0 0 ${f(-2*Rb)}Z M24 ${f(24-Rb+t)}a${f(Rb-t)} ${f(Rb-t)} 0 1 0 0 ${f(2*(Rb-t))}a${f(Rb-t)} ${f(Rb-t)} 0 1 0 0 ${f(-2*(Rb-t))}Z" fill="${c}" fill-rule="evenodd"/>
+      <path d="${ring(24,cy,Rr,t)}" fill="${c}" fill-rule="evenodd"/>
+      <path d="${p}" fill="${c}"/>`
+  };
+}
+// J4 — heavier ring
+{
+  const Rb=23, Rr=Rb/BEZEL_REL, cy=24, t=3.2;
+  const p=pinPath(24,cy,Rr,PIN_REL*Rr);
+  CARDS["J4 · outlined, heavier ring"] = {
+    note:`ring t=${t} — holds better at small sizes`,
+    mk:c=>`
+      <path d="M24 ${f(24-Rb)}a${Rb} ${Rb} 0 1 0 0 ${f(2*Rb)}a${Rb} ${Rb} 0 1 0 0 ${f(-2*Rb)}Z M24 ${f(24-Rb+t)}a${f(Rb-t)} ${f(Rb-t)} 0 1 0 0 ${f(2*(Rb-t))}a${f(Rb-t)} ${f(Rb-t)} 0 1 0 0 ${f(-2*(Rb-t))}Z" fill="${c}" fill-rule="evenodd"/>
+      <path d="${ring(24,cy,Rr,t)}" fill="${c}" fill-rule="evenodd"/>
+      <path d="${p}" fill="${c}"/>`
+  };
+}
+
+document.getElementById('g').innerHTML = Object.entries(CARDS).map(([name,v])=>{
+  const L=v.mk('var(--ink)'), D=v.mk('var(--paper-bright)');
+  return `<div class="card${v.pick?' pick':''}">
+   <div class="pad"><div class="lbl">${name}</div><div class="note">${v.note}</div>
+    <div class="row">
+      <svg class="big" viewBox="0 0 48 48">${L}</svg>
+      <svg class="mid" viewBox="0 0 48 48">${L}</svg>
+      <svg class="sm" viewBox="0 0 48 48">${L}</svg>
+      <svg class="xs" viewBox="0 0 48 48">${L}</svg>
+    </div></div>
+   <div class="dark row">
+     <svg class="mid" viewBox="0 0 48 48">${D}</svg>
+     <svg class="sm" viewBox="0 0 48 48">${D}</svg>
+     <svg class="xs" viewBox="0 0 48 48">${D}</svg>
+     <span class="word">fn64</span>
+   </div></div>`;
+}).join('');
+</script>

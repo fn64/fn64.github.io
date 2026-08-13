@@ -1,0 +1,139 @@
+<title>fn64 — characters, three pins kept</title>
+<style>
+  :root{--ink:#17131f;--paper:#f5f0e7;--paper-bright:#fffdf7;--purple:#7651d6;--coral:#ff795f;}
+  body{background:var(--paper);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui;margin:0;padding:38px}
+  h1{font:500 29px/1 Georgia,serif;margin:0 0 5px}
+  p.sub{color:#6c6674;font-size:12.5px;margin:0 0 20px;max-width:900px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:16px}
+  .card{background:var(--paper-bright);border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+  .pad{padding:12px}
+  .row{display:flex;align-items:center;gap:12px}
+  .dark{background:var(--ink);padding:9px 12px}
+  .dark .word{color:var(--paper-bright)}
+  svg{display:block}
+  .big{width:100px;height:100px}.mid{width:36px;height:36px}.sm{width:18px;height:18px}.xs{width:14px;height:14px}
+  .lbl{font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}
+  .note{font-size:11px;color:#6c6674;margin-bottom:8px;min-height:2.6em}
+  .word{font:800 18px ui-monospace,Menlo,monospace;letter-spacing:-.04em}
+</style>
+
+<h1>Characters — three pinholes kept as eyes</h1>
+<p class="sub">The three pins stay exactly as measured; only limbs and body change. Cuteness comes from proportion — squatter bodies, stubby limbs, a little blush — not from removing a pin. Three eyes is the character, and it keeps the port connection.</p>
+<div class="grid" id="g"></div>
+
+<script>
+const f=v=>{const s=(+v).toFixed(3).replace(/(\.\d*?)0+$/,'$1').replace(/\.$/,''); return s==='-0'?'0':s;};
+const CUT=0.423, PIN_REL=0.24, FILL_REL=0.10;
+
+function head(cx,cy,R){
+  const cr=FILL_REL*R, c=CUT*R, yf=c-cr, xf=Math.sqrt((R-cr)**2-yf*yf), d=Math.hypot(xf,yf);
+  const tax=xf*R/d, tay=yf*R/d;
+  return {path:`M${f(cx-xf)} ${f(cy+c)} A${f(cr)} ${f(cr)} 0 0 1 ${f(cx-tax)} ${f(cy+tay)} `
+    + `A${f(R)} ${f(R)} 0 1 1 ${f(cx+tax)} ${f(cy+tay)} `
+    + `A${f(cr)} ${f(cr)} 0 0 1 ${f(cx+xf)} ${f(cy+c)} Z`, baseY:cy+c, halfW:xf, cr};
+}
+// the three measured pins, as a knockout path
+function pins(cx,cy,R){
+  const r=PIN_REL*R, s=(R+r)/2;
+  const mk=x=>`M${f(x-r)} ${f(cy)}a${f(r)} ${f(r)} 0 1 0 ${f(2*r)} 0a${f(r)} ${f(r)} 0 1 0 ${f(-2*r)} 0`;
+  return [mk(cx-s),mk(cx),mk(cx+s)].join(' ');
+}
+// highlight dots in the outer two pins only (centre stays plain — reads as a nose/3rd eye)
+function sparkle(cx,cy,R,body){
+  const r=PIN_REL*R, s=(R+r)/2, hr=r*0.3;
+  const h=x=>`<circle cx="${f(x+r*0.32)}" cy="${f(cy-r*0.34)}" r="${f(hr)}" fill="${body}"/>`;
+  return h(cx-s)+h(cx+s);
+}
+function blush(cx,cy,R,tint){
+  const r=PIN_REL*R, s=(R+r)/2, by=cy+r*1.45, off=s+r*0.15;
+  return `<ellipse cx="${f(cx-off)}" cy="${f(by)}" rx="${f(r*0.75)}" ry="${f(r*0.46)}" fill="${tint}" opacity=".5"/>
+          <ellipse cx="${f(cx+off)}" cy="${f(by)}" rx="${f(r*0.75)}" ry="${f(r*0.46)}" fill="${tint}" opacity=".5"/>`;
+}
+
+const C={};
+
+// Blob — the mark itself, squat
+{
+  const R=19, cy=22, h=head(24,cy,R);
+  C["Blob"]={note:"Just the D. Squat, blushing, three pins as-is.",
+    mk:(c,bg)=>`<path d="${h.path} ${pins(24,cy,R)}" fill="${c}" fill-rule="evenodd"/>
+      ${blush(24,cy,R,'var(--coral)')}${sparkle(24,cy,R,c)}`};
+}
+// Mushroom
+{
+  const R=17.5, cy=17, h=head(24,cy,R), sw=8, sb=42, ft=4;
+  const stem=`M${24-sw} ${f(h.baseY)} L${24-sw} ${sb-ft} Q${24-sw} ${sb} ${24-sw+ft} ${sb} L${24+sw-ft} ${sb} Q${24+sw} ${sb} ${24+sw} ${sb-ft} L${24+sw} ${f(h.baseY)} Z`;
+  C["Mushroom"]={note:"Fat stubby stem, pins on the cap.",
+    mk:(c,bg)=>`<path d="${stem}" fill="${c}"/>
+      <path d="${h.path} ${pins(24,cy,R)}" fill="${c}" fill-rule="evenodd"/>
+      ${blush(24,cy,R,'var(--coral)')}${sparkle(24,cy,R,c)}`};
+}
+// Squid
+{
+  const R=17.5, cy=18, h=head(24,cy,R), n=4, span=h.halfW*1.9, step=span/n;
+  let legs='';
+  for(let i=0;i<n;i++){
+    const x=24-span/2+step*(i+0.5), w=step*0.40, len=(i===0||i===n-1)?5:7;
+    legs+=`<path d="M${f(x-w)} ${f(h.baseY-1)} L${f(x-w)} ${f(h.baseY+len-w)} A${f(w)} ${f(w)} 0 0 0 ${f(x+w)} ${f(h.baseY+len-w)} L${f(x+w)} ${f(h.baseY-1)} Z"/>`;
+  }
+  C["Squid"]={note:"Four rounded stubby tentacles.",
+    mk:(c,bg)=>`<g fill="${c}">${legs}</g>
+      <path d="${h.path} ${pins(24,cy,R)}" fill="${c}" fill-rule="evenodd"/>
+      ${blush(24,cy,R,'var(--coral)')}${sparkle(24,cy,R,c)}`};
+}
+// Ghost
+{
+  const R=18, cy=19, h=head(24,cy,R), skirtY=h.baseY+7, n=3, step=(h.halfW*2)/n;
+  let sc='';
+  for(let i=0;i<n;i++){const x1=24-h.halfW+(i+1)*step; sc+=`A${f(step/2)} 4 0 0 0 ${f(x1)} ${f(skirtY)} `;}
+  const skirt=`M${f(24-h.halfW)} ${f(h.baseY)} L${f(24-h.halfW)} ${f(skirtY)} ${sc}L${f(24+h.halfW)} ${f(h.baseY)} Z`;
+  C["Ghost"]={note:"Three soft scallops. Owns the ghost read.",
+    mk:(c,bg)=>`<path d="${skirt}" fill="${c}"/>
+      <path d="${h.path} ${pins(24,cy,R)}" fill="${c}" fill-rule="evenodd"/>
+      ${blush(24,cy,R,'var(--coral)')}${sparkle(24,cy,R,c)}`};
+}
+// Spider
+{
+  const R=14.5, cy=21, h=head(24,cy,R);
+  let legs='';
+  for(const [t,len,drop] of [[0.2,8,-1],[0.75,7.5,2.5],[1.2,6.5,5.5]]){
+    for(const s of [-1,1]){
+      const ax=24+s*(h.halfW*0.84), ay=cy+1+t*3.2;
+      const kx=ax+s*len*0.9, ky=ay-3.4, ex=ax+s*len*0.9, ey=ay+drop+4;
+      legs+=`<path d="M${f(ax)} ${f(ay)} Q${f(kx)} ${f(ky)} ${f(ex)} ${f(ey)}" fill="none" stroke-width="2.7" stroke-linecap="round"/>`;
+    }
+  }
+  C["Spider"]={note:"Six short curled legs, round body.",
+    mk:(c,bg)=>`<g stroke="${c}">${legs}</g>
+      <path d="${h.path} ${pins(24,cy,R)}" fill="${c}" fill-rule="evenodd"/>
+      ${blush(24,cy,R,'var(--coral)')}${sparkle(24,cy,R,c)}`};
+}
+// Cat
+{
+  const R=17, cy=21, h=head(24,cy,R);
+  const ear=s=>`<path d="M${f(24+s*7.5)} ${f(cy-R*0.9)} L${f(24+s*13)} ${f(cy-R*1.45)} L${f(24+s*14.2)} ${f(cy-R*0.6)} Z"/>`;
+  C["Cat"]={note:"Two ears, otherwise untouched.",
+    mk:(c,bg)=>`<g fill="${c}">${ear(-1)}${ear(1)}</g>
+      <path d="${h.path} ${pins(24,cy,R)}" fill="${c}" fill-rule="evenodd"/>
+      ${blush(24,cy,R,'var(--coral)')}${sparkle(24,cy,R,c)}`};
+}
+
+document.getElementById('g').innerHTML = Object.entries(C).map(([name,v])=>{
+  const L=v.mk('var(--ink)','var(--paper-bright)');
+  const D=v.mk('var(--paper-bright)','var(--ink)');
+  return `<div class="card">
+   <div class="pad"><div class="lbl">${name}</div><div class="note">${v.note}</div>
+    <div class="row">
+      <svg class="big" viewBox="0 0 48 48">${L}</svg>
+      <svg class="mid" viewBox="0 0 48 48">${L}</svg>
+      <svg class="sm" viewBox="0 0 48 48">${L}</svg>
+      <svg class="xs" viewBox="0 0 48 48">${L}</svg>
+    </div></div>
+   <div class="dark row">
+     <svg class="mid" viewBox="0 0 48 48">${D}</svg>
+     <svg class="sm" viewBox="0 0 48 48">${D}</svg>
+     <svg class="xs" viewBox="0 0 48 48">${D}</svg>
+     <span class="word">fn64</span>
+   </div></div>`;
+}).join('');
+</script>

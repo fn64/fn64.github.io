@@ -1,0 +1,6 @@
+# Browser/agent tooling artifacts
+.playwright-mcp/
+
+# Python
+__pycache__/
+*.pyc

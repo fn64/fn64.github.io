@@ -1,0 +1,88 @@
+<meta charset="utf-8">
+<title>fn64 — hero round 2</title>
+<style>
+  :root{--ink:#17131f;--paper:#f5f0e7;--bright:#fffdf7;--purple:#7651d6;--muted:#6c6674;--lime:#c8f05b;--coral:#ff795f}
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);margin:0;padding:38px;font:15px/1.55 Inter,ui-sans-serif,system-ui}
+  h1{font:500 29px/1 Georgia,serif;margin:0 0 5px;letter-spacing:-.03em}
+  .lede{color:var(--muted);font-size:13px;max-width:840px;margin:0 0 6px}
+  .crit{background:#fffdf7;border-left:3px solid var(--coral);padding:11px 14px;max-width:840px;
+        font-size:13px;margin:0 0 26px}
+  .opt{background:var(--bright);border:2px solid var(--ink);border-radius:2px;margin-bottom:15px;overflow:hidden}
+  .tag{font:700 10px ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;
+       background:var(--ink);color:var(--bright);padding:6px 11px;display:flex;justify-content:space-between}
+  .tag .pick{color:var(--lime)}
+  .body{padding:19px 22px}
+  .kick{font:700 9.5px ui-monospace,Menlo,monospace;letter-spacing:.15em;color:var(--purple);text-transform:uppercase;margin-bottom:9px}
+  h2{font:500 clamp(1.85rem,3.3vw,2.8rem)/1.02 Georgia,serif;letter-spacing:-.035em;margin:0 0 11px;max-width:22ch}
+  .sub{font-size:13.5px;color:#49434f;max-width:58ch;margin:0}
+  .why{font-size:12px;color:var(--muted);padding:10px 22px;border-top:1px solid rgba(23,19,31,.14)}
+  .why b{color:var(--ink)}
+  .grade{display:inline-block;font:700 9.5px ui-monospace,monospace;padding:1px 5px;border-radius:2px;margin-left:6px}
+  .g-what{background:#dceec0;color:#3f5410}
+  .g-who{background:#d8d3f2;color:#382a70}
+</style>
+
+<h1>Hero round 2</h1>
+<p class="lede">Round 1's #1 (“Ship it, fork it, embed it”) has a specific flaw worth naming before you pick.</p>
+<div class="crit"><b>The flaw:</b> it's about <i>licensing</i> — a reason to choose fn64 <i>after</i> you know what it is. A cold visitor doesn't learn there's an N64 runtime here; the eyebrow and subhead carry it all. It's also faintly defensive, defined against the incumbent's GPL rather than on its own merits. <b>Every option below leads with what fn64 IS, then earns the licence point in the subhead.</b> Keep the round-1 line for the closing CTA, where it fits perfectly.</p>
+
+<div class="opt">
+  <div class="tag"><span>1 · the layer (round-1 #2, tightened)</span><span class="pick">★ my pick</span></div>
+  <div class="body">
+    <div class="kick">Rust-native N64 recompilation</div>
+    <h2>The layer under the game.</h2>
+    <p class="sub">Scheduler, message queues, timers, DMA and overlay lifecycle, save, input, audio — everything your recompiled ROM calls into, rebuilt clean-room in Rust. Ship it, fork it, embed it: MIT OR Apache-2.0, end to end.</p>
+  </div>
+  <div class="why"><b>Why:</b> the clearest thing the README says about what fn64 <i>is</i>, and it works as a noun phrase — no verb, no posturing, reads like a spec sheet title. The round-1 imperative survives inside the subhead, where it lands as proof rather than a boast. <span class="grade g-what">says what it is</span></div>
+</div>
+
+<div class="opt">
+  <div class="tag"><span>2 · everything but the game</span><span></span></div>
+  <div class="body">
+    <div class="kick">Rust-native N64 recompilation</div>
+    <h2>Everything but the game.</h2>
+    <p class="sub">You bring the ROM. fn64 brings the scheduler, message queues, timers, DMA, overlays, save, input, and audio — clean-room Rust, MIT OR Apache-2.0. It boots Ocarina of Time today.</p>
+  </div>
+  <div class="why"><b>Why:</b> states the division of labour in four words, and doubles as the content-policy answer (fn64 ships no game data). “You bring the ROM” makes the reader a participant. <span class="grade g-what">says what it is</span> <span class="grade g-who">names the deal</span></div>
+</div>
+
+<div class="opt">
+  <div class="tag"><span>3 · the boring part</span><span></span></div>
+  <div class="body">
+    <div class="kick">Rust-native N64 recompilation</div>
+    <h2>Somebody has to write the boring part.</h2>
+    <p class="sub">Scheduler, queues, timers, DMA, overlay lifecycle, save, input, audio. We did, in Rust, clean-room, MIT OR Apache-2.0 — so your port can be the interesting part.</p>
+  </div>
+  <div class="why"><b>Why:</b> most human line here; self-deprecating in a way engineers trust, and the payoff (“so your port can be the interesting part”) is a real benefit. Risk: “boring” is a strange word to lead a homepage with. <span class="grade g-what">says what it is</span></div>
+</div>
+
+<div class="opt">
+  <div class="tag"><span>4 · runtime, not emulator</span><span></span></div>
+  <div class="body">
+    <div class="kick">Rust-native N64 recompilation</div>
+    <h2>Not an emulator. The runtime underneath.</h2>
+    <p class="sub">Your recompiled ROM runs as native host code and calls into fn64 for scheduler, queues, timers, DMA, overlays, save, input, and audio. Clean-room Rust, MIT OR Apache-2.0.</p>
+  </div>
+  <div class="why"><b>Why:</b> pre-empts the single most likely misreading — most people assume “N64 on PC” means emulator. Correcting that in the headline does real work. Risk: defines by negation, which spends the biggest type on what fn64 <i>isn't</i>. <span class="grade g-what">says what it is</span></div>
+</div>
+
+<div class="opt">
+  <div class="tag"><span>5 · era-flavoured, no permission-slip</span><span></span></div>
+  <div class="body">
+    <div class="kick">Rust-native N64 recompilation</div>
+    <h2>Your cart, running native.</h2>
+    <p class="sub">fn64 is the layer under the game — scheduler, queues, timers, DMA, overlays, save, input, audio — in clean-room Rust, MIT OR Apache-2.0. You supply the ROM; nothing derived from it leaves your disk.</p>
+  </div>
+  <div class="why"><b>Why:</b> period vocabulary without costume, and “running native” is the outcome in two words. Short enough to set very large, which suits the cart-label hero direction. <span class="grade g-what">says what it is</span></div>
+</div>
+
+<div class="opt">
+  <div class="tag"><span>6 · the invariants line</span><span></span></div>
+  <div class="body">
+    <div class="kick">Rust-native N64 recompilation</div>
+    <h2>Every invariant that code was supposed to keep.</h2>
+    <p class="sub">We spent weeks inside the incumbent runtime with lldb and hardware watchpoints, writing down what it was meant to guarantee. fn64 is that list, in Rust, with a compiler enforcing it.</p>
+  </div>
+  <div class="why"><b>Why:</b> the project's most credible claim, and unlike round-1 #3 it hints at the mechanism rather than just the war story. Best used as the <b>“Faithful” section headline</b>, not the hero — it presumes the reader already knows what a runtime is. <span class="grade g-who">earns trust</span></div>
+</div>

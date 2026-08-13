@@ -6,16 +6,16 @@
     <meta name="theme-color" content="#17131f">
     <meta
       name="description"
-      content="fn64 is a clean-room Rust foundation for Nintendo 64 static recompilation, native PC ports, ROM discovery, and evidence-driven runtime work."
+      content="fn64 is an MIT-licensed Rust runtime for Nintendo 64 static recompilation. Boot your own recompiled ROM as a native desktop app, with every unproven boundary named instead of guessed."
     >
-    <meta property="og:title" content="fn64 — A Rust foundation for N64 recompilation">
+    <meta property="og:title" content="fn64 — a Rust runtime for N64 static recompilation">
     <meta
       property="og:description"
-      content="Build N64 native ports on a faithful, friendly, fast, permissively licensed Rust toolchain and runtime."
+      content="The layer under the game: scheduler, queues, timers, DMA, save, input, audio. Clean-room Rust, MIT OR Apache-2.0."
     >
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fn64.github.io/">
-    <title>fn64 — Rust toolchain and runtime for N64 recompilation</title>
+    <title>fn64 — a Rust runtime for N64 static recompilation</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -45,7 +45,7 @@
         <div class="hero-copy">
           <p class="eyebrow"><span></span> Rust-native N64 recompilation</p>
           <h1 class="hero-lockup">
-            <span class="sr-only">Future. Faithful. Friendly. Fast. fn64.</span>
+            <span class="sr-only">fn64: a permissively licensed Rust runtime for Nintendo 64 static recompilation.</span>
             <span class="word-cycle" aria-hidden="true" translate="no">
               <span class="word-core">f</span><span class="insert-stack">
                 <span class="word-insert" style="--delay: 0s; --accent: var(--purple)">uture</span>
@@ -54,16 +54,17 @@
                 <span class="word-insert" style="--delay: 12s; --accent: var(--green-dark)">ast</span>
               </span><span class="word-core word-tail">n64</span>
             </span>
-            <span class="hero-promise">A better foundation for N64 ports.</span>
+            <span class="hero-promise">Ship it, fork it, embed it. Never ask permission.</span>
           </h1>
           <p class="hero-intro">
-            Bring N64Recomp-generated C, or let fn64 emit typed Rust from your
-            local ROM. Both recompilation lanes connect to the same clean-room
-            Rust runtime, rendering seams, and executable evidence gates.
+            fn64 is the layer under the game: scheduler, message queues,
+            timers, DMA and overlay lifecycle, save, input, audio. Written
+            clean-room in Rust, licensed MIT OR Apache-2.0, end to end. It
+            boots Ocarina of Time today.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="how-it-works.html">See how it works <span>→</span></a>
-            <a class="button button-secondary" href="https://github.com/fn64/fn64">Explore the source <span>↗</span></a>
+            <a class="button button-primary" href="how-it-works.html">See how a ROM becomes a native app <span>→</span></a>
+            <a class="button button-secondary" href="https://github.com/fn64/fn64">Read the runtime source <span>↗</span></a>
           </div>
           <p class="license-note">Project code licensed MIT OR Apache-2.0 · Pre-alpha</p>
         </div>
@@ -104,7 +105,7 @@
         <div>
           <span class="status-dot" aria-hidden="true"></span>
           <strong>Pre-alpha, with working code.</strong>
-          <span>OoT boots through native recompiled code with RT64 rendering, audio ucode execution, and input.</span>
+          <span>Ocarina of Time boots in a windowed app with the RT64 renderer and working input. Audio and outdoor gameplay are still open.</span>
         </div>
         <a href="how-it-works.html">See how the stack fits together →</a>
       </section>
@@ -115,7 +116,7 @@
           <h2>Spend less time rebuilding<br>the same infrastructure.</h2>
           <p>
             fn64 targets the reusable work between a game image and a native
-            port—not game assets, ROM bytes, or title-specific patches.
+            port.
           </p>
         </div>
 
@@ -124,24 +125,26 @@
             <span class="mechanism-icon" aria-hidden="true">C</span>
             <h3>Already using N64Recomp?</h3>
             <p>
-              Link generated code against a strongly typed implementation of
-              its ABI, with the libultra runtime and device machinery in Rust.
+              Link your generated C against a strongly typed Rust
+              implementation of its ABI—the exact set of functions that code
+              calls—instead of a C++ runtime you cannot relicense.
             </p>
           </article>
           <article>
             <span class="mechanism-icon" aria-hidden="true">R</span>
             <h3>Starting from a ROM?</h3>
             <p>
-              Use evidence-carrying ROM analysis to recover code and section
-              metadata—even when a finished decompilation does not exist.
+              Recover functions and section metadata from your own ROM, with
+              every unproven boundary named instead of guessed.
             </p>
           </article>
           <article>
             <span class="mechanism-icon" aria-hidden="true">✓</span>
             <h3>Trying to trust the result?</h3>
             <p>
-              Keep ABI tests, codegen oracles, deterministic backends, and
-              named release gates beside the implementation they grade.
+              Every claim has a test beside it: a real C caller links the
+              library, and generated code is diffed against N64Recomp
+              instruction by instruction.
             </p>
           </article>
         </div>
@@ -161,8 +164,9 @@
             <p class="card-number">01</p>
             <h3>Future</h3>
             <p>
-              A game-agnostic Rust foundation for discovery, typed codegen,
-              the libultra runtime, rendering seams, and certification.
+              A game-agnostic Rust runtime with zero game-specific
+              assumptions, plus the discovery, typed codegen, and rendering
+              seams around it.
             </p>
             <span class="card-tag">Built to evolve</span>
           </article>
@@ -171,8 +175,9 @@
             <p class="card-number">02</p>
             <h3>Faithful</h3>
             <p>
-              Real ABI link tests, instruction-level codegen oracles, and
-              explicit evidence gates. Unknown behavior traps loudly.
+              Unimplemented behavior does not silently return zero. It traps
+              and names itself, so you find the gap instead of debugging a
+              ghost.
             </p>
             <span class="card-tag">Evidence over vibes</span>
           </article>
@@ -205,19 +210,21 @@
           <p class="eyebrow eyebrow-light"><span></span> fn64-discover</p>
           <h2>Start with the ROM.<br><em>Not a finished decomp.</em></h2>
           <p class="discover-lead">
-            fn64’s novel, evidence-carrying discovery pipeline recovers
-            functions and section metadata directly from a locally supplied
-            ROM. It can open a path for projects without a completed source
-            decompilation; it does not pretend every ROM is solved today.
+            fn64’s evidence-carrying discovery pipeline recovers functions and
+            section metadata directly from a locally supplied ROM. It opens a
+            path for projects without a completed decompilation. Today’s graded
+            results still lean on donor ROMs and answer keys from existing
+            decomp projects—cold-start discovery on an unstudied ROM is the
+            open frontier, and fn64’s own docs say so.
           </p>
           <div class="proof-points" aria-label="Current discovery results">
-            <div><strong>5 / 5</strong><span>tested AKI titles pass the CPU-recompile gate with zero unsupported destinations</span></div>
-            <div><strong>Cold start</strong><span>VPW2 passed without a decomp, answer key, or per-game configuration</span></div>
+            <div><strong>wrong == 0</strong><span>Across six graded titles, discovery has never claimed a boundary the answer key contradicts. <a href="https://github.com/fn64/fn64#discovery-corpus">See the per-title grades ↗</a></span></div>
+            <div><strong>75.7–92.9%</strong><span>Boot-bank recall across those titles. Graded, not blind—each run uses a donor ROM and an answer key. As of August 2026.</span></div>
           </div>
           <ul class="check-list">
             <li><span>✓</span> Structural analysis and load-image recovery</li>
             <li><span>✓</span> Provenance-recorded signature matching</li>
-            <li><span>✓</span> Strict <code>wrong == 0</code> grading against answer keys</li>
+            <li><span>✓</span> Graded against public decomp answer keys—never self-scored</li>
             <li><span>✓</span> Named blockers when proof runs out—never guessed boundaries</li>
           </ul>
           <a class="text-link" href="https://github.com/fn64/fn64/blob/main/docs/DISCOVER-PLAN.md">Explore the discovery frontier →</a>
@@ -256,7 +263,7 @@
           <li>
             <span class="pipeline-number">02</span>
             <strong>Recompile</strong>
-            <small>Emit typed Rust runners</small>
+            <small>Turn MIPS into native code</small>
           </li>
           <li>
             <span class="pipeline-number">03</span>
@@ -265,33 +272,36 @@
           </li>
           <li>
             <span class="pipeline-number">04</span>
-            <strong>Render</strong>
-            <small>Reference or RT64 backend</small>
+            <strong>Present</strong>
+            <small>Graphics, audio, input</small>
           </li>
           <li>
             <span class="pipeline-number">05</span>
-            <strong>Certify</strong>
-            <small>Retain executable evidence</small>
+            <strong>Prove</strong>
+            <small>Keep the receipts</small>
           </li>
         </ol>
         <p class="content-note">
-          Your ROM and all ROM-derived artifacts stay local. fn64 contains
-          tooling and runtime code—never game content.
+          Your ROM and everything derived from it stays on your machine. This
+          repository contains tooling and runtime code—no game assets, no ROM
+          bytes, no recompiled game output.
         </p>
-        <a class="button button-outline-light pipeline-cta" href="how-it-works.html">Walk through the pipeline <span>→</span></a>
+        <a class="button button-outline-light pipeline-cta" href="how-it-works.html">See what each stage outputs <span>→</span></a>
       </section>
 
       <section class="section contribute" id="contribute">
         <div>
           <p class="eyebrow"><span></span> Build with us</p>
-          <h2>An open codebase<br>with an explicit culture.</h2>
+          <h2>Read the reasoning,<br>not just the diff.</h2>
         </div>
         <div class="contribute-copy">
           <p>
-            fn64 is agent-forward, not agent-exclusive. Humans direct the
-            work and hold the gates; humans and agents follow the same clean-room,
-            documentation, and validation contract. A new contributor can pick
-            up the reasoning—not just the latest diff.
+            We use agents heavily, and a human still reviews and merges every
+            change. Both work from the same notes: written from our own
+            debugging, public documentation, and MIT source, never from GPL
+            code. We write down why a thing is the way it is, so the next
+            person can argue with the reasoning instead of guessing at it from
+            the diff.
           </p>
           <div class="contribute-links">
             <a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">Read the contributor contract <span>→</span></a>
@@ -303,9 +313,9 @@
 
       <section class="cta">
         <p class="eyebrow eyebrow-light"><span></span> The future is native</p>
-        <h2>Build the port.<br>Share the foundation.</h2>
-        <p>Faithful by evidence. Friendly by design. Fast by construction.</p>
-        <a class="button button-light" href="https://github.com/fn64/fn64">Explore fn64 on GitHub <span>↗</span></a>
+        <h2>Build the port.<br>Ship it, fork it, embed it.</h2>
+        <p>Pre-alpha, and honest about it. The open gaps are written down in the roadmap before you ask.</p>
+        <a class="button button-light" href="https://github.com/fn64/fn64">Read the source and the roadmap <span>↗</span></a>
       </section>
     </main>
 
