@@ -530,6 +530,8 @@ h2 {
   color: #554e5a;
 }
 
+/* Card tags are links to the doc that backs the claim, so they keep their real
+   file-path casing rather than shouting. */
 .card-tag {
   position: absolute;
   bottom: 34px;
@@ -537,10 +539,15 @@ h2 {
   padding: 0.3rem 0.55rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.68rem;
-  font-weight: 850;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
   border: 1px solid currentColor;
+}
+
+.card-tag:hover,
+.card-tag:focus-visible {
+  text-decoration: underline;
 }
 
 .card-future {
@@ -1073,10 +1080,12 @@ footer {
   list-style: none;
 }
 
+/* Bottom padding reserves room for the absolutely-positioned .signal-output, so
+   the card grows with its copy instead of overflowing a fixed height. */
 .signal-step {
   position: relative;
   min-height: 310px;
-  padding: 28px 24px;
+  padding: 28px 24px 64px;
   background: #211b29;
   border: 1px solid rgba(255, 255, 255, 0.16);
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);

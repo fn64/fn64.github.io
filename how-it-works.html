@@ -60,7 +60,6 @@
       <section class="signal-map" aria-labelledby="stack-heading">
         <div class="signal-heading">
           <div>
-            <p class="eyebrow eyebrow-light"><span></span> The stack</p>
             <h2 id="stack-heading">From evidence<br>to execution.</h2>
           </div>
           <p>
@@ -74,13 +73,13 @@
           <li class="signal-step">
             <span class="signal-index">01 / DISCOVER</span>
             <h3>Recover the map</h3>
-            <p>Analyze a local ROM, retain proven facts, and name unresolved ownership instead of guessing.</p>
+            <p>Analyze a local ROM, retain proven facts, and keep a named blocker on every unresolved bank.</p>
             <span class="signal-output">OUT → content-free metadata</span>
           </li>
           <li class="signal-step">
             <span class="signal-index">02 / RECOMPILE</span>
             <h3>Translate the code</h3>
-            <p>Turn MIPS functions into native callable bodies with typed Rust runners—one native function per MIPS function.</p>
+            <p>Turn MIPS functions into typed Rust runners: one native function per MIPS function.</p>
             <span class="signal-output">OUT → host-native code</span>
           </li>
           <li class="signal-step">
@@ -143,26 +142,23 @@
 
       <section class="evidence-band">
         <div class="evidence-band-copy">
-          <p class="eyebrow eyebrow-light"><span></span> Faithful by mechanism</p>
-          <h2>Trust is part<br>of the pipeline.</h2>
+          <h2>What you can<br>check yourself.</h2>
           <p>
-            fn64 does not ask a port team to trust a rewrite on taste alone.
-            The codebase keeps the tests and provenance needed to challenge
-            its claims.
+            Four things in the repo you can run or read if you want to
+            disagree with us.
           </p>
         </div>
         <ol class="evidence-list">
-          <li><span>01</span><div><strong>ABI smoke tests</strong><small>A real C caller links against the static library and runs.</small></div></li>
-          <li><span>02</span><div><strong>Instruction oracles</strong><small>Generated callable bodies are compared against N64Recomp output.</small></div></li>
-          <li><span>03</span><div><strong>Clean-room provenance</strong><small>Design claims cite allowed sources and behavioral evidence.</small></div></li>
-          <li><span>04</span><div><strong>Loud frontiers</strong><small>Unknown behavior traps; incomplete discovery stays incomplete.</small></div></li>
+          <li><span>01</span><div><strong><code>c_smoke</code></strong><small>Link-tests the ABI with a real C caller against the static library.</small></div></li>
+          <li><span>02</span><div><strong>Per-instruction oracles</strong><small>Generated callable bodies diffed against N64Recomp output.</small></div></li>
+          <li><span>03</span><div><strong><code>scripts/lane-parity.sh</code></strong><small>Audits whether the two generated callable-body sets agree.</small></div></li>
+          <li><span>04</span><div><strong><code>docs/ROADMAP.md</code></strong><small>Every known gap, named. Unknown behavior traps instead of returning zero.</small></div></li>
         </ol>
       </section>
 
       <section class="cta">
-        <p class="eyebrow eyebrow-light"><span></span> Build on the runtime</p>
         <h2>Bring the game.<br>Improve the stack.</h2>
-        <p>Project code is MIT OR Apache-2.0. Human and agentic contributors follow the same evidence contract.</p>
+        <p>Project code is MIT OR Apache-2.0. Humans and agents follow the same <code>AGENTS.md</code>: evidence or it didn’t happen.</p>
         <a class="button button-light" href="https://github.com/fn64/fn64">Explore fn64 on GitHub <span>↗</span></a>
       </section>
     </main>

@@ -1,0 +1,171 @@
+<meta charset="utf-8">
+<title>fn64 — not-AI-generated: voice and shape</title>
+<style>
+  *{box-sizing:border-box}
+  body{background:#e9e5dd;color:#17131f;margin:0;padding:36px;
+       font:15px/1.6 Inter,ui-sans-serif,system-ui}
+  h1{font:500 28px/1 Georgia,serif;margin:0 0 5px;letter-spacing:-.03em}
+  .lede{color:#6c6674;font-size:13px;max-width:880px;margin:0 0 8px}
+  .note{background:#fff;border-left:3px solid #b8402a;padding:10px 13px;max-width:880px;
+        font-size:12.5px;margin:0 0 26px}
+  h2.s{font:500 19px/1 Georgia,serif;margin:32px 0 4px}
+  p.n{color:#6c6674;font-size:12.5px;max-width:900px;margin:0 0 14px}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+  @media(max-width:900px){.pair{grid-template-columns:1fr}}
+  .box{border:2px solid #17131f;background:#fff;overflow:hidden}
+  .bh{font:700 10px ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;
+      padding:6px 11px;display:flex;justify-content:space-between}
+  .bad .bh{background:#b8402a;color:#fff}
+  .good .bh{background:#2f4f2a;color:#fff}
+  .bb{padding:15px 17px}
+  .bb p{margin:0 0 9px}
+  .why{font-size:12px;color:#6c6674;padding:9px 13px;border-top:1px solid rgba(23,19,31,.15)}
+  .why b{color:#17131f}
+  code,pre{font:12.5px/1.5 ui-monospace,Menlo,monospace}
+  pre{background:#17131f;color:#e8e4dc;padding:12px 14px;overflow-x:auto;margin:0 0 10px}
+  pre .c{color:#8c8f93}
+  pre .g{color:#a8d060}
+  .tag{display:inline-block;font:700 9px ui-monospace,monospace;background:#eee;padding:2px 6px;margin-right:4px}
+  table{width:100%;border-collapse:collapse;font:12px ui-monospace,monospace}
+  td,th{padding:5px 9px;text-align:left;border-top:1px solid rgba(23,19,31,.16)}
+  th{font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:#6c6674}
+  td.n{text-align:right}
+  .cardgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .card{border:1px solid rgba(23,19,31,.2);padding:11px}
+  .card h4{margin:0 0 6px;font-size:13px}
+  .card p{font-size:11.5px;color:#555;margin:0}
+  .kick{font:700 8.5px ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:#7651d6;margin-bottom:7px}
+</style>
+
+<h1>Not-AI-generated: voice and shape</h1>
+<p class="lede">Two separate problems. <b>Voice</b> — the site borrowed the README's formal register and dropped its human one. <b>Shape</b> — nearly every section is an evenly-spaced card grid, which is the default silhouette of a generated landing page.</p>
+<div class="note"><b>Two corrections to things I said earlier.</b> (1) The four F-words are the project's own README table, not a site invention — but that doesn't make them good web copy. (2) I proposed “Rust is the mechanism, not the pitch” and “Discovery fails honestly” as the human voice to copy. Wrong. Those are <b>not-X-but-Y</b> and abstract-noun-plus-adverb — aphorisms that sound like insight while asserting instead of informing. The README has the same problem the site does. It is not a clean source of voice.</div>
+
+<h2 class="s">What's actually human in the README</h2>
+<p class="n">Not the aphorisms. The unglamorous, specific, faintly embarrassing bits — the ones written to inform rather than to land.</p>
+<div class="pair">
+  <div class="box bad">
+    <div class="bh"><span>Aphorisms — do not copy these</span></div>
+    <div class="bb">
+      <p style="font-size:13px">“Rust is the mechanism, not the pitch.”</p>
+      <p style="font-size:13px">“Discovery fails honestly.”</p>
+      <p style="font-size:13px">“Evidence over optimism.”</p>
+      <p style="font-size:13px">“A project people can join.”</p>
+    </div>
+    <div class="why"><b>Every one is a construction, not a statement.</b> not-X-but-Y, noun+adverb, noun-over-noun. They read as written-to-be-quoted, which is the tell.</div>
+  </div>
+  <div class="box good">
+    <div class="bh"><span>The real voice</span></div>
+    <div class="bb">
+      <p style="font-size:13px">“audio is still broken (R5) and the outdoor gameplay eye-gate is unmet (R3b)”</p>
+      <p style="font-size:13px">“boots OoT … in a windowed shell”</p>
+      <p style="font-size:13px">“a scheduler handoff that lets two ‘only’ threads run at once”</p>
+      <p style="font-size:13px">“a lost function that fell off the end of its own C body”</p>
+    </div>
+    <div class="why"><b>Specific, unglamorous, cites its own ticket numbers.</b> Nobody writes “eye-gate is unmet (R3b)” to impress you — which is exactly why it convinces.</div>
+  </div>
+</div>
+
+<h2 class="s">Shape: the card-grid problem</h2>
+<p class="n">26 <code>grid-template-columns</code> declarations. Values 4-up, questions 3-up, stats 2-up, pipeline 5-up, plus two checklists. Alternating bands of evenly-spaced cards is what a generated page looks like — regardless of how good the words inside are.</p>
+<div class="pair">
+  <div class="box bad">
+    <div class="bh"><span>Now — 3-up rhetorical questions</span></div>
+    <div class="bb">
+      <div class="kick">Built for N64 port builders</div>
+      <div class="cardgrid">
+        <div class="card"><h4>Already using N64Recomp?</h4><p>Link your generated C against a typed Rust ABI…</p></div>
+        <div class="card"><h4>Starting from a ROM?</h4><p>Recover functions and section metadata…</p></div>
+        <div class="card"><h4>Trying to trust the result?</h4><p>Every claim has a test beside it…</p></div>
+      </div>
+    </div>
+    <div class="why"><b>Three parallel questions in a 3-up grid</b> is a template slot, and “Every claim has a test beside it” is a slogan — it asserts rigor instead of showing any.</div>
+  </div>
+  <div class="box good">
+    <div class="bh"><span>Instead — show the thing</span></div>
+    <div class="bb">
+      <p style="font-size:13px;margin-bottom:8px">Two ways in, depending on what you already have:</p>
+      <pre><span class="c"># you have N64Recomp output already</span>
+fn64 build --recomp-dir RecompiledFuncs/
+
+<span class="c"># you have a ROM and no decomp</span>
+fn64-discover game.z64 --prove-owners
+fn64 build --from-discovery</pre>
+      <p style="font-size:12.5px;color:#555;margin:0">Either way the generated code links against the same <code>fn64-abi</code> crate. Your ROM never leaves your disk.</p>
+    </div>
+    <div class="why"><b>A developer learns more from two commands</b> than from three cards asking them rhetorical questions. Shows the fork in the road literally.</div>
+  </div>
+</div>
+
+<h2 class="s">Slogans vs. specifics</h2>
+<div class="pair">
+  <div class="box bad">
+    <div class="bh"><span>Now</span></div>
+    <div class="bb">
+      <p style="font-size:13.5px">“Every claim has a test beside it: a real C caller links the library, and generated code is diffed against N64Recomp instruction by instruction.”</p>
+      <p style="font-size:13.5px">“Unimplemented behavior does not silently return zero. It traps and names itself, so you find the gap instead of debugging a ghost.”</p>
+    </div>
+    <div class="why"><b>The first is a slogan</b> with the evidence bolted on after a colon. The second is close — but “debugging a ghost” is a flourish.</div>
+  </div>
+  <div class="box good">
+    <div class="bh"><span>Instead</span></div>
+    <div class="bb">
+      <p style="font-size:13.5px;margin-bottom:9px">When the runtime hits something it hasn't implemented, you get this:</p>
+      <pre><span class="c">thread 'guest' panicked at fn64-runtime/src/os/mq.rs:214</span>
+unimplemented: osSetEventMesg(OS_EVENT_PRENMI)
+  called from 0x8003a1c0 &lt;Main_ThreadEntry+0x4c&gt;</pre>
+      <p style="font-size:12.5px;color:#555;margin:0">Symbol and call context, not a silent zero. Every gap we know about is in <code>docs/ROADMAP.md</code>.</p>
+    </div>
+    <div class="why"><b>Show the panic.</b> One real trace proves the claim the slogan was asserting, and it is the single most convincing thing you can put in front of a runtime developer.</div>
+  </div>
+</div>
+
+<h2 class="s">Numbers: card vs. table</h2>
+<div class="pair">
+  <div class="box bad">
+    <div class="bh"><span>Now — big-number stat cards</span></div>
+    <div class="bb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="background:#7651d6;color:#fff;padding:12px">
+          <div style="font:800 20px ui-monospace,monospace">wrong == 0</div>
+          <div style="font-size:11px;opacity:.9;margin-top:4px">Across six graded titles…</div>
+        </div>
+        <div style="background:#7651d6;color:#fff;padding:12px">
+          <div style="font:800 20px ui-monospace,monospace">75.7–92.9%</div>
+          <div style="font-size:11px;opacity:.9;margin-top:4px">Boot-bank recall…</div>
+        </div>
+      </div>
+    </div>
+    <div class="why"><b>Two hero numbers in coloured boxes</b> is a SaaS metric strip. It also hides which title is which.</div>
+  </div>
+  <div class="box good">
+    <div class="bh"><span>Instead — the actual table</span></div>
+    <div class="bb">
+      <table>
+        <tr><th>Title</th><th>Boot bank</th><th>Recall</th><th>Wrong</th></tr>
+        <tr><td>Super Mario 64</td><td class="n">2816 / 3030</td><td class="n">92.9%</td><td class="n">0</td></tr>
+        <tr><td>Ocarina of Time</td><td class="n">119 / 137</td><td class="n">86.9%</td><td class="n">0</td></tr>
+        <tr><td>Majora's Mask</td><td class="n">402 / 486</td><td class="n">82.7%</td><td class="n">0</td></tr>
+        <tr><td>Kirby 64</td><td class="n">402 / 531</td><td class="n">75.7%</td><td class="n">0</td></tr>
+      </table>
+      <p style="font-size:12px;color:#555;margin:9px 0 0">Graded, not blind — each run uses a donor ROM and an answer key from an existing decomp project. Cold-start on an unstudied ROM is still open.</p>
+    </div>
+    <div class="why"><b>Developers read rows.</b> The table is more honest (you can see Kirby is the weak one) and more convincing than two numbers in purple boxes.</div>
+  </div>
+</div>
+
+<h2 class="s">What a developer-built page looks like structurally</h2>
+<p class="n">Less uniform, denser, willing to be plain. Not every section needs to be a band of cards with a kicker above it.</p>
+<div class="box good" style="max-width:640px">
+  <div class="bh"><span>Shape sketch</span></div>
+  <div class="bb" style="font-size:13px">
+    <p><b>1. What it is</b> — one paragraph, no kicker. What fn64 is and what it isn't (not an emulator).</p>
+    <p><b>2. Get started</b> — the two commands, in a code block, immediately.</p>
+    <p><b>3. Status</b> — plain prose about what boots and what's broken. Links to the roadmap.</p>
+    <p><b>4. Discovery</b> — the table, then the animation showing how <code>wrong == 0</code> is enforced.</p>
+    <p><b>5. The stack</b> — the crate table straight from the README. Devs want to know what links against what.</p>
+    <p><b>6. Contributing</b> — plain prose, licence, links.</p>
+    <p style="color:#6c6674;margin-top:11px">Six sections, maybe two of them card-shaped. Kickers on none or one. The eye should land on a code block or a table within the first screen and a half.</p>
+  </div>
+  <div class="why"><b>The single biggest change:</b> get a command or a real output on screen early. Right now you scroll through three prose sections before anything concrete appears.</div>
+</div>
