@@ -36,6 +36,7 @@
         <a href="how-it-works.html">How it works</a>
         <a href="#builders">For port builders</a>
         <a href="#discover">ROM discovery</a>
+        <a href="#crates">Crates</a>
         <a class="nav-github" href="https://github.com/fn64/fn64">GitHub ↗</a>
       </nav>
     </header>
@@ -286,6 +287,43 @@
           bytes, no recompiled game output.
         </p>
         <a class="button button-outline-light pipeline-cta" href="how-it-works.html">See what each stage outputs <span>→</span></a>
+      </section>
+
+      <section class="section crates" id="crates">
+        <div class="section-heading">
+          <h2>What’s in the box.</h2>
+          <p>
+            One workspace, separate crates, each publishable on its own. If you
+            only want the ABI surface, you only take <code>fn64-abi</code>.
+          </p>
+        </div>
+        <div class="crate-table-wrap">
+          <table class="crate-table">
+            <caption class="sr-only">fn64 crates and their roles</caption>
+            <thead>
+              <tr><th scope="col">Crate</th><th scope="col">Role</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row"><code>fn64-runtime</code></th><td>Scheduler, OS message queues, timers, PI/SI/VI/AI plumbing, rdram model, overlays</td></tr>
+              <tr><th scope="row"><code>fn64-abi</code></th><td>The <code>extern "C"</code> surface recompiled code links against</td></tr>
+              <tr><th scope="row"><code>fn64-shell</code></th><td>The executable: window, input, audio out, ROM intake</td></tr>
+              <tr><th scope="row"><code>fn64-discover</code></th><td>ROM discovery: symbol and section metadata without a decomp</td></tr>
+              <tr><th scope="row"><code>fn64-recomp-rs</code></th><td>Linked typed execution runtime for generated VR4300 Rust runners</td></tr>
+              <tr><th scope="row"><code>fn64-render</code></th><td>Backend-neutral render seam and ordered microcode admission</td></tr>
+              <tr><th scope="row"><code>fn64-render-reference</code></th><td>Deterministic pure-Rust backend, software rasterizer, VI reference path</td></tr>
+              <tr><th scope="row"><code>fn64-render-rt64</code></th><td>FFI bridge to RT64. All C++ interop stays quarantined here</td></tr>
+              <tr><th scope="row"><code>fn64-audio</code></th><td>RSP audio ucode execution</td></tr>
+              <tr><th scope="row"><code>fn64-diff</code></th><td>The first-divergence comparator. Pure, no I/O</td></tr>
+              <tr><th scope="row"><code>fn64-certification</code></th><td>Cross-backend and native RT64 behavioral evidence gates</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="crate-note">
+          Three more (<code>fn64-boot-harness</code>, <code>fn64-recomp-rs-codegen</code>,
+          <code>fn64-recomp</code>) handle boot wiring, build-side codegen, and the
+          N64Recomp comparison lane.
+          <a href="https://github.com/fn64/fn64#crates">Full table with dependency rules ↗</a>
+        </p>
       </section>
 
       <section class="section contribute" id="contribute">
