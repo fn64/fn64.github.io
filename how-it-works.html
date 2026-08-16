@@ -34,8 +34,9 @@
         <b translate="no">fn64</b>
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="index.html#discovery">Discovery</a>
-        <a href="index.html#crates">Crates</a>
+        <a href="#routes">Routes</a>
+        <a href="#stages">Stages</a>
+        <a href="#check">Checks</a>
         <a href="https://github.com/fn64/fn64">GitHub</a>
       </nav>
     </header>
@@ -124,6 +125,27 @@
         </p>
       </section>
 
+      <section id="rendering">
+        <h2>Rendering</h2>
+        <p>
+          Graphics go through a backend-neutral seam, so the thing that draws
+          is swappable and the thing that decides what to draw is not.
+        </p>
+        <dl>
+          <dt>fn64-render</dt>
+          <dd>The seam itself: ordered microcode admission and completion inspection, with no backend assumptions.</dd>
+          <dt>fn64-render-reference</dt>
+          <dd>A deterministic pure-Rust backend with a software rasteriser. Slow, but it produces the same frame every time, which is what makes differential testing possible.</dd>
+          <dt>fn64-render-rt64</dt>
+          <dd>An FFI bridge to RT64 for the fast path. All C++ interop is quarantined in this one crate.</dd>
+        </dl>
+        <p style="margin-top:1.25rem">
+          The reference backend is not a fallback that nobody runs. Having a
+          deterministic renderer beside the fast one is how a rendering
+          regression gets caught as a diff rather than as a bug report.
+        </p>
+      </section>
+
       <section id="content">
         <h2>Your content stays local</h2>
         <p>
@@ -132,6 +154,30 @@
           bytes, no recompiled game output. You supply the ROM, it is read
           locally, and everything derived from it stays on your disk and out of
           git.
+        </p>
+        <p>
+          The discovery tool only emits metadata, never game assets, so its
+          output is safe to paste into an issue or commit to a public repo.
+        </p>
+      </section>
+
+      <section id="licence">
+        <h2>Licence</h2>
+        <p>
+          MIT OR Apache-2.0, end to end. Ship it, fork it, embed it in a
+          commercial product, relicense your own work on top of it. Permissive
+          licensing is a large part of why fn64 exists rather than a patch on
+          something that already worked.
+        </p>
+        <p>
+          The runtime is written clean-room: from our own debugging notes,
+          public documentation and MIT source. GPL implementation code is not
+          read, not referenced, not laundered.
+        </p>
+        <p>
+          RT64 is MIT and stays behind an FFI boundary in its own crate, so a
+          port that does not want the C++ dependency can take the reference
+          backend and never link it.
         </p>
       </section>
     </main>

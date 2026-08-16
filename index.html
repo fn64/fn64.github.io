@@ -38,9 +38,10 @@
         <b translate="no">fn64</b>
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#what">What it is</a>
         <a href="#discovery">Discovery</a>
-        <a href="#stages">Stages</a>
         <a href="#crates">Crates</a>
+        <a href="how-it-works.html">How it works</a>
         <a href="https://github.com/fn64/fn64">GitHub</a>
       </nav>
     </header>
@@ -67,6 +68,28 @@
           <li>MIT OR Apache-2.0</li>
         </ul>
       </div>
+
+      <section id="what">
+        <h2>Not an emulator</h2>
+        <p>
+          An emulator reads the game’s MIPS instructions and interprets or
+          JITs them while it runs. Static recompilation does that work once,
+          ahead of time: the game’s functions become native code compiled into
+          your binary, and there is no interpreter in the loop.
+        </p>
+        <p>
+          What that code still needs is everything the game used to call into
+          on real hardware. That is fn64. It does not read your ROM’s
+          instructions at runtime; it answers the calls the recompiled code
+          makes.
+        </p>
+        <dl>
+          <dt>You supply</dt>
+          <dd>A ROM you own, and either N64Recomp output or nothing at all.</dd>
+          <dt>fn64 supplies</dt>
+          <dd>The runtime those functions call into, the render seam, and the checks that grade it.</dd>
+        </dl>
+      </section>
 
       <section id="run">
         <h2>Run it</h2>
@@ -131,6 +154,22 @@ cargo run -p fn64-shell</code></pre>
             discovery on an unstudied ROM is still the open frontier.
           </p>
         </div>
+
+        <h3>How the zero holds</h3>
+        <p>
+          Discovery only claims a boundary it can prove, and the passes are
+          separable so you can see which one made a claim.
+        </p>
+        <dl>
+          <dt>Delta-vote admission</dt>
+          <dd>Candidate tables are probed at a fixed stride. A table is admitted only when enough records agree on their field deltas, so a coincidental run of plausible values is rejected.</dd>
+          <dt>Prologue refinement</dt>
+          <dd>A prefix matcher flags likely function entries, then each boundary is pulled back to the preceding terminator. A candidate without one is not claimed.</dd>
+          <dt>Authority closure</dt>
+          <dd>Proof propagates only along call edges with incoming-edge evidence. Anything the closure cannot reach stays unresolved rather than being inferred.</dd>
+          <dt>Named blockers</dt>
+          <dd>Every unresolved bank keeps a blocker naming why it stopped, so a gap is a fact you can read rather than silence.</dd>
+        </dl>
       </section>
 
       <section id="stages">
@@ -180,39 +219,35 @@ cargo run -p fn64-shell</code></pre>
         </p>
       </section>
 
-      <section id="check">
-        <h2>What you can check</h2>
-        <p class="sub">Four things in the repo you can run or read if you want to disagree with us.</p>
-        <dl>
-          <dt>c_smoke</dt>
-          <dd>Link-tests the ABI with a real C caller against the static library.</dd>
-          <dt>Instruction oracles</dt>
-          <dd>Generated callable bodies diffed against N64Recomp output, instruction by instruction.</dd>
-          <dt>scripts/lane-parity.sh</dt>
-          <dd>Audits whether the two generated callable-body sets agree.</dd>
-          <dt>docs/ROADMAP.md</dt>
-          <dd>Every known gap, named. Unimplemented behavior traps instead of returning zero.</dd>
-        </dl>
-        <p style="margin-top:1.25rem">
-          A deterministic fix needs 10 consecutive clean runs before it counts.
-          A concurrency fix needs 20 or more.
-        </p>
-      </section>
-
       <section id="status">
         <h2>Status</h2>
         <p>
           Ocarina of Time boots in a windowed app with the RT64 renderer and
           working input. Audio is still broken (R5) and the outdoor gameplay
           eye-gate is unmet (R3b). Both are tracked in
-          <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">the roadmap</a>.
+          <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">the roadmap</a>,
+          which is the honest place to look before deciding whether fn64 is
+          ready for what you want to do.
         </p>
+        <p>
+          Pre-alpha means the runtime surface is implemented as far as shipping
+          ports have needed, and no further. Anything past that edge traps and
+          names itself rather than returning a plausible zero, so you find the
+          gap instead of debugging a ghost.
+        </p>
+
+        <h3>How the work gets done</h3>
         <p>
           Most of the code is written by agents in orchestrated waves, and a
           human reviews and merges every change. Both work from the same
           <a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">AGENTS.md</a>:
           written from our own debugging, public documentation and MIT source,
-          never from GPL code.
+          never from GPL code. A deterministic fix needs 10 consecutive clean
+          runs before it counts; a concurrency fix needs 20 or more.
+        </p>
+        <p>
+          If you want to check any of that rather than take it on faith,
+          <a href="how-it-works.html#check">the checks are listed here</a>.
         </p>
       </section>
     </main>
