@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f5f0e7" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#14111a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0c0c0d" media="(prefers-color-scheme: dark)">
     <meta
       name="description"
-      content="fn64 is an MIT-licensed Rust runtime for Nintendo 64 static recompilation. Boot your own recompiled ROM as a native desktop app, with every unproven boundary named instead of guessed."
+      content="fn64 is a Rust runtime for Nintendo 64 static recompilation. Your recompiled ROM calls into it for the scheduler, message queues, timers, DMA, save, input and audio."
     >
     <meta property="og:title" content="fn64 — a Rust runtime for N64 static recompilation">
     <meta
@@ -18,6 +18,9 @@
     <meta property="og:url" content="https://fn64.github.io/">
     <title>fn64 — a Rust runtime for N64 static recompilation</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -25,329 +28,203 @@
 
     <header class="site-header">
       <a class="brand" href="#top" aria-label="fn64 home">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48">
-            <path class="mark-body" fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/>
-            <g class="mark-pins"><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></g>
-          </svg>
-        </span>
-        <span class="brand-word" translate="no"><b>f</b><span>n64</span></span>
+        <!-- Small mark: the insert alone. Below ~20px the full bezel closes up
+             and the pins lose separation, so the ring is dropped and the shape
+             that carries recognition is scaled to fill the box. The favicon
+             keeps the full round mark, where a silhouette matters more. -->
+        <svg class="mark" width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0-10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0-10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0-10.56 0"/>
+        </svg>
+        <b translate="no">fn64</b>
       </a>
-      <nav aria-label="Primary navigation">
-        <a href="how-it-works.html">How it works</a>
-        <a href="#builders">For port builders</a>
-        <a href="#discover">ROM discovery</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#discovery">Discovery</a>
+        <a href="#stages">Stages</a>
         <a href="#crates">Crates</a>
-        <a class="nav-github" href="https://github.com/fn64/fn64">GitHub ↗</a>
+        <a href="https://github.com/fn64/fn64">GitHub</a>
       </nav>
     </header>
 
     <main id="main">
-      <section class="hero" id="top">
-        <div class="hero-copy">
-          <p class="eyebrow"><span></span> Rust-native N64 recompilation</p>
-          <h1 class="hero-lockup">
-            <span class="sr-only">fn64: a permissively licensed Rust runtime for Nintendo 64 static recompilation.</span>
-            <span class="word-cycle" aria-hidden="true" translate="no">
-              <span class="word-core">f</span><span class="insert-stack">
-                <span class="word-insert" style="--delay: 0s; --accent: var(--color-purple)">uture</span>
-                <span class="word-insert" style="--delay: 4s; --accent: var(--color-coral)">aithful</span>
-                <span class="word-insert" style="--delay: 8s; --accent: var(--color-cyan-dark)">riendly</span>
-                <span class="word-insert" style="--delay: 12s; --accent: var(--color-green-dark)">ast</span>
-              </span><span class="word-core word-tail">n64</span>
-            </span>
-            <span class="hero-promise">Ship it, fork it, embed it. Never ask permission.</span>
-          </h1>
-          <p class="hero-intro">
-            fn64 is the layer under the game: scheduler, message queues,
-            timers, DMA and overlay lifecycle, save, input, audio. Written
-            clean-room in Rust, licensed MIT OR Apache-2.0, end to end. It
-            boots Ocarina of Time today.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="how-it-works.html">See how a ROM becomes a native app <span>→</span></a>
-            <a class="button button-secondary" href="https://github.com/fn64/fn64">Read the runtime source <span>↗</span></a>
-          </div>
-          <p class="license-note">Project code licensed MIT OR Apache-2.0 · Pre-alpha</p>
-        </div>
+      <div class="hero" id="top">
+        <span class="word-cycle" aria-hidden="true" translate="no">
+          <span class="word-core">f</span><span class="insert-stack">
+            <span class="word-insert" style="--delay: 0s">uture</span>
+            <span class="word-insert" style="--delay: 4s">aithful</span>
+            <span class="word-insert" style="--delay: 8s">riendly</span>
+            <span class="word-insert" style="--delay: 12s">ast</span>
+          </span><span class="word-core word-tail">n64</span>
+        </span>
+        <h1>Run your recompiled ROM as a native app.</h1>
+        <p class="lede">
+          fn64 is a Rust runtime for Nintendo&nbsp;64 static recompilation. Your
+          recompiled ROM calls into it for the scheduler, message queues,
+          timers, DMA and overlay lifecycle, save, input and audio.
+        </p>
+        <ul class="meta">
+          <li><span class="dot" aria-hidden="true"></span>Boots Ocarina of Time today</li>
+          <li>Pre-alpha</li>
+          <li>MIT OR Apache-2.0</li>
+        </ul>
+      </div>
 
-        <div class="hero-visual" role="img" aria-label="An abstract N64 console face with four controller ports">
-          <svg class="console-art" viewBox="0 0 620 440" aria-hidden="true">
-            <path class="console-shadow" d="M34 137C132 88 207 67 310 67s178 21 276 70l25 239H9z"/>
-            <path class="console-shell" d="M25 117C126 67 204 46 310 46s184 21 285 71l16 239H9z"/>
-            <path class="console-seam" d="M27 208h566"/>
-            <path class="console-badge" d="M242 84h136l-12 63H254z"/>
-            <text class="console-word" x="274" y="126">fn64</text>
+      <section id="run">
+        <h2>Run it</h2>
+        <p class="sub">
+          The shell builds without any game content. It refuses to open an empty
+          window and tells you what it needs instead.
+        </p>
 
-            <g class="controller-port" transform="translate(91 270)">
-              <circle class="port-bezel" r="57"/>
-              <path class="port-insert" d="M-36.61 18.43A4.36 4.36 0 0 1-40.67 15.64A43.58 43.58 0 1 1 40.67 15.64A4.36 4.36 0 0 1 36.61 18.43Z"/>
-              <circle class="port-hole" cx="-27.02" r="10.46"/><circle class="port-hole" r="10.46"/><circle class="port-hole" cx="27.02" r="10.46"/>
-            </g>
-            <g class="controller-port" transform="translate(237 270)">
-              <circle class="port-bezel" r="57"/>
-              <path class="port-insert" d="M-36.61 18.43A4.36 4.36 0 0 1-40.67 15.64A43.58 43.58 0 1 1 40.67 15.64A4.36 4.36 0 0 1 36.61 18.43Z"/>
-              <circle class="port-hole" cx="-27.02" r="10.46"/><circle class="port-hole" r="10.46"/><circle class="port-hole" cx="27.02" r="10.46"/>
-            </g>
-            <g class="controller-port" transform="translate(383 270)">
-              <circle class="port-bezel" r="57"/>
-              <path class="port-insert" d="M-36.61 18.43A4.36 4.36 0 0 1-40.67 15.64A43.58 43.58 0 1 1 40.67 15.64A4.36 4.36 0 0 1 36.61 18.43Z"/>
-              <circle class="port-hole" cx="-27.02" r="10.46"/><circle class="port-hole" r="10.46"/><circle class="port-hole" cx="27.02" r="10.46"/>
-            </g>
-            <g class="controller-port" transform="translate(529 270)">
-              <circle class="port-bezel" r="57"/>
-              <path class="port-insert" d="M-36.61 18.43A4.36 4.36 0 0 1-40.67 15.64A43.58 43.58 0 1 1 40.67 15.64A4.36 4.36 0 0 1 36.61 18.43Z"/>
-              <circle class="port-hole" cx="-27.02" r="10.46"/><circle class="port-hole" r="10.46"/><circle class="port-hole" cx="27.02" r="10.46"/>
-            </g>
-          </svg>
-        </div>
-      </section>
+        <h3>Without a ROM</h3>
+        <pre><code>cargo run -p fn64-shell -- --demo</code></pre>
+        <p class="cap">
+          Drives the real window, framebuffer conversion and overlay from a
+          synthetic RDRAM field, so the UI stack stays verifiable in a checkout
+          with nothing to boot.
+        </p>
 
-      <section class="status-strip" aria-label="Current project status">
-        <div>
-          <span class="status-dot" aria-hidden="true"></span>
-          <strong>Pre-alpha, with working code.</strong>
-          <span>Ocarina of Time boots in a windowed app with the RT64 renderer and working input. Audio and outdoor gameplay are still open.</span>
-        </div>
-        <a href="how-it-works.html">See how the stack fits together →</a>
-      </section>
-
-      <section class="section start" id="builders">
-        <div class="section-heading">
-          <h2 id="builders-heading">Run it.<a class="anchor" href="#builders" aria-label="Link to this section">#</a></h2>
-          <p>
-            The shell builds without any game content. It refuses to open an
-            empty window and tells you what it needs instead.
-          </p>
-        </div>
-
-        <div class="start-grid">
-          <div class="start-block">
-            <p class="start-label">No ROM, no game content</p>
-            <pre><code>cargo run -p fn64-shell -- --demo</code></pre>
-            <p class="start-note">
-              Drives the real window, framebuffer conversion, and overlay from
-              a synthetic RDRAM field, so the UI stack stays verifiable in a
-              checkout with nothing to boot.
-            </p>
-          </div>
-
-          <div class="start-block">
-            <p class="start-label">With your own ROM and N64Recomp output</p>
-            <pre><code>RECOMPILED_DIR=.../OOTU/RecompiledFuncs \
+        <h3>With your own ROM</h3>
+        <pre><code>RECOMPILED_DIR=.../OOTU/RecompiledFuncs \
 ROM=.../oot-ntsc-1.0.z64 \
 cargo run -p fn64-shell</code></pre>
-            <p class="start-note">
-              Same intake contract as <code>examples/oot-boot</code>. Your ROM
-              and everything derived from it stays on your machine.
-            </p>
-          </div>
-        </div>
-
-        <p class="start-tail">
-          No decomp yet? <code>fn64-discover</code> recovers function and
-          section metadata from the ROM first. <a href="#discover">See what it
-          can prove ↓</a>
+        <p class="cap">
+          Same intake contract as <code>examples/oot-boot</code>. This
+          repository holds tooling and runtime code: no game assets, no ROM
+          bytes, no recompiled game output. Everything derived from your ROM
+          stays on your disk.
         </p>
       </section>
 
-      <section class="section four-fs" id="why">
-        <div class="section-heading">
-          <h2 id="why-heading">Future, faithful, friendly, fast.<a class="anchor" href="#why" aria-label="Link to this section">#</a></h2>
-          <p>
-            The four words come from the README. Here is the mechanism behind
-            each one, and the doc where you can check it.
-          </p>
-        </div>
-
-        <div class="why-table-wrap">
-          <table class="why-table">
-            <thead>
-              <tr><th scope="col">Word</th><th scope="col">What it means here</th><th scope="col">Check it</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Future</th>
-                <td>A game-agnostic runtime with zero game-specific assumptions, plus the discovery, typed codegen, and rendering seams around it.</td>
-                <td><a href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md"><code>docs/DESIGN.md</code> ↗</a></td>
-              </tr>
-              <tr>
-                <th scope="row">Faithful</th>
-                <td>Unimplemented behavior does not silently return zero. It traps and names itself, so you find the gap instead of debugging a ghost.</td>
-                <td><a href="https://github.com/fn64/fn64/blob/main/docs/PARITY-METHOD.md"><code>docs/PARITY-METHOD.md</code> ↗</a></td>
-              </tr>
-              <tr>
-                <th scope="row">Friendly</th>
-                <td>One contract for humans and agents, docs maintained like code, and MIT OR Apache-2.0 throughout.</td>
-                <td><a href="https://github.com/fn64/fn64/blob/main/AGENTS.md"><code>AGENTS.md</code> ↗</a></td>
-              </tr>
-              <tr>
-                <th scope="row">Fast</th>
-                <td>Static recompilation produces native host code. Rust adds predictable memory behavior and zero-cost abstractions. Speed claims require measurements.</td>
-                <td><a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md"><code>docs/ROADMAP.md</code> ↗</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="section discover" id="discover">
-        <div class="discover-copy">
-          <p class="eyebrow eyebrow-light"><span></span> fn64-discover</p>
-          <h2 id="discover-heading">Start with the ROM, not a finished decomp.<a class="anchor" href="#discover" aria-label="Link to this section">#</a></h2>
-          <p class="discover-lead">
-            <code>fn64-discover</code> reads a local ROM and recovers function
-            and section metadata. You do not need a finished decomp to start,
-            and what it cannot prove it refuses to claim. Today’s graded
-            results still lean on donor ROMs and answer keys from existing
-            decomp projects. Cold-start discovery on an unstudied ROM is the
-            open frontier, and fn64’s own docs say so.
-          </p>
-          <div class="grade-table-wrap">
-            <table class="grade-table">
-              <caption>Boot-bank function recovery, graded against public decomp answer keys. As of August 2026.</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Title</th>
-                  <th scope="col" class="num">Matched</th>
-                  <th scope="col" class="num">Recall</th>
-                  <th scope="col" class="num">Wrong</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><th scope="row">Super Mario 64</th><td class="num">2816 / 3030</td><td class="num">92.9%</td><td class="num zero">0</td></tr>
-                <tr><th scope="row">Ocarina of Time</th><td class="num">119 / 137</td><td class="num">86.9%</td><td class="num zero">0</td></tr>
-                <tr><th scope="row">No Mercy</th><td class="num">835 / 985</td><td class="num">84.8%</td><td class="num zero">0</td></tr>
-                <tr><th scope="row">Majora’s Mask</th><td class="num">402 / 486</td><td class="num">82.7%</td><td class="num zero">0</td></tr>
-                <tr><th scope="row">WM2000</th><td class="num">698 / 847</td><td class="num">82.4%</td><td class="num zero">0</td></tr>
-                <tr><th scope="row">Kirby 64</th><td class="num">402 / 531</td><td class="num">75.7%</td><td class="num zero">0</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="grade-note">
-            Recall is what discovery found. <b>Wrong is what it got wrong, and
-            it is zero on every title.</b> Missing a function costs you work;
-            claiming a boundary that isn’t there costs you a debugging session
-            chasing a ghost. Graded, not blind: each run uses a donor ROM and
-            an answer key from an existing decomp project.
-          </p>
-          <a class="text-link" href="https://github.com/fn64/fn64/blob/main/docs/DISCOVER-PLAN.md">Read the discovery plan →</a>
-        </div>
-
-        <div class="terminal" role="img" aria-label="Illustration of fn64 discovery retaining proven facts and unresolved evidence">
-          <div class="terminal-bar">
-            <div><span></span><span></span><span></span></div>
-            <p>fn64 / discover</p>
-          </div>
-          <div class="terminal-body">
-            <p><span class="prompt">$</span> fn64-discover game.z64 --prove-owners --summary</p>
-            <p class="muted">normalizing local ROM image…</p>
-            <p><span class="ok">✓</span> resident image mapped</p>
-            <p><span class="ok">✓</span> proven facts recorded</p>
-            <p><span class="ok">✓</span> owner blockers classified</p>
-            <p><span class="warn">!</span> unresolved sites retained with evidence</p>
-            <div class="terminal-rule"></div>
-            <p><span class="result">SUMMARY</span> content-free receipt emitted</p>
-            <p class="cursor-line"><span class="prompt">$</span> <span class="cursor"></span></p>
-          </div>
-        </div>
-      </section>
-
-      <section class="pipeline-section">
-        <div class="pipeline-intro">
-          <h2>Your ROM never leaves your machine.</h2>
-        </div>
-        <p class="content-note">
-          This repository contains tooling and runtime code. No game assets, no
-          ROM bytes, no recompiled game output. You supply the ROM, it is read
-          locally, and everything derived from it stays on your disk and out of
-          git.
+      <section id="discovery">
+        <h2>Discovery</h2>
+        <p class="sub">
+          <code>fn64-discover</code> reads a local ROM and recovers function and
+          section metadata. You do not need a finished decomp to start.
         </p>
-        <a class="button button-outline-light pipeline-cta" href="how-it-works.html">See what each stage outputs <span>→</span></a>
-      </section>
 
-      <section class="section crates" id="crates">
-        <div class="section-heading">
-          <h2 id="crates-heading">What’s in the box.<a class="anchor" href="#crates" aria-label="Link to this section">#</a></h2>
+        <table>
+          <caption>Boot-bank function recovery, graded against public decomp answer keys. August 2026.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col" style="text-align:right">Matched</th>
+              <th scope="col" style="text-align:right">Recall</th>
+              <th scope="col" style="text-align:right">Wrong</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Super Mario 64</th><td class="num">2816 / 3030</td><td class="num">92.9%</td><td class="zero">0</td></tr>
+            <tr><th scope="row">Ocarina of Time</th><td class="num">119 / 137</td><td class="num">86.9%</td><td class="zero">0</td></tr>
+            <tr><th scope="row">No Mercy</th><td class="num">835 / 985</td><td class="num">84.8%</td><td class="zero">0</td></tr>
+            <tr><th scope="row">Majora’s Mask</th><td class="num">402 / 486</td><td class="num">82.7%</td><td class="zero">0</td></tr>
+            <tr><th scope="row">WM2000</th><td class="num">698 / 847</td><td class="num">82.4%</td><td class="zero">0</td></tr>
+            <tr><th scope="row">Kirby 64</th><td class="num">402 / 531</td><td class="num">75.7%</td><td class="zero">0</td></tr>
+          </tbody>
+        </table>
+
+        <div class="claim">
           <p>
-            One workspace, separate crates, each publishable on its own. If you
-            only want the ABI surface, you only take <code>fn64-abi</code>.
+            <strong>Wrong is zero on every title.</strong> Missing a function
+            costs you work. Claiming a boundary that is not there costs you a
+            debugging session. Graded, not blind: each run uses a donor ROM and
+            an answer key from an existing decomp project, so cold-start
+            discovery on an unstudied ROM is still the open frontier.
           </p>
         </div>
-        <div class="crate-table-wrap">
-          <table class="crate-table">
-            <caption class="sr-only">fn64 crates and their roles</caption>
-            <thead>
-              <tr><th scope="col">Crate</th><th scope="col">Role</th></tr>
-            </thead>
-            <tbody>
-              <tr><th scope="row"><code>fn64-runtime</code></th><td>Scheduler, OS message queues, timers, PI/SI/VI/AI plumbing, rdram model, overlays</td></tr>
-              <tr><th scope="row"><code>fn64-abi</code></th><td>The <code>extern "C"</code> surface recompiled code links against</td></tr>
-              <tr><th scope="row"><code>fn64-shell</code></th><td>The executable: window, input, audio out, ROM intake</td></tr>
-              <tr><th scope="row"><code>fn64-discover</code></th><td>ROM discovery: symbol and section metadata without a decomp</td></tr>
-              <tr><th scope="row"><code>fn64-cpu-runtime</code></th><td>Linked typed execution runtime for generated VR4300 Rust runners</td></tr>
-              <tr><th scope="row"><code>fn64-render</code></th><td>Backend-neutral render seam and ordered microcode admission</td></tr>
-              <tr><th scope="row"><code>fn64-render-reference</code></th><td>Deterministic pure-Rust backend, software rasterizer, VI reference path</td></tr>
-              <tr><th scope="row"><code>fn64-render-rt64</code></th><td>FFI bridge to RT64. All C++ interop stays quarantined here</td></tr>
-              <tr><th scope="row"><code>fn64-audio</code></th><td>RSP audio ucode execution</td></tr>
-              <tr><th scope="row"><code>fn64-diff</code></th><td>The first-divergence comparator. Pure, no I/O</td></tr>
-              <tr><th scope="row"><code>fn64-certification</code></th><td>Cross-backend and native RT64 behavioral evidence gates</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="crate-note">
-          Three more (<code>fn64-boot-harness</code>, <code>fn64-cpu-runtime-codegen</code>,
-          <code>fn64-recomp</code>) handle boot wiring, build-side codegen, and the
-          N64Recomp comparison lane.
-          <a href="https://github.com/fn64/fn64#crates">Full table with dependency rules ↗</a>
+      </section>
+
+      <section id="stages">
+        <h2>Stages</h2>
+        <p class="sub">
+          Each stage writes a file you can look at, so you can re-run one
+          without rebuilding the others.
+        </p>
+        <dl>
+          <dt>Discover</dt>
+          <dd>Analyze a local ROM, retain proven facts, keep a named blocker on every unresolved bank.</dd>
+          <dt>Recompile</dt>
+          <dd>Turn MIPS functions into typed Rust runners, one native function per MIPS function.</dd>
+          <dt>Execute</dt>
+          <dd>Link recompiled code to a clean-room Rust implementation of the runtime surface.</dd>
+          <dt>Present</dt>
+          <dd>Graphics, audio, input and platform integration through explicit backend seams.</dd>
+          <dt>Prove</dt>
+          <dd>Grade ABI shape, code generation and deterministic behavior with executable checks.</dd>
+        </dl>
+      </section>
+
+      <section id="crates">
+        <h2>Crates</h2>
+        <p class="sub">
+          One workspace, separate crates, each publishable on its own. If you
+          only want the ABI surface, you only take <code>fn64-abi</code>.
+        </p>
+        <dl>
+          <dt>fn64-runtime</dt>
+          <dd>Scheduler, OS message queues, timers, PI/SI/VI/AI plumbing, rdram model, overlays.</dd>
+          <dt>fn64-abi</dt>
+          <dd>The <code>extern "C"</code> surface recompiled code links against.</dd>
+          <dt>fn64-shell</dt>
+          <dd>The executable: window, input, audio out, ROM intake.</dd>
+          <dt>fn64-discover</dt>
+          <dd>ROM discovery: symbol and section metadata without a decomp.</dd>
+          <dt>fn64-cpu-runtime</dt>
+          <dd>Linked typed execution runtime for generated VR4300 Rust runners.</dd>
+          <dt>fn64-render</dt>
+          <dd>Backend-neutral render seam and ordered microcode admission.</dd>
+          <dt>fn64-diff</dt>
+          <dd>The first-divergence comparator. Pure, no I/O.</dd>
+        </dl>
+        <p style="margin-top:1.25rem">
+          <a href="https://github.com/fn64/fn64#crates">All fourteen crates and their dependency rules →</a>
         </p>
       </section>
 
-      <section class="section contribute" id="contribute">
-        <div>
-          <h2 id="contribute-heading">How the work gets done.<a class="anchor" href="#contribute" aria-label="Link to this section">#</a></h2>
-        </div>
-        <div class="contribute-copy">
-          <p>
-            We use agents heavily, and a human still reviews and merges every
-            change. Both work from the same notes: written from our own
-            debugging, public documentation, and MIT source, never from GPL
-            code. We write down why a thing is the way it is, so the next
-            person can argue with the reasoning instead of guessing at it from
-            the diff.
-          </p>
-          <div class="contribute-links">
-            <a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">Read the contributor contract <span>→</span></a>
-            <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">Find the open frontier <span>→</span></a>
-            <a href="https://github.com/fn64/fn64">Browse the source <span>→</span></a>
-          </div>
-        </div>
+      <section id="check">
+        <h2>What you can check</h2>
+        <p class="sub">Four things in the repo you can run or read if you want to disagree with us.</p>
+        <dl>
+          <dt>c_smoke</dt>
+          <dd>Link-tests the ABI with a real C caller against the static library.</dd>
+          <dt>Instruction oracles</dt>
+          <dd>Generated callable bodies diffed against N64Recomp output, instruction by instruction.</dd>
+          <dt>scripts/lane-parity.sh</dt>
+          <dd>Audits whether the two generated callable-body sets agree.</dd>
+          <dt>docs/ROADMAP.md</dt>
+          <dd>Every known gap, named. Unimplemented behavior traps instead of returning zero.</dd>
+        </dl>
+        <p style="margin-top:1.25rem">
+          A deterministic fix needs 10 consecutive clean runs before it counts.
+          A concurrency fix needs 20 or more.
+        </p>
       </section>
 
-      <section class="cta">
-        <h2>Build the port.<br>Ship it, fork it, embed it.</h2>
-        <p>Pre-alpha. The open gaps are written down in the roadmap before you ask.</p>
-        <a class="button button-light" href="https://github.com/fn64/fn64">Read the source and the roadmap <span>↗</span></a>
+      <section id="status">
+        <h2>Status</h2>
+        <p>
+          Ocarina of Time boots in a windowed app with the RT64 renderer and
+          working input. Audio is still broken (R5) and the outdoor gameplay
+          eye-gate is unmet (R3b). Both are tracked in
+          <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">the roadmap</a>.
+        </p>
+        <p>
+          Most of the code is written by agents in orchestrated waves, and a
+          human reviews and merges every change. Both work from the same
+          <a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">AGENTS.md</a>:
+          written from our own debugging, public documentation and MIT source,
+          never from GPL code.
+        </p>
       </section>
     </main>
 
-    <footer>
-      <a class="brand footer-brand" href="#top">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48">
-            <path class="mark-body" fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/>
-            <g class="mark-pins"><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></g>
-          </svg>
-        </span>
-        <span class="brand-word" translate="no"><b>f</b><span>n64</span></span>
-      </a>
-      <p>Clean-room N64 static recompilation in Rust.</p>
-      <div>
-        <a href="https://github.com/fn64/fn64">GitHub</a>
+    <footer class="site-footer">
+      <span>Clean-room N64 static recompilation in Rust.</span>
+      <nav aria-label="Footer">
         <a href="how-it-works.html">How it works</a>
+        <a href="https://github.com/fn64/fn64">GitHub</a>
         <a href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md">Docs</a>
-        <a href="https://github.com/fn64/fn64#license">License</a>
-      </div>
+        <a href="https://github.com/fn64/fn64#license">Licence</a>
+      </nav>
     </footer>
   </body>
 </html>

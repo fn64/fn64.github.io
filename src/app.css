@@ -1,146 +1,118 @@
 @import "tailwindcss";
 
-/* Scan the pages for classes. Explicit because the site root is the repo root
-   and we do not want design/ or scripts/ pulled in. */
 @source "../index.html";
 @source "../how-it-works.html";
 
 /* ---------------------------------------------------------------------------
-   Design tokens
-   These are the identity: a paper/ink base with four accents taken from the
-   N64 controller colourways, plus a serif display face. Changing these
-   changes the brand, so they live in one place.
+   Tokens
+
+   Simplified theme. One column, no bands, no cards, one accent used sparingly.
+   With nothing decorative to hide behind, the discipline is in the type scale
+   and the spacing.
    --------------------------------------------------------------------------- */
-/* `static` so the keyframes below survive tree-shaking: the word-cycle sets
-   its animation through a component class, not an animate-* utility, so
-   Tailwind would otherwise drop them as unused. */
 @theme static {
-  --color-ink: #17131f;
-  --color-paper: #f5f0e7;
-  --color-paper-bright: #fffdf7;
-  --color-purple: #7651d6;
-  --color-purple-dark: #3c286f;
-  --color-lime: #c8f05b;
-  --color-coral: #ff795f;
-  --color-cyan: #68d9df;
-  --color-cyan-dark: #267f85;
-  --color-green-dark: #5b7620;
-  --color-muted: #6c6674;
-  --color-body: #49434f;
-  --color-rule: rgba(23, 19, 31, 0.16);
+  /* Neutrals carry the page. A near-black rather than a true one, and a white
+     rather than the old warm cream, which read as a generic AI default. */
+  --color-bg: #ffffff;
+  --color-bg-2: #f6f6f7;
+  --color-fg: #0c0c0d;
+  --color-fg-2: #41424a;
+  /* #6b6c77 not #71727d: muted text sometimes lands on --surface-2 (inline
+     code inside a caption), where the lighter value measured 4.41:1, under the
+     4.5:1 minimum. This is 4.82:1 there and 5.20:1 on plain white. */
+  --color-fg-3: #6b6c77;
+  --color-line: #e4e4e8;
 
-  /* Accent-band background. Darker than --color-purple because lime cannot
-     reach 4.5:1 on the lighter value at any usable tint -- pushing it far
-     enough bleaches it to near-white. This carries lime at 5.64:1 and white
-     at 7.37:1. See the semantic layer below. */
-  --color-accent-band: #5f3cbb;
+  /* One accent, for links and the one number that matters. */
+  --color-accent: #2f5bd8;
+  --color-ok: #1f7a4d;
 
-  --font-display: Georgia, "Times New Roman", serif;
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Instrument Sans: a grotesque with slightly narrow, squared-off forms that
+     holds up at display size, without Inter's neutrality.
+     IBM Plex Mono: drawn for engineering documentation, so it sits beside a
+     grotesque rather than fighting it. */
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --container-site: 1180px;
+  --container-site: 760px;
 
   /* The hero wordmark cycles f[uture|aithful|riendly|ast]n64. Two animations
      run together: each insert expands in place while the n64 tail slides right
      to make room. Per-word --delay and --accent are set inline in the markup.
-     Keyframes cannot be expressed as utility classes, so they live here. */
-  --animate-expand-insert: expand-insert 16s ease-in-out infinite;
-  --animate-slide-tail: slide-tail 16s ease-in-out infinite;
-
+     Keyframes cannot be utility classes, so they live here; `@theme static`
+     keeps them from being tree-shaken, since no animate-* utility uses them. */
   @keyframes expand-insert {
-    0%, 3%   { opacity: 0; transform: scaleX(0.02); }
-    6%, 15%  { opacity: 0.72; transform: scaleX(1); }
+    0%, 3%    { opacity: 0; transform: scaleX(0.02); }
+    6%, 15%   { opacity: 1; transform: scaleX(1); }
     18%, 100% { opacity: 0; transform: scaleX(0.02); }
   }
 
+  /* Tail offsets are the letter counts of each insert: uture=5, aithful=7,
+     riendly=7, ast=3. In a monospace face that is exactly N ch. */
   @keyframes slide-tail {
     0%, 3%   { transform: translateX(0); }
-    6%, 15%  { transform: translateX(4.5ch); }
+    6%, 15%  { transform: translateX(5ch); }
     18%, 28% { transform: translateX(0); }
-    31%, 40% { transform: translateX(6.2ch); }
+    31%, 40% { transform: translateX(7ch); }
     43%, 53% { transform: translateX(0); }
-    56%, 65% { transform: translateX(6.2ch); }
+    56%, 65% { transform: translateX(7ch); }
     68%, 78% { transform: translateX(0); }
-    81%, 90% { transform: translateX(2.8ch); }
+    81%, 90% { transform: translateX(3ch); }
     93%, 100% { transform: translateX(0); }
   }
+
+  /* One scale, 1.25 ratio, no in-between sizes. */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.5rem;
 }
 
 /* ---------------------------------------------------------------------------
    Semantic layer
-   The palette above names *colours*; these name *roles*. Components should use
-   these, so a theme change is a change here rather than a hunt through rules.
 
-   Every text/surface pair below is >= 4.5:1, verified with a contrast script
-   rather than by eye. Two failures Lighthouse caught in the hand-written CSS
-   came from hardcoded hexes with no single place to fix them, which is the
-   reason this layer exists.
+   The tokens above name colours; these name roles, so a theme change happens
+   here rather than in a hunt through rules. Every text/surface pair is >= 4.5:1,
+   verified with a contrast script rather than by eye.
    --------------------------------------------------------------------------- */
 @layer theme {
   :root {
-    --surface: var(--color-paper);
-    --surface-raised: var(--color-paper-bright);
-    --surface-inverse: var(--color-ink);
-    --surface-accent: var(--color-accent-band);
-    --surface-deep: var(--color-purple-dark);
-
-    --text: var(--color-ink);
-    --text-body: var(--color-body);
-    --text-muted: var(--color-muted);
-    --text-on-inverse: #ffffff;
-    --text-on-inverse-muted: #b2a8bd;
-    --text-on-accent: #ffffff;
-    --text-on-accent-muted: #ded5ef;
-    --text-on-deep: #d8d0e4;
-    --text-link: var(--color-purple);
-    --text-emphasis: var(--color-lime);
-
-    --border: var(--color-rule);
-    --border-strong: var(--color-ink);
-    --border-on-dark: rgba(255, 255, 255, 0.16);
+    --surface: var(--color-bg);
+    --surface-2: var(--color-bg-2);
+    --text: var(--color-fg);
+    --text-body: var(--color-fg-2);
+    --text-muted: var(--color-fg-3);
+    --text-link: var(--color-accent);
+    --text-ok: var(--color-ok);
+    --border: var(--color-line);
   }
 
   /* Dark mode. Only the role bindings change; no component rule is touched.
-     Opt-in via `data-theme="dark"` on <html>, and automatic for anyone whose
-     OS asks for it. The logomark needs no rule at all here -- it rides
-     currentColor, so it inverts on its own. */
+     The logomark needs no rule here at all -- it rides currentColor. */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --surface: #14111a;
-      --surface-raised: #1c1824;
-      --surface-inverse: var(--color-paper-bright);
-      --surface-accent: #4a2b9e;
-      --surface-deep: #241a3f;
-
-      --text: #ece8f2;
-      --text-body: #c4bed0;
-      --text-muted: #948da3;
-      --text-on-inverse: var(--color-ink);
-      --text-on-inverse-muted: #4a4455;
-      --text-link: #b49cf0;
-
-      --border: rgba(255, 255, 255, 0.14);
-      --border-strong: rgba(255, 255, 255, 0.28);
+      --surface: #0c0c0d;
+      --surface-2: #151517;
+      --text: #f2f2f3;
+      --text-body: #b4b5bd;
+      --text-muted: #83848e;
+      --text-link: #8aa8ff;
+      --text-ok: #5fc38b;
+      --border: #26262b;
     }
   }
 
   :root[data-theme="dark"] {
-    --surface: #14111a;
-    --surface-raised: #1c1824;
-    --surface-inverse: var(--color-paper-bright);
-    --surface-accent: #4a2b9e;
-    --surface-deep: #241a3f;
-
-    --text: #ece8f2;
-    --text-body: #c4bed0;
-    --text-muted: #948da3;
-    --text-on-inverse: var(--color-ink);
-    --text-on-inverse-muted: #4a4455;
-    --text-link: #b49cf0;
-
-    --border: rgba(255, 255, 255, 0.14);
-    --border-strong: rgba(255, 255, 255, 0.28);
+    --surface: #0c0c0d;
+    --surface-2: #151517;
+    --text: #f2f2f3;
+    --text-body: #b4b5bd;
+    --text-muted: #83848e;
+    --text-link: #8aa8ff;
+    --text-ok: #5fc38b;
+    --border: #26262b;
   }
 }
 
@@ -148,274 +120,251 @@
    Base
    --------------------------------------------------------------------------- */
 @layer base {
-  /* Tells the browser to render native UI (scrollbars, form controls, the
-     caret) in the matching scheme. Without this the page can go dark while
-     the scrollbar stays light. */
+  /* Renders native UI (scrollbars, caret, form controls) in the matching
+     scheme. Without it the page can go dark while the scrollbar stays light. */
   html {
     color-scheme: light dark;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
-  /* The faint 32px grid reads as engineering graph paper. Two 1px gradients
-     rather than an image, so it costs no request and scales cleanly. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
   body {
-    color: var(--color-ink);
-    background:
-      linear-gradient(rgba(23, 19, 31, 0.027) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(23, 19, 31, 0.027) 1px, transparent 1px),
-      var(--color-paper);
-    background-size: 32px 32px;
+    background: var(--surface);
+    color: var(--text);
     font-family: var(--font-sans);
-    line-height: 1.6;
+    font-size: var(--text-base);
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: rgba(118, 81, 214, 0.18);
+    -webkit-tap-highlight-color: transparent;
   }
 
-  h1, h2 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    letter-spacing: -0.055em;
-    line-height: 0.98;
+  /* One column. The whole layout is this rule. */
+  header, main, footer {
+    width: min(100% - 48px, var(--container-site));
+    margin-inline: auto;
+  }
+
+  h1 {
+    margin: 0 0 1.25rem;
+    max-width: 20ch;
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.038em;
     text-wrap: balance;
   }
 
-  p, li { text-wrap: pretty; }
-
-  a { color: inherit; }
-
-  a:focus-visible {
-    outline: 3px solid var(--color-purple);
-    outline-offset: 4px;
+  h2 {
+    margin: 0 0 0.375rem;
+    font-size: var(--text-xl);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.024em;
   }
 
-  section[id], main[id] { scroll-margin-top: 2rem; }
+  h3 {
+    margin: 1.625rem 0 0.375rem;
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.4;
+  }
 
-  code { font-family: var(--font-mono); font-size: 0.9em; }
+  p { margin: 0 0 0.875rem; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+  li { text-wrap: pretty; }
+
+  a { color: var(--text-link); text-decoration: none; text-underline-offset: 3px; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible {
+    outline: 2px solid var(--text-link);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  section { padding: 2.75rem 0 0; scroll-margin-top: 1rem; }
+  section + section { margin-top: 2.75rem; border-top: 1px solid var(--border); }
+
+  code { font-family: var(--font-mono); }
+
+  :not(pre) > code {
+    padding: 0.12em 0.35em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.875em;
+  }
+
+  /* Quiet and bordered rather than a black slab, so code sits in the page
+     instead of interrupting it. */
+  pre {
+    margin: 0.75rem 0 0.5rem;
+    padding: 0.875rem 1rem;
+    overflow-x: auto;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* The only dense element on the page. */
+  table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); margin: 0.25rem 0 0.75rem; }
+  caption { padding-bottom: 0.75rem; color: var(--text-muted); font-size: var(--text-sm); text-align: left; }
+  th, td { padding: 0.5625rem 0.75rem 0.5625rem 0; text-align: left; border-bottom: 1px solid var(--border); }
+  thead th { color: var(--text-muted); font-size: var(--text-xs); font-weight: 500; border-bottom: 1px solid var(--text-muted); }
+  tbody th { font-family: var(--font-mono); font-weight: 400; white-space: nowrap; }
+  tbody td { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-body); }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+
+  /* Definition pairs instead of cards. */
+  dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(140px, auto) 1fr;
+    gap: 0 1.625rem;
+    font-size: var(--text-sm);
+  }
+  dt { padding: 0.5625rem 0; font-family: var(--font-mono); color: var(--text); border-top: 1px solid var(--border); }
+  dd { margin: 0; padding: 0.5625rem 0; color: var(--text-body); border-top: 1px solid var(--border); }
+  dl > dt:first-of-type, dl > dt:first-of-type + dd { border-top: 0; }
+
+  @media (max-width: 560px) {
+    dl { grid-template-columns: 1fr; gap: 0; }
+    dt { padding-bottom: 0.125rem; }
+    dd { padding-top: 0; border-top: 0; }
+  }
 }
 
 /* ---------------------------------------------------------------------------
    Components
-   Only what utilities genuinely cannot express: the logomark's colour
-   inheritance, clipped geometry, and compound patterns repeated enough that
-   pasting a dozen classes would be worse.
+   Only what utilities cannot express.
    --------------------------------------------------------------------------- */
-/* Layout and section styling, carried over from the hand-written stylesheet
-   and remapped onto @theme tokens. Kept as component classes rather than
-   rewritten into utility soup: these are stable, they read better named, and
-   converting them wholesale would risk visual drift for no functional gain.
-   New work should prefer utilities; convert these opportunistically. */
-@import "./_ported.css" layer(components);
-
 @layer components {
   /* Controller-port logomark, measured off a photo of a real N64 port: insert
      radius = bezel radius / 1.308, cut at 0.423 of its own radius below centre,
      three pins spaced so all four gaps are equal.
 
-     Everything rides currentColor and the insert is a real hole punched with
+     Rides currentColor and the insert is a real hole punched with
      fill-rule=evenodd, so the mark carries no background colour of its own and
-     inverts on any ground. The footer setting `color: white` IS the entire
-     dark-mode implementation. Do not hardcode these fills. */
-  .mark-body,
-  .mark-pins circle {
-    fill: currentColor;
+     inverts on any ground. Never hardcode these fills. */
+  .mark { fill: currentColor; flex: 0 0 auto; }
+
+  .skip-link {
+    position: fixed;
+    z-index: 100;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    color: var(--surface);
+    background: var(--text);
+    transform: translateY(-150%);
+  }
+  .skip-link:focus-visible { transform: translateY(0); }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.75rem 0;
   }
 
-  /* Hero console art. Same three layers as the logomark so the ports on the
-     console and the mark in the header are demonstrably the same object. */
-  .port-bezel { fill: #d8d2c8; stroke: #09070d; stroke-width: 4; }
-  .port-insert { fill: #29232f; }
-  .port-hole { fill: #d8d2c8; }
+  .brand { display: flex; align-items: center; gap: 0.625rem; color: var(--text); }
+  .brand:hover { text-decoration: none; }
+  .brand b { font-size: var(--text-base); font-weight: 600; letter-spacing: -0.02em; }
 
-  /* Notched corner, echoing the console's moulded seams. Arbitrary-value
-     utilities can express this, but it appears on five cards and reads far
-     better named. */
-  .clip-notch {
-    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
-  }
+  .site-nav { display: flex; gap: 1.25rem; font-size: var(--text-sm); }
+  .site-nav a { color: var(--text-muted); }
+  .site-nav a:hover { color: var(--text); }
 
-  /* The four README words as a table. Four equal cards insisted the items were
-     parallel and forced padding into the short ones; a table admits they are
-     heterogeneous. Third column links to the doc that backs each claim. */
-  .why-table-wrap { overflow-x: auto; }
+  .hero { padding: 3rem 0 0.5rem; }
 
-  .why-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-  }
-
-  .why-table th,
-  .why-table td {
-    padding: 1rem 1.5rem 1rem 0;
-    text-align: left;
-    vertical-align: baseline;
-    border-bottom: 1px solid var(--color-rule);
-  }
-
-  .why-table thead th {
-    padding-bottom: 0.55rem;
-    color: var(--color-muted);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--color-ink);
-  }
-
-  .why-table tbody th {
-    width: 1%;
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    white-space: nowrap;
-  }
-
-  .why-table td {
-    color: var(--color-body);
-    line-height: 1.6;
-  }
-
-  .why-table td:last-child {
-    padding-right: 0;
-    white-space: nowrap;
-  }
-
-  .why-table td a {
-    color: var(--color-purple);
-    font-size: 0.85rem;
-    text-underline-offset: 3px;
-  }
-
-  /* Get-started blocks. The two commands are what fn64-shell itself prints
-     when built without a linked game, so the page opens on something real and
-     runnable rather than three prose sections. */
-  .start-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
-  }
-
-  .start-label {
-    margin: 0 0 0.7rem;
-    color: var(--color-muted);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .start-block pre {
-    margin: 0 0 0.9rem;
-    padding: 1.1rem 1.25rem;
-    overflow-x: auto;
-    color: #e8e4dc;
-    background: var(--color-ink);
-    border-radius: 3px;
-    box-shadow: 5px 5px 0 rgba(23, 19, 31, 0.14);
-  }
-
-  .start-block pre code {
-    font-size: 0.82rem;
-    line-height: 1.7;
-    white-space: pre;
-  }
-
-  .start-note {
-    max-width: 46ch;
-    margin: 0;
-    color: var(--color-body);
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-
-  .start-tail {
-    margin: 3rem 0 0;
-    padding-top: 1.6rem;
-    color: var(--color-body);
-    font-size: 0.95rem;
-    border-top: 1px solid var(--color-rule);
-  }
-
-  .start-tail a {
-    color: var(--color-purple);
-    font-weight: 600;
-    text-underline-offset: 3px;
-  }
-
-  /* Heading anchors: invisible until hover or keyboard focus, so every section
-     is addressable at no visual cost. The linter validates the fragments. */
-  .anchor {
-    margin-left: 0.4ch;
-    color: var(--color-purple);
-    font-weight: 400;
-    text-decoration: none;
-    opacity: 0;
-    transition: opacity 120ms ease;
-  }
-
-  h2:hover > .anchor,
-  h3:hover > .anchor,
-  .anchor:focus-visible {
-    opacity: 1;
-  }
-
-  /* Hero wordmark. The inserts stack in one absolutely-positioned column and
-     take turns expanding, while the n64 tail slides right to make room. Needs
-     to be a component because each insert reads its own --delay and --accent
-     from an inline style, which a utility class cannot carry. */
+  /* Decorative wordmark above the headline. aria-hidden: the h1 below carries
+     the real sentence, so nothing here needs to be read aloud. */
   .word-cycle {
     position: relative;
     display: block;
-    height: 1.02em;
+    height: 1.05em;
+    margin-bottom: 1.75rem;
     font-family: var(--font-mono);
-    font-size: clamp(3.2rem, 6.1vw, 6.2rem);
-    font-weight: 900;
-    letter-spacing: -0.105em;
-    line-height: 0.92;
+    font-size: clamp(2rem, 5.5vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.07em;
+    line-height: 1;
     white-space: nowrap;
+    color: var(--text);
   }
 
-  .word-core {
-    position: relative;
-    z-index: 1;
-    display: inline-block;
-    color: var(--color-ink);
-  }
+  .word-core { position: relative; z-index: 1; display: inline-block; }
 
-  .insert-stack {
-    position: absolute;
-    top: 0;
-    left: 0.895ch;
-  }
+  .insert-stack { position: absolute; top: 0; left: 1ch; }
 
   .word-insert {
     position: absolute;
     top: 0;
     left: 0;
-    color: var(--accent);
+    color: var(--accent-word, var(--text-link));
     opacity: 0;
     transform: scaleX(0.02);
     transform-origin: left center;
-    animation: expand-insert 16s var(--delay) ease-in-out infinite;
+    animation: expand-insert 16s var(--delay, 0s) ease-in-out infinite;
   }
 
-  .word-tail {
-    animation: slide-tail 16s ease-in-out infinite;
-  }
+  .word-tail { animation: slide-tail 16s ease-in-out infinite; }
 
-  /* The site respects prefers-reduced-motion elsewhere; the word-cycle is
-     decorative and aria-hidden, so it simply stops. */
+  /* Decorative, so under reduced motion it simply holds the first word. */
   @media (prefers-reduced-motion: reduce) {
-    .word-insert,
-    .word-tail {
-      animation: none;
-    }
-
-    .word-insert:first-child {
-      opacity: 0.72;
-      transform: scaleX(1);
-    }
+    .word-insert, .word-tail { animation: none; }
+    .word-insert:first-child { opacity: 1; transform: scaleX(1); }
   }
+  .lede { max-width: 62ch; margin: 0 0 1.5rem; color: var(--text-body); font-size: var(--text-lg); line-height: 1.55; }
+
+  /* Status line: a fact, a state, a licence, a link. */
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1;
+    color: var(--text-muted);
+  }
+  .meta li { display: flex; align-items: center; gap: 0.4375rem; }
+  .meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-ok); flex: 0 0 auto; }
+
+  .sub { max-width: 64ch; margin: 0 0 1.375rem; color: var(--text-body); }
+  .cap { margin: 0 0 1.125rem; color: var(--text-muted); font-size: var(--text-sm); }
+
+  /* Not a card: a rule and a hanging note, so it reads as a footnote to the
+     table rather than a callout competing with it. */
+  .claim { margin: 1.25rem 0 0; padding: 0.875rem 0 0; border-top: 1px solid var(--border); }
+  .claim p { margin: 0; max-width: 66ch; color: var(--text-body); font-size: var(--text-sm); }
+  .claim strong { color: var(--text); font-weight: 600; }
+
+  td.num { text-align: right; }
+  td.zero { text-align: right; color: var(--text-ok); }
+
+  .site-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2.75rem;
+    padding: 2.5rem 0 3.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+  .site-footer nav { display: flex; gap: 1.125rem; }
+  .site-footer a { color: var(--text-muted); }
+  .site-footer a:hover { color: var(--text); }
 }

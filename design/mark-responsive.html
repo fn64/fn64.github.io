@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fn64 — responsive logomark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#fff;--bg-2:#f6f6f7;--fg:#0c0c0d;--fg-2:#41424a;--fg-3:#71727d;--line:#e4e4e8;
+  --sans:"Instrument Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#0c0c0d;--bg-2:#151517;--fg:#f2f2f3;--fg-2:#b4b5bd;--fg-3:#83848e;--line:#26262b}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.6 var(--sans);padding:40px 24px}
+.wrap{width:min(100% - 0px,900px);margin-inline:auto}
+h1{font:600 1.75rem/1.15 var(--sans);letter-spacing:-.03em;margin:0 0 6px}
+.sub{color:var(--fg-2);max-width:64ch;margin:0 0 34px}
+h2{font:600 1rem/1.3 var(--sans);margin:32px 0 4px}
+.note{color:var(--fg-3);font-size:.875rem;margin:0 0 16px;max-width:62ch}
+
+.mark{fill:currentColor}
+.row{display:flex;align-items:flex-end;gap:26px;flex-wrap:wrap;
+  padding:22px 20px;border:1px solid var(--line);border-radius:8px;background:var(--bg-2)}
+figure{margin:0;text-align:center}
+figcaption{margin-top:9px;font:400 .6875rem/1 var(--mono);color:var(--fg-3)}
+.dark{background:var(--fg);color:var(--bg);border-color:transparent}
+
+table{width:100%;border-collapse:collapse;font-size:.875rem;margin-top:8px}
+th,td{padding:9px 12px 9px 0;text-align:left;border-bottom:1px solid var(--line)}
+thead th{font-size:.75rem;color:var(--fg-3);font-weight:500}
+td{font-family:var(--mono);color:var(--fg-2)}
+td b{color:var(--fg);font-weight:600}
+
+.lockup{display:flex;align-items:center;gap:9px}
+.lockup b{font:600 1rem/1 var(--sans);letter-spacing:-.02em}
+.lockup.sm b{font-size:.8125rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Responsive logomark</h1>
+<p class="sub">
+  Below a threshold the bezel stops doing work: the ring closes up, the gap
+  between it and the insert disappears, and the three pins lose separation.
+  Dropping to the insert alone keeps the shape that actually carries
+  recognition and lets the pins stay legible.
+</p>
+
+<h2>Full mark — bezel plus insert</h2>
+<p class="note">Correct down to about 24px. Below that the ring and the insert start to merge.</p>
+<div class="row">
+  <figure><svg class="mark" width="96" height="96" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg><figcaption>96</figcaption></figure>
+  <figure><svg class="mark" width="48" height="48" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg><figcaption>48</figcaption></figure>
+  <figure><svg class="mark" width="24" height="24" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg><figcaption>24</figcaption></figure>
+  <figure><svg class="mark" width="18" height="18" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg><figcaption>18</figcaption></figure>
+  <figure><svg class="mark" width="16" height="16" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg><figcaption>16</figcaption></figure>
+</div>
+
+<h2>Small mark — insert only, bezel dropped</h2>
+<p class="note">Same measured geometry, scaled to fill the box. The cut sits at 0.423 of the radius below centre, exactly as on the full mark.</p>
+<div class="row">
+  <figure><svg class="mark" width="96" height="96" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption>96</figcaption></figure>
+  <figure><svg class="mark" width="48" height="48" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption>48</figcaption></figure>
+  <figure><svg class="mark" width="24" height="24" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption>24</figcaption></figure>
+  <figure><svg class="mark" width="18" height="18" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption>18</figcaption></figure>
+  <figure><svg class="mark" width="16" height="16" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption>16</figcaption></figure>
+  <figure><svg class="mark" width="12" height="12" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption>12</figcaption></figure>
+</div>
+
+<h2>Side by side at the crossover</h2>
+<p class="note">Left of each pair is the full mark, right is the insert. The insert wins from about 20px down.</p>
+<div class="row">
+  <figure>
+    <span style="display:flex;gap:10px;align-items:flex-end">
+      <svg class="mark" width="24" height="24" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg>
+      <svg class="mark" width="24" height="24" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg>
+    </span><figcaption>24</figcaption>
+  </figure>
+  <figure>
+    <span style="display:flex;gap:10px;align-items:flex-end">
+      <svg class="mark" width="20" height="20" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg>
+      <svg class="mark" width="20" height="20" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg>
+    </span><figcaption>20</figcaption>
+  </figure>
+  <figure>
+    <span style="display:flex;gap:10px;align-items:flex-end">
+      <svg class="mark" width="16" height="16" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg>
+      <svg class="mark" width="16" height="16" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg>
+    </span><figcaption>16</figcaption>
+  </figure>
+  <figure>
+    <span style="display:flex;gap:10px;align-items:flex-end">
+      <svg class="mark" width="12" height="12" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg>
+      <svg class="mark" width="12" height="12" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg>
+    </span><figcaption>12</figcaption>
+  </figure>
+</div>
+
+<h2>On dark</h2>
+<div class="row dark">
+  <figure><svg class="mark" width="48" height="48" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></svg><figcaption style="color:inherit;opacity:.55">full 48</figcaption></figure>
+  <figure><svg class="mark" width="20" height="20" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption style="color:inherit;opacity:.55">small 20</figcaption></figure>
+  <figure><svg class="mark" width="16" height="16" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg><figcaption style="color:inherit;opacity:.55">small 16</figcaption></figure>
+  <span class="lockup" style="margin-left:auto">
+    <svg class="mark" width="20" height="20" viewBox="0 0 48 48"><path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0 -10.56 0"/></svg>
+    <b translate="no">fn64</b>
+  </span>
+</div>
+
+<h2>Where each is used</h2>
+<table>
+  <thead><tr><th>Context</th><th>Size</th><th>Mark</th></tr></thead>
+  <tbody>
+    <tr><td>Favicon, tab</td><td>16</td><td><b>full</b> — an icon needs a recognizable silhouette</td></tr>
+    <tr><td>Header lockup</td><td>20–24</td><td><b>insert</b> — sits beside the wordmark, silhouette already carried</td></tr>
+    <tr><td>Footer, docs sidebar</td><td>24</td><td>either</td></tr>
+    <tr><td>README, social card</td><td>48+</td><td><b>full</b></td></tr>
+    <tr><td>Hero, print</td><td>96+</td><td><b>full</b></td></tr>
+  </tbody>
+</table>
+
+</div>
+</body>
+</html>
