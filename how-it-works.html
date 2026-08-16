@@ -108,20 +108,22 @@
 
       <section id="check">
         <h2>What you can check yourself</h2>
-        <p class="sub">Four things in the repo you can run or read if you want to disagree with us.</p>
+        <p class="sub">Five things in the repo you can run or read if you want to disagree with us.</p>
         <dl>
           <dt>c_smoke</dt>
           <dd>Link-tests the ABI with a real C caller against the static library.</dd>
           <dt>Instruction oracles</dt>
           <dd>Generated callable bodies diffed against N64Recomp output.</dd>
           <dt>scripts/lane-parity.sh</dt>
-          <dd>Audits whether the two generated callable-body sets agree.</dd>
+          <dd>Compares the C lane against the Rust lane, and currently refuses to treat the legacy C output as the arbiter of correctness, because it has not earned that mechanically.</dd>
+          <dt>docs/PARITY-METHOD.md</dt>
+          <dd>The blind spot in each of those checks, written down. A differential you cannot run is not evidence.</dd>
           <dt>docs/ROADMAP.md</dt>
           <dd>Every known gap, named. Unimplemented behavior traps instead of returning zero.</dd>
         </dl>
         <p style="margin-top:1.25rem">
           A deterministic fix needs 10 consecutive clean runs before it counts.
-          A concurrency fix needs 20 or more.
+          A concurrency fix needs 20 or more. One green run proves nothing.
         </p>
       </section>
 
@@ -135,14 +137,18 @@
           <dt>fn64-render</dt>
           <dd>The seam itself: ordered microcode admission and completion inspection, with no backend assumptions.</dd>
           <dt>fn64-render-reference</dt>
-          <dd>A deterministic pure-Rust backend with a software rasteriser. Slow, but it produces the same frame every time, which is what makes differential testing possible.</dd>
+          <dd>A deterministic pure-Rust backend with a software rasteriser. Slow, but it needs no GPU and produces the same frame every time.</dd>
           <dt>fn64-render-rt64</dt>
           <dd>An FFI bridge to RT64 for the fast path. All C++ interop is quarantined in this one crate.</dd>
         </dl>
         <p style="margin-top:1.25rem">
-          The reference backend is not a fallback that nobody runs. Having a
-          deterministic renderer beside the fast one is how a rendering
-          regression gets caught as a diff rather than as a bug report.
+          The reference backend exists so there is something to compare
+          against: it has no GPU, no driver and no C++ dependency, so it runs
+          in CI and produces the same frame every time. It has its own snapshot
+          tests today. Diffing it against RT64 as a release gate is not wired
+          up yet, and <code>--observe</code> keeps a per-swap framebuffer
+          comparison that is deliberately labelled non-authoritative until it
+          is.
         </p>
       </section>
 
