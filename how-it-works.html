@@ -175,6 +175,15 @@
           read, not referenced, not laundered.
         </p>
         <p>
+          That is enforced by the build rather than promised. N64Recomp’s
+          generated C emits <code>#include "librecomp/sections.h"</code>
+          unconditionally, because it was written for a GPL-3.0 runtime. fn64
+          ships its own header at that path and puts its include directory
+          first, so the compiler resolves to the clean-room version even if the
+          original is installed. Your generated code links against the Rust
+          runtime unchanged, and the GPL implementation is never compiled in.
+        </p>
+        <p>
           RT64 is MIT and stays behind an FFI boundary in its own crate, so a
           port that does not want the C++ dependency can take the reference
           backend and never link it.
