@@ -234,10 +234,32 @@
   dd { margin: 0; padding: 0.5625rem 0; color: var(--text-body); border-top: 1px solid var(--border); }
   dl > dt:first-of-type, dl > dt:first-of-type + dd { border-top: 0; }
 
+  /* Phone layout. One breakpoint for the whole page, matching the one the
+     header stacks at, so nothing changes shape twice on the way down. */
   @media (max-width: 560px) {
+    /* 24px gutters were sized for a 760px column; at 320px they cost 15% of
+       the line. 20px still separates the text from the bezel. */
+    header, main, footer { width: min(100% - 40px, var(--container-site)); }
+
+    /* 88px between sections reads as considered at 760px and as a gap in the
+       page at 320px, where the eye has a third of the line length to travel. */
+    section { padding-top: 2rem; }
+    section + section { margin-top: 2rem; }
+
     dl { grid-template-columns: 1fr; gap: 0; }
     dt { padding-bottom: 0.125rem; }
     dd { padding-top: 0; border-top: 0; }
+
+    /* The one element that cannot reflow: four columns are four columns. It
+       drops a step on the scale, sheds the cell padding it does not need and
+       lets titles wrap, while the numerals stay nowrap so a fraction never
+       breaks across lines. Without this the Wrong column -- the one carrying
+       the zero the section is about -- sits off-screen at 320px. */
+    table { font-size: var(--text-xs); }
+    th, td { padding-right: 0.5rem; }
+    th:last-child, td:last-child { padding-right: 0; }
+    tbody th { white-space: normal; }
+    tbody td { white-space: nowrap; }
   }
 }
 
@@ -280,10 +302,46 @@
   .brand b { font-size: var(--text-base); font-weight: 600; letter-spacing: -0.02em; }
 
   .site-nav { display: flex; gap: 1.25rem; font-size: var(--text-sm); }
-  .site-nav a { color: var(--text-muted); }
+  .site-nav a { color: var(--text-muted); white-space: nowrap; }
   .site-nav a:hover { color: var(--text); }
 
+  /* The labels are phrases. Left to wrap, "How it works" breaks after "How"
+     and reads as three links in a column, which is what the header did on
+     every phone width: at 375px the nav was three lines tall and still ran
+     44px past the viewport, so GitHub sat off-screen and the whole document
+     scrolled sideways. Wrapping belongs between links, never inside one.
+
+     Brand plus five links stops fitting on one row below about 510px. Under
+     that the header stacks into a brand row and a nav row that wraps. No
+     disclosure widget: five links fit in two rows at 320px, and a menu you
+     have to open to read is worse than one you can already see. */
+  @media (max-width: 560px) {
+    .site-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 1.25rem 0 1rem;
+    }
+
+    /* Padding takes the hit area to ~37px at 14px type. The negative margin
+       pulls it back off the text box, so the first link still lines up with
+       the brand and the body copy rather than sitting indented by its own
+       padding. Row gap stays 0: the padding already separates the rows. */
+    .site-nav {
+      flex-wrap: wrap;
+      gap: 0 0.25rem;
+      margin-inline: -0.5rem;
+    }
+    .site-nav a { padding: 0.4375rem 0.5rem; }
+  }
+
   .hero { padding: 3rem 0 0.5rem; }
+
+  /* The stacked header already carries its own bottom padding, and a phone
+     has a fifth of the vertical room to spend on the gap above the wordmark. */
+  @media (max-width: 560px) {
+    .hero { padding-top: 1.75rem; }
+  }
 
   /* Decorative wordmark above the headline. aria-hidden: the h1 below carries
      the real sentence, so nothing here needs to be read aloud. */
