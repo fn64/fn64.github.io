@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* Scan the pages for classes. Explicit because the site root is the repo root
+   and we do not want design/ or scripts/ pulled in. */
+@source "../index.html";
+@source "../how-it-works.html";
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+   These are the identity: a paper/ink base with four accents taken from the
+   N64 controller colourways, plus a serif display face. Changing these
+   changes the brand, so they live in one place.
+   --------------------------------------------------------------------------- */
+/* `static` so the keyframes below survive tree-shaking: the word-cycle sets
+   its animation through a component class, not an animate-* utility, so
+   Tailwind would otherwise drop them as unused. */
+@theme static {
+  --color-ink: #17131f;
+  --color-paper: #f5f0e7;
+  --color-paper-bright: #fffdf7;
+  --color-purple: #7651d6;
+  --color-purple-dark: #3c286f;
+  --color-lime: #c8f05b;
+  --color-coral: #ff795f;
+  --color-cyan: #68d9df;
+  --color-cyan-dark: #267f85;
+  --color-green-dark: #5b7620;
+  --color-muted: #6c6674;
+  --color-body: #49434f;
+  --color-rule: rgba(23, 19, 31, 0.16);
+
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --container-site: 1180px;
+
+  /* The hero wordmark cycles f[uture|aithful|riendly|ast]n64. Two animations
+     run together: each insert expands in place while the n64 tail slides right
+     to make room. Per-word --delay and --accent are set inline in the markup.
+     Keyframes cannot be expressed as utility classes, so they live here. */
+  --animate-expand-insert: expand-insert 16s ease-in-out infinite;
+  --animate-slide-tail: slide-tail 16s ease-in-out infinite;
+
+  @keyframes expand-insert {
+    0%, 3%   { opacity: 0; transform: scaleX(0.02); }
+    6%, 15%  { opacity: 0.72; transform: scaleX(1); }
+    18%, 100% { opacity: 0; transform: scaleX(0.02); }
+  }
+
+  @keyframes slide-tail {
+    0%, 3%   { transform: translateX(0); }
+    6%, 15%  { transform: translateX(4.5ch); }
+    18%, 28% { transform: translateX(0); }
+    31%, 40% { transform: translateX(6.2ch); }
+    43%, 53% { transform: translateX(0); }
+    56%, 65% { transform: translateX(6.2ch); }
+    68%, 78% { transform: translateX(0); }
+    81%, 90% { transform: translateX(2.8ch); }
+    93%, 100% { transform: translateX(0); }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+@layer base {
+  /* The faint 32px grid reads as engineering graph paper. Two 1px gradients
+     rather than an image, so it costs no request and scales cleanly. */
+  body {
+    color: var(--color-ink);
+    background:
+      linear-gradient(rgba(23, 19, 31, 0.027) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23, 19, 31, 0.027) 1px, transparent 1px),
+      var(--color-paper);
+    background-size: 32px 32px;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: rgba(118, 81, 214, 0.18);
+  }
+
+  h1, h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  p, li { text-wrap: pretty; }
+
+  a { color: inherit; }
+
+  a:focus-visible {
+    outline: 3px solid var(--color-purple);
+    outline-offset: 4px;
+  }
+
+  section[id], main[id] { scroll-margin-top: 2rem; }
+
+  code { font-family: var(--font-mono); font-size: 0.9em; }
+}
+
+/* ---------------------------------------------------------------------------
+   Components
+   Only what utilities genuinely cannot express: the logomark's colour
+   inheritance, clipped geometry, and compound patterns repeated enough that
+   pasting a dozen classes would be worse.
+   --------------------------------------------------------------------------- */
+@layer components {
+  /* Controller-port logomark, measured off a photo of a real N64 port: insert
+     radius = bezel radius / 1.308, cut at 0.423 of its own radius below centre,
+     three pins spaced so all four gaps are equal.
+
+     Everything rides currentColor and the insert is a real hole punched with
+     fill-rule=evenodd, so the mark carries no background colour of its own and
+     inverts on any ground. The footer setting `color: white` IS the entire
+     dark-mode implementation. Do not hardcode these fills. */
+  .mark-body,
+  .mark-pins circle {
+    fill: currentColor;
+  }
+
+  /* Hero console art. Same three layers as the logomark so the ports on the
+     console and the mark in the header are demonstrably the same object. */
+  .port-bezel { fill: #d8d2c8; stroke: #09070d; stroke-width: 4; }
+  .port-insert { fill: #29232f; }
+  .port-hole { fill: #d8d2c8; }
+
+  /* Notched corner, echoing the console's moulded seams. Arbitrary-value
+     utilities can express this, but it appears on five cards and reads far
+     better named. */
+  .clip-notch {
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  }
+}

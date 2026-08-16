@@ -111,44 +111,43 @@
         <a href="how-it-works.html">See how the stack fits together →</a>
       </section>
 
-      <section class="section mechanism audience" id="builders">
-        <div class="section-heading mechanism-heading">
-          <h2 id="builders-heading">Spend less time rebuilding the same infrastructure.<a class="anchor" href="#builders" aria-label="Link to this section">#</a></h2>
+      <section class="section start" id="builders">
+        <div class="section-heading">
+          <h2 id="builders-heading">Run it.<a class="anchor" href="#builders" aria-label="Link to this section">#</a></h2>
           <p>
-            fn64 targets the reusable work between a game image and a native
-            port.
+            The shell builds without any game content. It refuses to open an
+            empty window and tells you what it needs instead.
           </p>
         </div>
 
-        <div class="mechanism-grid">
-          <article>
-            <span class="mechanism-icon" aria-hidden="true">C</span>
-            <h3>Already using N64Recomp?</h3>
-            <p>
-              Link your generated C against a strongly typed Rust
-              implementation of its ABI, the exact set of functions that code
-              calls, instead of a C++ runtime you cannot relicense.
+        <div class="start-grid">
+          <div class="start-block">
+            <p class="start-label">No ROM, no game content</p>
+            <pre><code>cargo run -p fn64-shell -- --demo</code></pre>
+            <p class="start-note">
+              Drives the real window, framebuffer conversion, and overlay from
+              a synthetic RDRAM field, so the UI stack stays verifiable in a
+              checkout with nothing to boot.
             </p>
-          </article>
-          <article>
-            <span class="mechanism-icon" aria-hidden="true">R</span>
-            <h3>Starting from a ROM?</h3>
-            <p>
-              Recover functions and section metadata from your own ROM, with
-              every unproven boundary named instead of guessed.
+          </div>
+
+          <div class="start-block">
+            <p class="start-label">With your own ROM and N64Recomp output</p>
+            <pre><code>RECOMPILED_DIR=.../OOTU/RecompiledFuncs \
+ROM=.../oot-ntsc-1.0.z64 \
+cargo run -p fn64-shell</code></pre>
+            <p class="start-note">
+              Same intake contract as <code>examples/oot-boot</code>. Your ROM
+              and everything derived from it stays on your machine.
             </p>
-          </article>
-          <article>
-            <span class="mechanism-icon" aria-hidden="true">✓</span>
-            <h3>Trying to trust the result?</h3>
-            <p>
-              A real C caller links the static library and runs it. Generated
-              code is diffed against N64Recomp instruction by instruction. A
-              deterministic fix needs 10 consecutive clean runs before it
-              counts; a concurrency fix needs 20 or more.
-            </p>
-          </article>
+          </div>
         </div>
+
+        <p class="start-tail">
+          No decomp yet? <code>fn64-discover</code> recovers function and
+          section metadata from the ROM first. <a href="#discover">See what it
+          can prove ↓</a>
+        </p>
       </section>
 
       <section class="section four-fs" id="why">
@@ -160,49 +159,34 @@
           </p>
         </div>
 
-        <div class="cards">
-          <article class="feature-card card-future">
-            <p class="card-number">01</p>
-            <h3>Future</h3>
-            <p>
-              A game-agnostic Rust runtime with zero game-specific
-              assumptions, plus the discovery, typed codegen, and rendering
-              seams around it.
-            </p>
-            <a class="card-tag" href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md">docs/DESIGN.md ↗</a>
-          </article>
-
-          <article class="feature-card card-faithful">
-            <p class="card-number">02</p>
-            <h3>Faithful</h3>
-            <p>
-              Unimplemented behavior does not silently return zero. It traps
-              and names itself, so you find the gap instead of debugging a
-              ghost.
-            </p>
-            <a class="card-tag" href="https://github.com/fn64/fn64/blob/main/docs/PARITY-METHOD.md">docs/PARITY-METHOD.md ↗</a>
-          </article>
-
-          <article class="feature-card card-friendly">
-            <p class="card-number">03</p>
-            <h3>Friendly</h3>
-            <p>
-              Human and agentic contributors share one contract. Load-bearing
-              docs preserve context, and MIT OR Apache-2.0 keeps reuse open.
-            </p>
-            <a class="card-tag" href="https://github.com/fn64/fn64/blob/main/AGENTS.md">AGENTS.md ↗</a>
-          </article>
-
-          <article class="feature-card card-fast">
-            <p class="card-number">04</p>
-            <h3>Fast</h3>
-            <p>
-              Static recompilation produces native host code. Rust adds
-              predictable memory behavior and zero-cost abstractions; speed
-              claims require measurements.
-            </p>
-            <a class="card-tag" href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">docs/ROADMAP.md ↗</a>
-          </article>
+        <div class="why-table-wrap">
+          <table class="why-table">
+            <thead>
+              <tr><th scope="col">Word</th><th scope="col">What it means here</th><th scope="col">Check it</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Future</th>
+                <td>A game-agnostic runtime with zero game-specific assumptions, plus the discovery, typed codegen, and rendering seams around it.</td>
+                <td><a href="https://github.com/fn64/fn64/blob/main/docs/DESIGN.md"><code>docs/DESIGN.md</code> ↗</a></td>
+              </tr>
+              <tr>
+                <th scope="row">Faithful</th>
+                <td>Unimplemented behavior does not silently return zero. It traps and names itself, so you find the gap instead of debugging a ghost.</td>
+                <td><a href="https://github.com/fn64/fn64/blob/main/docs/PARITY-METHOD.md"><code>docs/PARITY-METHOD.md</code> ↗</a></td>
+              </tr>
+              <tr>
+                <th scope="row">Friendly</th>
+                <td>One contract for humans and agents, docs maintained like code, and MIT OR Apache-2.0 throughout.</td>
+                <td><a href="https://github.com/fn64/fn64/blob/main/AGENTS.md"><code>AGENTS.md</code> ↗</a></td>
+              </tr>
+              <tr>
+                <th scope="row">Fast</th>
+                <td>Static recompilation produces native host code. Rust adds predictable memory behavior and zero-cost abstractions. Speed claims require measurements.</td>
+                <td><a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md"><code>docs/ROADMAP.md</code> ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -270,39 +254,13 @@
 
       <section class="pipeline-section">
         <div class="pipeline-intro">
-          <h2>From local ROM<br>to native application.</h2>
+          <h2>Your ROM never leaves your machine.</h2>
         </div>
-        <ol class="pipeline">
-          <li>
-            <span class="pipeline-number">01</span>
-            <strong>Discover</strong>
-            <small>Map code with proof</small>
-          </li>
-          <li>
-            <span class="pipeline-number">02</span>
-            <strong>Recompile</strong>
-            <small>Turn MIPS into native code</small>
-          </li>
-          <li>
-            <span class="pipeline-number">03</span>
-            <strong>Execute</strong>
-            <small>Run against the fn64 ABI</small>
-          </li>
-          <li>
-            <span class="pipeline-number">04</span>
-            <strong>Present</strong>
-            <small>Graphics, audio, input</small>
-          </li>
-          <li>
-            <span class="pipeline-number">05</span>
-            <strong>Prove</strong>
-            <small>Keep the receipts</small>
-          </li>
-        </ol>
         <p class="content-note">
-          Your ROM and everything derived from it stays on your machine. This
-          repository contains tooling and runtime code. No game assets, no ROM
-          bytes, no recompiled game output.
+          This repository contains tooling and runtime code. No game assets, no
+          ROM bytes, no recompiled game output. You supply the ROM, it is read
+          locally, and everything derived from it stays on your disk and out of
+          git.
         </p>
         <a class="button button-outline-light pipeline-cta" href="how-it-works.html">See what each stage outputs <span>→</span></a>
       </section>
