@@ -29,6 +29,12 @@
   --color-body: #49434f;
   --color-rule: rgba(23, 19, 31, 0.16);
 
+  /* Accent-band background. Darker than --color-purple because lime cannot
+     reach 4.5:1 on the lighter value at any usable tint -- pushing it far
+     enough bleaches it to near-white. This carries lime at 5.64:1 and white
+     at 7.37:1. See the semantic layer below. */
+  --color-accent-band: #5f3cbb;
+
   --font-display: Georgia, "Times New Roman", serif;
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -58,6 +64,83 @@
     68%, 78% { transform: translateX(0); }
     81%, 90% { transform: translateX(2.8ch); }
     93%, 100% { transform: translateX(0); }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Semantic layer
+   The palette above names *colours*; these name *roles*. Components should use
+   these, so a theme change is a change here rather than a hunt through rules.
+
+   Every text/surface pair below is >= 4.5:1, verified with a contrast script
+   rather than by eye. Two failures Lighthouse caught in the hand-written CSS
+   came from hardcoded hexes with no single place to fix them, which is the
+   reason this layer exists.
+   --------------------------------------------------------------------------- */
+@layer theme {
+  :root {
+    --surface: var(--color-paper);
+    --surface-raised: var(--color-paper-bright);
+    --surface-inverse: var(--color-ink);
+    --surface-accent: var(--color-accent-band);
+    --surface-deep: var(--color-purple-dark);
+
+    --text: var(--color-ink);
+    --text-body: var(--color-body);
+    --text-muted: var(--color-muted);
+    --text-on-inverse: #ffffff;
+    --text-on-inverse-muted: #b2a8bd;
+    --text-on-accent: #ffffff;
+    --text-on-accent-muted: #ded5ef;
+    --text-on-deep: #d8d0e4;
+    --text-link: var(--color-purple);
+    --text-emphasis: var(--color-lime);
+
+    --border: var(--color-rule);
+    --border-strong: var(--color-ink);
+    --border-on-dark: rgba(255, 255, 255, 0.16);
+  }
+
+  /* Dark mode. Only the role bindings change; no component rule is touched.
+     Opt-in via `data-theme="dark"` on <html>, and automatic for anyone whose
+     OS asks for it. The logomark needs no rule at all here -- it rides
+     currentColor, so it inverts on its own. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --surface: #14111a;
+      --surface-raised: #1c1824;
+      --surface-inverse: var(--color-paper-bright);
+      --surface-accent: #4a2b9e;
+      --surface-deep: #241a3f;
+
+      --text: #ece8f2;
+      --text-body: #c4bed0;
+      --text-muted: #948da3;
+      --text-on-inverse: var(--color-ink);
+      --text-on-inverse-muted: #4a4455;
+      --text-link: #b49cf0;
+
+      --border: rgba(255, 255, 255, 0.14);
+      --border-strong: rgba(255, 255, 255, 0.28);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --surface: #14111a;
+    --surface-raised: #1c1824;
+    --surface-inverse: var(--color-paper-bright);
+    --surface-accent: #4a2b9e;
+    --surface-deep: #241a3f;
+
+    --text: #ece8f2;
+    --text-body: #c4bed0;
+    --text-muted: #948da3;
+    --text-on-inverse: var(--color-ink);
+    --text-on-inverse-muted: #4a4455;
+    --text-link: #b49cf0;
+
+    --border: rgba(255, 255, 255, 0.14);
+    --border-strong: rgba(255, 255, 255, 0.28);
   }
 }
 
