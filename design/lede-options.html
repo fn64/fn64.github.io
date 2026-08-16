@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fn64 — hero lede options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:#fff;--bg2:#f6f6f7;--fg:#0c0c0d;--fg2:#41424a;--fg3:#6b6c77;--line:#e4e4e8;
+  --accent:#2f5bd8;--ok:#1f7a4d;
+  --sans:"Instrument Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#0c0c0d;--bg2:#151517;--fg:#f2f2f3;--fg2:#b4b5bd;--fg3:#83848e;--line:#26262b;--accent:#8aa8ff;--ok:#5fc38b}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.65 var(--sans);padding:44px 24px}
+.wrap{width:min(100% - 0px,820px);margin-inline:auto}
+h1{font:600 1.75rem/1.15 var(--sans);letter-spacing:-.03em;margin:0 0 6px}
+.intro{color:var(--fg2);max-width:66ch;margin:0 0 10px}
+.diag{background:var(--bg2);border-left:3px solid var(--accent);padding:12px 15px;margin:0 0 34px;font-size:.9rem;color:var(--fg2)}
+.opt{border-top:1px solid var(--line);padding:26px 0 0;margin:0 0 26px}
+.tag{font:500 .7rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);margin:0 0 14px;display:flex;gap:10px;align-items:center}
+.tag .pick{color:var(--ok);font-weight:500}
+.h{font:600 2.5rem/1.08 var(--sans);letter-spacing:-.038em;margin:0 0 1.25rem;max-width:20ch}
+.lede{font:400 1.25rem/1.55 var(--sans);color:var(--fg2);max-width:62ch;margin:0 0 1rem}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.25rem;margin:0;padding:0;list-style:none;font:400 .875rem/1 var(--mono);color:var(--fg3)}
+.meta li{display:flex;align-items:center;gap:.4375rem}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.why{margin:14px 0 0;font-size:.875rem;color:var(--fg3);max-width:64ch}
+.why b{color:var(--fg)}
+code{font-family:var(--mono);font-size:.875em;background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.12em .35em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Hero lede — options</h1>
+<p class="intro">Current copy, for reference:</p>
+<div class="diag">
+  “fn64 is a Rust runtime for Nintendo 64 static recompilation. Your recompiled
+  ROM calls into it for the scheduler, message queues, timers, DMA and overlay
+  lifecycle, save, input and audio.”
+  <br><br>
+  <b>Three problems.</b> The second sentence is a seven-item list that trails
+  off rather than ends. “Calls into it for” is a clumsy verb. And that same
+  noun-pile already appears twice more on the page — in “Not an emulator” and
+  in the <code>fn64-runtime</code> crate row — so its third appearance adds
+  nothing.
+</div>
+
+<!-- A -->
+<div class="opt">
+  <div class="tag"><span>A · cut the list entirely</span><span class="pick">★ recommended</span></div>
+  <p class="h">Run your recompiled ROM as a native app.</p>
+  <p class="lede">
+    fn64 is the Rust runtime underneath: the part your recompiled game calls
+    when it wants a thread scheduled, a file loaded, or a frame drawn.
+  </p>
+  <ul class="meta">
+    <li><span class="dot"></span>Boots Ocarina of Time today</li><li>Pre-alpha</li><li>MIT OR Apache-2.0</li>
+  </ul>
+  <p class="why"><b>Why:</b> replaces seven nouns with three verbs a reader can picture. The full surface is still listed twice below, where a reader who wants it will find it. Shortest of the options and the only one that ends on a concrete image.</p>
+</div>
+
+<!-- B -->
+<div class="opt">
+  <div class="tag"><span>B · keep the list, fix the verb</span></div>
+  <p class="h">Run your recompiled ROM as a native app.</p>
+  <p class="lede">
+    fn64 is the Rust runtime your recompiled game runs on top of. It owns the
+    scheduler, message queues, timers, DMA, save, input and audio.
+  </p>
+  <ul class="meta">
+    <li><span class="dot"></span>Boots Ocarina of Time today</li><li>Pre-alpha</li><li>MIT OR Apache-2.0</li>
+  </ul>
+  <p class="why"><b>Why:</b> “owns” is stronger than “calls into it for”, and the list drops “overlay lifecycle” to seven→six items so it ends rather than trails. Keeps the specificity if you want it up top.</p>
+</div>
+
+<!-- C -->
+<div class="opt">
+  <div class="tag"><span>C · lead with the problem</span></div>
+  <p class="h">Run your recompiled ROM as a native app.</p>
+  <p class="lede">
+    Static recompilation turns a game’s MIPS code into native code. It does not
+    give you the machine that code expects to be running on. fn64 is that
+    machine, in Rust.
+  </p>
+  <ul class="meta">
+    <li><span class="dot"></span>Boots Ocarina of Time today</li><li>Pre-alpha</li><li>MIT OR Apache-2.0</li>
+  </ul>
+  <p class="why"><b>Why:</b> answers “why does this need to exist” before “what is it”, which is the question a newcomer actually has. Risk: three sentences is long for a lede, and it front-loads a definition.</p>
+</div>
+
+<!-- D -->
+<div class="opt">
+  <div class="tag"><span>D · one sentence, no list</span></div>
+  <p class="h">Run your recompiled ROM as a native app.</p>
+  <p class="lede">
+    fn64 is the Rust runtime a statically recompiled N64 game links against
+    instead of an emulator.
+  </p>
+  <ul class="meta">
+    <li><span class="dot"></span>Boots Ocarina of Time today</li><li>Pre-alpha</li><li>MIT OR Apache-2.0</li>
+  </ul>
+  <p class="why"><b>Why:</b> tightest, and “instead of an emulator” pre-empts the most common misreading in four words. Risk: defines partly by negation, and “links against” assumes the reader knows what that means.</p>
+</div>
+
+</div>
+</body>
+</html>

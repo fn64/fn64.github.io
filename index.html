@@ -28,12 +28,13 @@
 
     <header class="site-header">
       <a class="brand" href="#top" aria-label="fn64 home">
-        <!-- Small mark: the insert alone. Below ~20px the full bezel closes up
-             and the pins lose separation, so the ring is dropped and the shape
-             that carries recognition is scaled to fill the box. The favicon
-             keeps the full round mark, where a silhouette matters more. -->
-        <svg class="mark" width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
-          <path fill-rule="evenodd" d="M5.519 39.653A2.2 2.2 0 0 1 3.466 38.243A22 22 0 1 1 44.534 38.243A2.2 2.2 0 0 1 42.481 39.653Z M5.08 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0-10.56 0 M18.72 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0-10.56 0 M32.36 30.347a5.28 5.28 0 1 0 10.56 0a5.28 5.28 0 1 0-10.56 0"/>
+        <!-- Controller-port mark, measured from a photo of a real N64 port:
+             bezel, D-shaped insert cut at 0.423 of its radius below centre,
+             three pins spaced so all four gaps are equal. One path with the
+             insert and pins knocked out (evenodd), so it rides currentColor
+             and inverts on any background with no dark-mode rule. -->
+        <svg class="mark" width="24" height="24" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z M8.878 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M19.78 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M30.682 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0"/>
         </svg>
         <b translate="no">fn64</b>
       </a>
