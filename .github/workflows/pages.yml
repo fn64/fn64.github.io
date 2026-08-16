@@ -39,10 +39,6 @@ jobs:
         # edits markup or src/app.css without rebuilding. Rebuild here and fail
         # on any difference rather than deploying stale CSS.
         #
-        # Disabled until the markup migration to Tailwind utilities lands:
-        # styles.css is still the hand-written stylesheet, so this would fail
-        # by design. Flip to `true` in the same commit that ships the migration.
-        if: false
         run: |
           set -euo pipefail
           curl -fsSL -o /tmp/tailwindcss \

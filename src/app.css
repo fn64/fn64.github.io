@@ -108,6 +108,13 @@
    inheritance, clipped geometry, and compound patterns repeated enough that
    pasting a dozen classes would be worse.
    --------------------------------------------------------------------------- */
+/* Layout and section styling, carried over from the hand-written stylesheet
+   and remapped onto @theme tokens. Kept as component classes rather than
+   rewritten into utility soup: these are stable, they read better named, and
+   converting them wholesale would risk visual drift for no functional gain.
+   New work should prefer utilities; convert these opportunistically. */
+@import "./_ported.css" layer(components);
+
 @layer components {
   /* Controller-port logomark, measured off a photo of a real N64 port: insert
      radius = bezel radius / 1.308, cut at 0.423 of its own radius below centre,
@@ -133,5 +140,192 @@
      better named. */
   .clip-notch {
     clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  }
+
+  /* The four README words as a table. Four equal cards insisted the items were
+     parallel and forced padding into the short ones; a table admits they are
+     heterogeneous. Third column links to the doc that backs each claim. */
+  .why-table-wrap { overflow-x: auto; }
+
+  .why-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .why-table th,
+  .why-table td {
+    padding: 1rem 1.5rem 1rem 0;
+    text-align: left;
+    vertical-align: baseline;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .why-table thead th {
+    padding-bottom: 0.55rem;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-ink);
+  }
+
+  .why-table tbody th {
+    width: 1%;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .why-table td {
+    color: var(--color-body);
+    line-height: 1.6;
+  }
+
+  .why-table td:last-child {
+    padding-right: 0;
+    white-space: nowrap;
+  }
+
+  .why-table td a {
+    color: var(--color-purple);
+    font-size: 0.85rem;
+    text-underline-offset: 3px;
+  }
+
+  /* Get-started blocks. The two commands are what fn64-shell itself prints
+     when built without a linked game, so the page opens on something real and
+     runnable rather than three prose sections. */
+  .start-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .start-label {
+    margin: 0 0 0.7rem;
+    color: var(--color-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .start-block pre {
+    margin: 0 0 0.9rem;
+    padding: 1.1rem 1.25rem;
+    overflow-x: auto;
+    color: #e8e4dc;
+    background: var(--color-ink);
+    border-radius: 3px;
+    box-shadow: 5px 5px 0 rgba(23, 19, 31, 0.14);
+  }
+
+  .start-block pre code {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    white-space: pre;
+  }
+
+  .start-note {
+    max-width: 46ch;
+    margin: 0;
+    color: var(--color-body);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .start-tail {
+    margin: 3rem 0 0;
+    padding-top: 1.6rem;
+    color: var(--color-body);
+    font-size: 0.95rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .start-tail a {
+    color: var(--color-purple);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+
+  /* Heading anchors: invisible until hover or keyboard focus, so every section
+     is addressable at no visual cost. The linter validates the fragments. */
+  .anchor {
+    margin-left: 0.4ch;
+    color: var(--color-purple);
+    font-weight: 400;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+
+  h2:hover > .anchor,
+  h3:hover > .anchor,
+  .anchor:focus-visible {
+    opacity: 1;
+  }
+
+  /* Hero wordmark. The inserts stack in one absolutely-positioned column and
+     take turns expanding, while the n64 tail slides right to make room. Needs
+     to be a component because each insert reads its own --delay and --accent
+     from an inline style, which a utility class cannot carry. */
+  .word-cycle {
+    position: relative;
+    display: block;
+    height: 1.02em;
+    font-family: var(--font-mono);
+    font-size: clamp(3.2rem, 6.1vw, 6.2rem);
+    font-weight: 900;
+    letter-spacing: -0.105em;
+    line-height: 0.92;
+    white-space: nowrap;
+  }
+
+  .word-core {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    color: var(--color-ink);
+  }
+
+  .insert-stack {
+    position: absolute;
+    top: 0;
+    left: 0.895ch;
+  }
+
+  .word-insert {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--accent);
+    opacity: 0;
+    transform: scaleX(0.02);
+    transform-origin: left center;
+    animation: expand-insert 16s var(--delay) ease-in-out infinite;
+  }
+
+  .word-tail {
+    animation: slide-tail 16s ease-in-out infinite;
+  }
+
+  /* The site respects prefers-reduced-motion elsewhere; the word-cycle is
+     decorative and aria-hidden, so it simply stops. */
+  @media (prefers-reduced-motion: reduce) {
+    .word-insert,
+    .word-tail {
+      animation: none;
+    }
+
+    .word-insert:first-child {
+      opacity: 0.72;
+      transform: scaleX(1);
+    }
   }
 }
