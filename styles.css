@@ -663,36 +663,77 @@ h2 {
   font-size: 1.1rem;
 }
 
-.proof-points {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  margin: 2rem 0;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+/* Per-title grades. A table rather than two big-number cards: a developer reads
+   rows, and it shows which title is weakest instead of hiding it in a range. */
+.grade-table-wrap {
+  margin: 2rem 0 1.4rem;
+  overflow-x: auto;
 }
 
-.proof-points > div {
-  padding: 1rem;
-  background: var(--purple-dark);
+.grade-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
 }
 
-.proof-points strong,
-.proof-points span {
-  display: block;
-}
-
-.proof-points strong {
-  color: var(--lime);
-  font-family: Georgia, serif;
-  font-size: 1.6rem;
-  font-weight: 500;
-}
-
-.proof-points span {
+.grade-table caption {
+  margin-bottom: 0.9rem;
   color: #c8bfd8;
-  font-size: 0.76rem;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
   line-height: 1.45;
+  text-align: left;
+}
+
+.grade-table th,
+.grade-table td {
+  padding: 0.55rem 0.9rem 0.55rem 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.grade-table thead th {
+  color: #a99cc0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.grade-table tbody th {
+  color: white;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.grade-table td {
+  color: #d8d0e4;
+  font-variant-numeric: tabular-nums;
+}
+
+.grade-table .num {
+  padding-right: 0;
+  text-align: right;
+}
+
+.grade-table .zero {
+  color: var(--lime);
+  font-weight: 700;
+}
+
+.grade-note {
+  max-width: 58ch;
+  margin: 0 0 2rem;
+  color: #c8bfd8;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.grade-note b {
+  color: white;
+  font-weight: 600;
 }
 
 .check-list {
@@ -1484,8 +1525,8 @@ footer > div a:focus-visible {
     font-size: 0.7rem;
   }
 
-  .proof-points {
-    grid-template-columns: 1fr;
+  .grade-table {
+    font-size: 0.74rem;
   }
 
   .route-grid {
