@@ -4,10 +4,12 @@ on:
   push:
     branches: [main]
     paths:
-      - "index.html"
-      - "styles.css"
-      - "favicon.svg"
-      - "scripts/lint-site.py"
+      # Globs, not individual files: how-it-works.html was previously missing
+      # from this list, so edits to it alone never triggered a deploy.
+      - "*.html"
+      - "*.css"
+      - "*.svg"
+      - "scripts/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -33,10 +35,17 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Validate site
         run: python3 scripts/lint-site.py
+      - name: Stage published files
+        # design/ holds working explorations, not part of the published site.
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp *.html *.css *.svg .nojekyll _site/
+          ls -la _site
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: _site
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
