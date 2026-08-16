@@ -143,12 +143,12 @@
         </dl>
         <p style="margin-top:1.25rem">
           The reference backend exists so there is something to compare
-          against: it has no GPU, no driver and no C++ dependency, so it runs
-          in CI and produces the same frame every time. It has its own snapshot
-          tests today. Diffing it against RT64 as a release gate is not wired
-          up yet, and <code>--observe</code> keeps a per-swap framebuffer
-          comparison that is deliberately labelled non-authoritative until it
-          is.
+          against. It needs no GPU, no driver and no C++ dependency, so
+          <code>cargo test</code> stays GPU-free and every run produces the same
+          frame. A cross-backend pixel differential exists and works, but it is
+          narrow and runs by hand rather than in CI, because RT64 needs Vulkan,
+          D3D12 or Metal and the test machines do not have one. Widening it is
+          open work, not a finished gate.
         </p>
       </section>
 
