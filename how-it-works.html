@@ -164,10 +164,16 @@
       <section id="licence">
         <h2>Licence</h2>
         <p>
-          MIT OR Apache-2.0, end to end. Ship it, fork it, embed it in a
-          commercial product, relicense your own work on top of it. Permissive
-          licensing is a large part of why fn64 exists rather than a patch on
-          something that already worked.
+          fn64’s own code is MIT OR Apache-2.0. Ship it, fork it, embed it in a
+          commercial product, relicense your own work on top of it.
+        </p>
+        <p>
+          The dependency tree is permissive throughout, with no copyleft, but
+          it is not MIT-only: <code>winit</code> and <code>cpal</code> are
+          Apache-2.0, so a build that wants a window and audio takes Apache
+          terms. The debug overlay also embeds egui’s default fonts, which
+          carry OFL-1.1 and the Ubuntu Font Licence. Neither is onerous, and
+          both want attribution in anything you distribute.
         </p>
         <p>
           The runtime is written clean-room: from our own debugging notes,
