@@ -415,6 +415,23 @@ h2 em {
 .port-insert { fill: #29232f; }
 .port-hole { fill: #d8d2c8; }
 
+/* Heading anchors, a docs convention: the link is invisible until you hover or
+   tab to it, so it costs nothing visually but every section is addressable. */
+.anchor {
+  margin-left: 0.4ch;
+  color: var(--purple);
+  font-weight: 400;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+h2:hover > .anchor,
+h3:hover > .anchor,
+.anchor:focus-visible {
+  opacity: 1;
+}
+
 /* Crate table. A developer wants to know what the pieces are called and what
    links against what, so this is a table rather than feature cards. */
 .crate-table-wrap {
