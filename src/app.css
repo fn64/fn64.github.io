@@ -148,6 +148,13 @@
    Base
    --------------------------------------------------------------------------- */
 @layer base {
+  /* Tells the browser to render native UI (scrollbars, form controls, the
+     caret) in the matching scheme. Without this the page can go dark while
+     the scrollbar stays light. */
+  html {
+    color-scheme: light dark;
+  }
+
   /* The faint 32px grid reads as engineering graph paper. Two 1px gradients
      rather than an image, so it costs no request and scales cleanly. */
   body {

@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fn64 — direction B</title>
+<style>
+:root{
+  /* Edge magazine, 1993-95, printed its own colophon: ITC Franklin Gothic
+     Heavy / Gill Sans Bold / Bell Gothic, on Royal Press 90gsm, with a literal
+     "Fifth colour: Pantone 8303c" -- a metallic teal-grey spot ink laid down
+     alongside CMYK. That fifth plate is the whole direction here. */
+  --stock:#f2efe6;      /* uncoated paper                        */
+  --stock-2:#e7e3d8;    /* second tint of the same stock         */
+  --ink:#1b1b1e;        /* process black                         */
+  --body:#3d3d42;
+  --muted:#6b6b70;
+  --spot:#4c6a66;       /* Pantone 8303c, the fifth plate        */
+  --spot-lt:#7fa39d;    /* same ink, knocked back                */
+  --red:#a8321c;        /* the rating line, and only that        */
+  --rule:rgba(27,27,30,.18);
+
+  --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body-face:"Gill Sans","Gill Sans MT",Optima,sans-serif;
+  --mono:Monaco,"SF Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--stock);color:var(--ink);
+  font:400 15.5px/1.62 var(--body-face);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{width:min(100% - 40px,1060px);margin-inline:auto}
+
+/* ---- the fifth plate, used as an actual printing plate ------------------- */
+/* Every spot-coloured element sits on this one ink. Nothing else is coloured. */
+
+header{border-bottom:2px solid var(--ink)}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:15px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand svg .b{fill:var(--ink)} .brand svg .i{fill:var(--stock)} .brand svg .p{fill:var(--ink)}
+.brand b{font:700 18px/1 var(--display);letter-spacing:-.045em}
+nav{display:flex;gap:22px;align-items:center}
+nav a{
+  color:var(--body);text-decoration:none;
+  font:400 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+}
+nav a:hover{color:var(--spot)}
+nav a.gh{color:var(--stock);background:var(--ink);padding:7px 11px}
+nav a.gh:hover{background:var(--spot);color:var(--stock)}
+
+/* ---- masthead ------------------------------------------------------------ */
+.mast{padding:54px 0 40px;border-bottom:1px solid var(--rule)}
+.mast-top{display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+  padding-bottom:10px;margin-bottom:26px;border-bottom:1px solid var(--rule)}
+.issue{font:400 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.issue b{color:var(--spot);font-weight:400}
+
+h1{
+  margin:0 0 18px;max-width:16ch;
+  font:700 clamp(2.7rem,6vw,4.9rem)/0.95 var(--display);
+  letter-spacing:-.04em;text-wrap:balance;
+}
+.standfirst{
+  max-width:54ch;margin:0 0 26px;
+  font:400 1.12rem/1.6 var(--body-face);color:var(--body);
+}
+.standfirst .drop{
+  float:left;margin:6px 9px 0 0;padding:5px 11px;
+  background:var(--spot);color:var(--stock);
+  font:700 1.5rem/1 var(--display);
+}
+.cta-row{display:flex;flex-wrap:wrap;gap:9px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:11px 16px;text-decoration:none;
+  font:400 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  transition:transform 120ms ease;
+}
+.btn-a{background:var(--ink);color:var(--stock)}
+.btn-b{border:1px solid var(--ink);color:var(--ink)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--spot)}
+
+/* ---- section headers, set as magazine department heads ------------------- */
+section{padding:46px 0;border-bottom:1px solid var(--rule);scroll-margin-top:12px}
+.dept{
+  display:flex;align-items:baseline;gap:12px;margin:0 0 6px;
+}
+.dept .tag{
+  font:400 10.5px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--spot);
+}
+.dept h2{margin:0;font:700 1.5rem/1.15 var(--display);letter-spacing:-.028em}
+.dept-sub{max-width:60ch;margin:0 0 26px;color:var(--body);font-size:.97rem}
+
+/* ---- code ---------------------------------------------------------------- */
+.runs{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:820px){.runs{grid-template-columns:1fr}}
+.run-label{margin:0 0 8px;font:400 10px/1 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted)}
+pre{
+  margin:0 0 9px;padding:14px 16px;overflow-x:auto;
+  background:var(--ink);color:#e2e0d8;font:400 12.5px/1.75 var(--mono);
+}
+pre .k{color:var(--spot-lt)}
+pre .c{color:#8a8a90}
+.run-note{margin:0;max-width:42ch;color:var(--muted);font-size:.87rem;line-height:1.58}
+
+/* ---- table, set like a results panel ------------------------------------- */
+table{width:100%;border-collapse:collapse;font:400 13px/1.5 var(--mono)}
+caption{text-align:left;color:var(--muted);font:400 12px/1.5 var(--body-face);padding-bottom:10px}
+th,td{padding:8px 14px 8px 0;text-align:left;border-bottom:1px solid var(--rule)}
+thead th{color:var(--muted);font:400 10px/1 var(--mono);letter-spacing:.13em;
+  text-transform:uppercase;border-bottom:1.5px solid var(--ink);padding-bottom:8px}
+tbody th{font-weight:400;white-space:nowrap}
+td.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--body)}
+td.z{text-align:right;color:var(--spot);font-weight:700}
+
+/* The signature: Edge printed no score box. The rating was one line at the
+   foot of the last column, spelled as words, never a numeral. */
+.verdict{
+  display:flex;align-items:baseline;gap:14px;
+  margin:22px 0 0;padding-top:14px;border-top:1.5px solid var(--ink);
+}
+.verdict .lbl{font:700 12px/1 var(--display);letter-spacing:.02em;white-space:nowrap}
+.verdict .val{font:400 12px/1 var(--mono);letter-spacing:.06em;color:var(--red)}
+.verdict .val b{font-weight:700}
+.after{margin:14px 0 0;max-width:62ch;color:var(--body);font-size:.92rem}
+.after b{font-weight:600}
+
+/* ---- pipeline ------------------------------------------------------------ */
+.pipe{display:grid;grid-template-columns:repeat(5,1fr)}
+@media(max-width:900px){.pipe{grid-template-columns:1fr}}
+.stage{padding:0 18px;border-left:1px solid var(--rule)}
+.stage:first-child{border-left:0;padding-left:0}
+.stage .sn{display:block;margin-bottom:7px;font:400 10px/1 var(--mono);
+  letter-spacing:.14em;color:var(--spot)}
+.stage h3{margin:0 0 4px;font:700 .95rem/1.25 var(--display);letter-spacing:-.012em}
+.stage p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.5}
+.stage .out{display:block;margin-top:10px;font:400 9.5px/1.4 var(--mono);color:var(--spot-lt)}
+
+/* ---- sidebar note, as a magazine boxout --------------------------------- */
+.boxout{margin:24px 0 0;padding:15px 18px;background:var(--stock-2);border-left:3px solid var(--spot)}
+.boxout b{display:block;margin-bottom:4px;font:400 10px/1 var(--mono);
+  letter-spacing:.13em;text-transform:uppercase;color:var(--spot)}
+.boxout p{margin:0;color:var(--body);font-size:.91rem;line-height:1.58}
+
+footer{padding:30px 0 44px;color:var(--muted);font-size:.85rem}
+.foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center}
+.foot a{color:var(--body);text-decoration:none;font:400 10.5px/1 var(--mono);
+  letter-spacing:.09em;text-transform:uppercase}
+.foot a:hover{color:var(--spot)}
+a:focus-visible{outline:2px solid var(--spot);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top">
+      <svg width="25" height="25" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="b" cx="24" cy="24" r="23"/>
+        <path class="i" d="M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z"/>
+        <g class="p"><circle cx="13.098" cy="24" r="4.22"/><circle cx="24" cy="24" r="4.22"/><circle cx="34.902" cy="24" r="4.22"/></g>
+      </svg>
+      <b>fn64</b>
+    </a>
+    <nav>
+      <a href="#run">Run it</a>
+      <a href="#grades">Discovery</a>
+      <a href="#pipeline">Pipeline</a>
+      <a class="gh" href="https://github.com/fn64/fn64">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap mast" id="top">
+  <div class="mast-top">
+    <span class="issue">Rust runtime · N64 static recompilation</span>
+    <span class="issue">Pre-alpha · <b>MIT OR Apache-2.0</b></span>
+  </div>
+
+  <h1>The layer under the game.</h1>
+  <p class="standfirst">
+    <span class="drop">fn</span>
+    Scheduler, message queues, timers, DMA and overlay lifecycle, save, input,
+    audio. Everything your recompiled ROM calls into, written clean-room in
+    Rust. It boots Ocarina of Time today.
+  </p>
+  <div class="cta-row">
+    <a class="btn btn-a" href="#run">Run it →</a>
+    <a class="btn btn-b" href="https://github.com/fn64/fn64">Read the source ↗</a>
+  </div>
+</div>
+
+<section id="run">
+  <div class="wrap">
+    <div class="dept"><span class="tag">Start</span><h2>Run it</h2></div>
+    <p class="dept-sub">
+      The shell builds with no game content linked. It refuses to open an empty
+      window and tells you what it needs instead.
+    </p>
+    <div class="runs">
+      <div>
+        <p class="run-label">No ROM, no game content</p>
+        <pre><span class="k">cargo</span> run -p fn64-shell -- --demo</pre>
+        <p class="run-note">Drives the real window, framebuffer conversion, and overlay from a synthetic RDRAM field.</p>
+      </div>
+      <div>
+        <p class="run-label">With your ROM and N64Recomp output</p>
+        <pre><span class="c">RECOMPILED_DIR</span>=.../OOTU/RecompiledFuncs \
+<span class="c">ROM</span>=.../oot-ntsc-1.0.z64 \
+<span class="k">cargo</span> run -p fn64-shell</pre>
+        <p class="run-note">Same intake contract as <code>examples/oot-boot</code>.</p>
+      </div>
+    </div>
+    <div class="boxout">
+      <b>Your content stays local</b>
+      <p>This repository holds tooling and runtime code. No game assets, no ROM bytes, no recompiled game output. Everything derived from your ROM stays on your disk.</p>
+    </div>
+  </div>
+</section>
+
+<section id="grades">
+  <div class="wrap">
+    <div class="dept"><span class="tag">Testscreen</span><h2>What discovery proves</h2></div>
+    <p class="dept-sub">
+      <code style="font-family:var(--mono)">fn64-discover</code> reads a local ROM and recovers function and
+      section metadata. You do not need a finished decomp to start.
+    </p>
+    <table>
+      <caption>Boot-bank function recovery, graded against public decomp answer keys. As of August 2026.</caption>
+      <thead><tr><th>Title</th><th style="text-align:right">Matched</th><th style="text-align:right">Recall</th><th style="text-align:right">Wrong</th></tr></thead>
+      <tbody>
+        <tr><th>Super Mario 64</th><td class="n">2816 / 3030</td><td class="n">92.9%</td><td class="z">0</td></tr>
+        <tr><th>Ocarina of Time</th><td class="n">119 / 137</td><td class="n">86.9%</td><td class="z">0</td></tr>
+        <tr><th>No Mercy</th><td class="n">835 / 985</td><td class="n">84.8%</td><td class="z">0</td></tr>
+        <tr><th>Majora’s Mask</th><td class="n">402 / 486</td><td class="n">82.7%</td><td class="z">0</td></tr>
+        <tr><th>WM2000</th><td class="n">698 / 847</td><td class="n">82.4%</td><td class="z">0</td></tr>
+        <tr><th>Kirby 64</th><td class="n">402 / 531</td><td class="n">75.7%</td><td class="z">0</td></tr>
+      </tbody>
+    </table>
+
+    <div class="verdict">
+      <span class="lbl">Wrong boundaries claimed:</span>
+      <span class="val"><b>zero</b> out of <b>six</b> titles</span>
+    </div>
+
+    <p class="after">
+      Recall is what discovery found. <b>Wrong is what it got wrong.</b> Missing a
+      function costs you work. Claiming a boundary that is not there costs you a
+      debugging session. Graded, not blind: each run uses a donor ROM and an
+      answer key from an existing decomp project.
+    </p>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="wrap">
+    <div class="dept"><span class="tag">The stack</span><h2>From local ROM to native app</h2></div>
+    <p class="dept-sub">Five stages. Each writes a file you can look at, so you can re-run any one without rebuilding the others.</p>
+    <div class="pipe">
+      <div class="stage"><span class="sn">01</span><h3>Discover</h3><p>Analyze a local ROM, retain proven facts, keep a named blocker on every unresolved bank.</p><span class="out">→ content-free metadata</span></div>
+      <div class="stage"><span class="sn">02</span><h3>Recompile</h3><p>Turn MIPS functions into typed Rust runners, one per MIPS function.</p><span class="out">→ host-native code</span></div>
+      <div class="stage"><span class="sn">03</span><h3>Execute</h3><p>Link recompiled code to a clean-room Rust implementation of the runtime surface.</p><span class="out">→ running game logic</span></div>
+      <div class="stage"><span class="sn">04</span><h3>Present</h3><p>Graphics, audio, input and platform integration through explicit backend seams.</p><span class="out">→ native application</span></div>
+      <div class="stage"><span class="sn">05</span><h3>Prove</h3><p>Grade ABI shape, code generation and deterministic behavior with executable checks.</p><span class="out">→ reviewable evidence</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>Pre-alpha. Audio is still broken (R5), the outdoor gameplay eye-gate is unmet (R3b).</span>
+    <span style="display:flex;gap:18px">
+      <a href="https://github.com/fn64/fn64">GitHub</a>
+      <a href="#">Docs</a>
+      <a href="#">Licence</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
