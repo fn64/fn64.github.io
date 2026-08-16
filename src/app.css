@@ -353,6 +353,25 @@
   td.num { text-align: right; }
   td.zero { text-align: right; color: var(--text-ok); }
 
+  /* Ecosystem diagram: a bordered figure holding an inline SVG, in the same
+     rule-and-note idiom as everything else on the page. Colours come from
+     the SVG's own fill/stroke="var(--...)" attributes, so the diagram
+     inverts with the theme like every other component. */
+  .diagram {
+    margin: 1rem 0 0;
+    padding: 1.25rem 1.25rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-2);
+  }
+  .diagram svg { width: 100%; height: auto; }
+  .diagram figcaption {
+    margin-top: 0.875rem;
+    max-width: 66ch;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
   .site-footer {
     display: flex;
     justify-content: space-between;

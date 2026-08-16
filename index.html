@@ -40,6 +40,7 @@
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#what">What it is</a>
+        <a href="#who">Who it's for</a>
         <a href="#discovery">Discovery</a>
         <a href="#crates">Crates</a>
         <a href="how-it-works.html">How it works</a>
@@ -90,6 +91,105 @@
           <dt>fn64 supplies</dt>
           <dd>The runtime those functions call into, the render seam, and the checks that grade it.</dd>
         </dl>
+      </section>
+
+      <section id="who">
+        <h2>Who this is for</h2>
+        <p class="sub">
+          People building a native N64 port, at one of two starting points.
+        </p>
+        <dl>
+          <dt>Already on N64Recomp</dt>
+          <dd>
+            Your generated C runs, but it links against a GPL-3.0 runtime
+            (ultramodern/librecomp). fn64 is a drop-in Rust runtime for the
+            same generated code, MIT OR Apache-2.0, so the licence on your own
+            port is your call rather than the runtime's.
+          </dd>
+          <dt>No decomp yet</dt>
+          <dd>
+            You have a ROM and no finished decompilation to recompile.
+            <code>fn64-discover</code> recovers function and section
+            boundaries directly from the ROM, and names what it cannot prove
+            instead of guessing, so you can see the actual gap before you
+            start.
+          </dd>
+          <dt>Auditing what you'd depend on</dt>
+          <dd>
+            Every crate is MIT OR Apache-2.0, the RSP audio interpreter is
+            clean-room, and the one filename forced by N64Recomp's generated
+            code (<code>librecomp/sections.h</code>) is fn64's own header, not
+            the GPL one. See <a href="how-it-works.html#licence">the licence
+            page</a> for what that means for your build.
+          </dd>
+        </dl>
+      </section>
+
+      <section id="ecosystem">
+        <h2>Where fn64 sits</h2>
+        <p class="sub">
+          One ROM, two lanes in, one runtime underneath. The lane you take
+          decides how your code gets generated; it does not change what it
+          links against.
+        </p>
+        <figure class="diagram" role="img" aria-label="Diagram: a local ROM feeds either N64Recomp's C code generator or fn64's own Rust code generator. Both lanes produce native code that links against the fn64 runtime, which is MIT or Apache-2.0 licensed and replaces the GPL-3.0 ultramodern runtime. The runtime connects to a render seam, either the reference software backend or the RT64 backend, producing a native application.">
+          <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0 0L8 4L0 8Z" fill="var(--text-muted)"/>
+              </marker>
+            </defs>
+            <!-- your ROM (top-left) branches down into each lane -->
+            <g fill="none" stroke="var(--text-muted)" stroke-width="1.25" marker-end="url(#arrow)">
+              <path d="M110 46 Q110 66 110 66 L110 78"/>
+              <path d="M110 46 Q110 168 110 168 L110 178"/>
+              <!-- each lane converges on the runtime box -->
+              <path d="M270 96 L420 96 L420 132"/>
+              <path d="M270 196 L420 196 L420 168"/>
+              <!-- runtime down to render seam, seam forks to both backends -->
+              <path d="M460 186 L460 222"/>
+              <path d="M440 258 L390 288"/>
+              <path d="M480 258 L530 288"/>
+            </g>
+            <g font-family="var(--font-mono)" font-size="12.5">
+              <g>
+                <rect x="50" y="12" width="120" height="34" rx="4" fill="none" stroke="var(--text)"/>
+                <text x="110" y="34" text-anchor="middle" fill="var(--text)">your ROM</text>
+              </g>
+              <g>
+                <rect x="20" y="78" width="250" height="34" rx="4" fill="none" stroke="var(--border)"/>
+                <text x="145" y="100" text-anchor="middle" fill="var(--text-body)">N64Recomp (C, MIT)</text>
+              </g>
+              <g>
+                <rect x="20" y="178" width="250" height="34" rx="4" fill="none" stroke="var(--border)"/>
+                <text x="145" y="200" text-anchor="middle" fill="var(--text-body)">fn64-discover + Rust codegen</text>
+              </g>
+              <g>
+                <rect x="420" y="132" width="160" height="36" rx="4" fill="var(--surface-2)" stroke="var(--text)"/>
+                <text x="500" y="154" text-anchor="middle" fill="var(--text)">fn64 runtime</text>
+              </g>
+              <text x="500" y="184" text-anchor="middle" font-size="10.5" fill="var(--text-ok)">MIT OR Apache-2.0, not ultramodern's GPL-3.0</text>
+              <g>
+                <rect x="420" y="222" width="160" height="34" rx="4" fill="none" stroke="var(--border)"/>
+                <text x="500" y="244" text-anchor="middle" fill="var(--text-body)">render seam</text>
+              </g>
+              <g>
+                <rect x="300" y="288" width="120" height="32" rx="4" fill="none" stroke="var(--border)"/>
+                <text x="360" y="308" text-anchor="middle" font-size="11" fill="var(--text-body)">reference</text>
+              </g>
+              <g>
+                <rect x="470" y="288" width="120" height="32" rx="4" fill="none" stroke="var(--border)"/>
+                <text x="530" y="308" text-anchor="middle" font-size="11" fill="var(--text-body)">RT64</text>
+              </g>
+            </g>
+          </svg>
+          <figcaption>
+            Both lanes read your locally supplied ROM; neither ships game
+            content. The GPL boundary is at the runtime, not the recompiler:
+            N64Recomp's own generator is MIT, but the runtime it was written
+            for is GPL-3.0. fn64 replaces that runtime, not the recompiler.
+          </figcaption>
+        </figure>
       </section>
 
       <section id="run">
