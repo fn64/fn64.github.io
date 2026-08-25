@@ -510,17 +510,341 @@
     <div class="wrap">
       <div class="section-hd">
         <span class="eyebrow">07 · Crates</span>
-        <h2>One workspace. Each crate publishable alone.</h2>
+        <h2>One workspace, fifteen crates, one runtime underneath.</h2>
+        <p>Each crate is publishable on its own. The graph below is the real Cargo dependency shape — your ROM enters at the bottom and leaves as a native app across platforms.</p>
       </div>
-      <div class="crates">
-        <div class="crate"><div class="nm">fn64-runtime</div><div class="ds">Scheduler, queues, timers, save, input, audio.</div></div>
-        <div class="crate"><div class="nm">fn64-abi</div><div class="ds">The typed surface the recompiled code calls.</div></div>
-        <div class="crate"><div class="nm">fn64-shell</div><div class="ds">Windowed host — brings it up on screen.</div></div>
-        <div class="crate"><div class="nm">fn64-discover</div><div class="ds">Recovers boundaries from a local ROM.</div></div>
-        <div class="crate"><div class="nm">fn64-cpu-runtime</div><div class="ds">VR4300 execution semantics, typed.</div></div>
-        <div class="crate"><div class="nm">fn64-render</div><div class="ds">The render seam: reference and RT64.</div></div>
-        <div class="crate"><div class="nm">fn64-diff</div><div class="ds">Grades output against named gates.</div></div>
-      </div>
+      <figure class="diagram crates-diagram" role="group" aria-label="fn64 crate dependency and data-flow diagram">
+        <div class="scroll">
+              <svg viewBox="0 0 1000 872" width="1000" height="872" role="img"
+                aria-label="Layered crate dependency diagram for fn64, arranged in five horizontal pipeline-stage bands stacked bottom to top, with a ROM input at the bottom and a platform-target output branch at the top. At the very bottom, a distinct dashed input node — your ROM or cartridge, held locally and never shipped — feeds an arrow up into fn64-discover, the entry to the DISCOVER band. Bottom band DISCOVER contains fn64-recomp, fn64-recomp-rs, fn64-recomp-rs-codegen, fn64-discover and fn64-boot-harness. Above it, EXECUTE contains fn64-runtime, fn64-abi and fn64-audio. Above that, PRESENT contains fn64-render, fn64-render-ir, fn64-render-reference and fn64-render-rt64. Above that, PROVE contains fn64-certification and fn64-diff. Above that, the HOST band contains fn64-shell. At the very top, an OUTPUT branch: fn64-shell builds a native app, which forks through two render backends — reference software rasterizer (portable, any platform) and RT64 GPU fast path (Metal on macOS, D3D12 on Windows) — into platform targets with honest status: macOS supported, Linux supported, Windows uncertified but targeted soon, and Web or WASM aspirational and dashed with wgpu ready but a coroutine runtime blocker. fn64-runtime is the hub: almost every crate depends on it, shown as faint converging edges. Emphasized edges: fn64-shell depends on its many subsystems; fn64-certification depends on the render backends, boot-harness and abi; fn64-render-rt64 depends on fn64-render and fn64-render-reference; fn64-abi depends into runtime; fn64-discover depends on fn64-boot-harness. fn64-diff is standalone with no dependencies.">
+
+                <defs>
+                  <marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                    <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--ink-3)" stroke-width="1.4"/>
+                  </marker>
+                  <marker id="arrowFaint" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M0,1.5 L8.5,5 L0,8.5" fill="none" stroke="var(--ink-3)" stroke-width="1.1" opacity="0.5"/>
+                  </marker>
+                  <marker id="arrowIn" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                    <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--s-discover)" stroke-width="1.5"/>
+                  </marker>
+                  <marker id="arrowOut" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                    <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+                  </marker>
+                </defs>
+
+                <!-- ================= existing 5-band pipeline, shifted down 128px to make room for the OUTPUT branch above HOST ================= -->
+                <g transform="translate(0,128)">
+
+                <!-- ================= BANDS (bottom-to-top flow) ================= -->
+                <!-- Band Y layout: HOST 24, PROVE 128, PRESENT 244, EXECUTE 384, DISCOVER 512 -->
+
+                <!-- band backgrounds -->
+                <g opacity="0.55">
+                  <rect x="120" y="16"  width="864" height="88"  rx="8" fill="var(--panel-2)" stroke="var(--hair)"/>
+                  <rect x="120" y="118" width="864" height="98"  rx="8" fill="var(--panel-2)" stroke="var(--hair)"/>
+                  <rect x="120" y="230" width="864" height="118" rx="8" fill="var(--panel-2)" stroke="var(--hair)"/>
+                  <rect x="120" y="362" width="864" height="98"  rx="8" fill="var(--panel-2)" stroke="var(--hair)"/>
+                  <rect x="120" y="474" width="864" height="150" rx="8" fill="var(--panel-2)" stroke="var(--hair)"/>
+                </g>
+
+                <!-- band labels (left, mono) -->
+                <g class="band-label">
+                  <text x="18" y="56"  font-size="13" fill="var(--accent)">HOST</text>
+                  <text x="18" y="72"  class="band-sub">the host window</text>
+
+                  <text x="18" y="162" font-size="13" fill="var(--s-prove)">PROVE</text>
+                  <text x="18" y="178" class="band-sub">gates &amp; diff</text>
+
+                  <text x="18" y="284" font-size="13" fill="var(--s-present)">PRESENT</text>
+                  <text x="18" y="300" class="band-sub">render seam</text>
+
+                  <text x="18" y="406" font-size="13" fill="var(--s-execute)">EXECUTE</text>
+                  <text x="18" y="422" class="band-sub">runtime core</text>
+
+                  <text x="18" y="522" font-size="13" fill="var(--s-discover)">DISCOVER</text>
+                  <text x="18" y="538" class="band-sub">recompile in</text>
+                </g>
+
+                <!-- ============ EDGES (drawn under boxes) ============ -->
+                <!-- FAINT hub edges: everything -> fn64-runtime (drawn as thin converging lines).
+                     Runtime box is centered ~ x=205..345 in EXECUTE band; hub target top edge y=384. -->
+                <g fill="none" stroke="var(--ink-3)" stroke-width="1" opacity="0.32">
+                  <!-- shell -> runtime -->
+                  <path d="M300 66 C 300 210, 275 300, 275 384" marker-end="url(#arrowFaint)"/>
+                  <!-- certification -> runtime -->
+                  <path d="M300 176 C 300 260, 268 320, 268 384" marker-end="url(#arrowFaint)"/>
+                  <!-- render -> runtime -->
+                  <path d="M470 296 C 470 340, 300 358, 292 384" marker-end="url(#arrowFaint)"/>
+                  <!-- render-reference -> runtime -->
+                  <path d="M600 296 C 600 348, 312 360, 300 384" marker-end="url(#arrowFaint)"/>
+                  <!-- render-rt64 -> runtime -->
+                  <path d="M760 296 C 760 352, 320 362, 308 384" marker-end="url(#arrowFaint)"/>
+                  <!-- abi -> runtime -->
+                  <path d="M470 408 C 430 420, 370 420, 352 418" marker-end="url(#arrowFaint)"/>
+                  <!-- audio -> runtime -->
+                  <path d="M640 408 C 560 452, 360 452, 300 436" marker-end="url(#arrowFaint)"/>
+                  <!-- boot-harness -> runtime -->
+                  <path d="M470 500 C 400 480, 300 470, 285 436" marker-end="url(#arrowFaint)"/>
+                  <!-- discover -> runtime -->
+                  <path d="M300 500 C 280 480, 270 460, 268 436" marker-end="url(#arrowFaint)"/>
+                </g>
+
+                <!-- EMPHASIZED key cross-band edges -->
+                <g fill="none" stroke="var(--ink-3)" stroke-width="1.3">
+                  <!-- shell -> certification (host down into prove) -->
+                  <path d="M360 66 C 430 92, 470 108, 490 122" marker-end="url(#arrow)"/>
+                  <!-- shell -> render-rt64 -->
+                  <path d="M420 60 C 620 88, 740 190, 775 224" marker-end="url(#arrow)"/>
+                  <!-- shell -> boot-harness -->
+                  <path d="M470 60 C 720 150, 560 430, 500 470" marker-end="url(#arrow)"/>
+
+                  <!-- certification -> render-rt64 -->
+                  <path d="M560 132 C 680 160, 760 196, 780 226" marker-end="url(#arrow)"/>
+                  <!-- certification -> render-reference -->
+                  <path d="M540 138 C 600 172, 610 200, 612 226" marker-end="url(#arrow)"/>
+                  <!-- certification -> boot-harness -->
+                  <path d="M500 158 C 480 300, 490 430, 490 470" marker-end="url(#arrow)"/>
+
+                  <!-- render-rt64 -> render-reference -->
+                  <path d="M745 270 C 700 280, 660 280, 648 274" marker-end="url(#arrow)"/>
+                  <!-- render-rt64 -> render -->
+                  <path d="M735 262 C 620 268, 540 268, 522 268" marker-end="url(#arrow)"/>
+                  <!-- render-reference -> render -->
+                  <path d="M570 270 C 550 276, 530 278, 522 276" marker-end="url(#arrow)"/>
+
+                  <!-- abi -> render (surface into present) -->
+                  <path d="M500 386 C 490 350, 490 320, 490 296" marker-end="url(#arrow)"/>
+
+                  <!-- discover -> boot-harness -->
+                  <path d="M360 510 C 400 508, 430 506, 456 506" marker-end="url(#arrow)"/>
+                  <!-- discover -> recomp-rs -->
+                  <path d="M300 526 C 300 556, 470 566, 476 552" marker-end="url(#arrow)"/>
+
+                  <!-- boot-harness -> abi -->
+                  <path d="M500 494 C 490 470, 500 440, 500 434" marker-end="url(#arrow)"/>
+
+                  <!-- recomp-rs <-> codegen : bidirectional -->
+                  <path d="M556 540 L 636 540" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+                  <!-- recomp-rs -> recomp -->
+                  <path d="M510 552 C 720 590, 780 580, 812 560" marker-end="url(#arrow)"/>
+                  <!-- runtime -> recomp-rs (core edge) -->
+                  <path d="M275 436 C 350 480, 460 500, 478 528" marker-end="url(#arrow)"/>
+                </g>
+
+                <!-- ============ CRATE BOXES ============ -->
+                <!-- helper visual: left color bar + panel-2 fill + hairline border -->
+
+                <!-- ---- HOST band (y 16..104) ---- -->
+                <g>
+                  <rect x="270" y="34" width="200" height="52" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.2"/>
+                  <rect x="270" y="34" width="5" height="52" rx="2" fill="var(--accent)"/>
+                  <text class="crate-name" x="288" y="58">fn64-shell</text>
+                  <text class="crate-role" x="288" y="74">windowed host — on screen</text>
+                </g>
+
+                <!-- ---- PROVE band (y 118..216) ---- -->
+                <g>
+                  <rect x="450" y="128" width="196" height="52" rx="5" fill="var(--panel-2)" stroke="var(--s-prove)" stroke-width="1.2"/>
+                  <rect x="450" y="128" width="5" height="52" rx="2" fill="var(--s-prove)"/>
+                  <text class="crate-name" x="468" y="152">fn64-certification</text>
+                  <text class="crate-role" x="468" y="168">named release gates</text>
+                </g>
+                <g>
+                  <rect x="770" y="128" width="196" height="52" rx="5" fill="var(--panel-2)" stroke="var(--s-prove)" stroke-width="1.2"/>
+                  <rect x="770" y="128" width="5" height="52" rx="2" fill="var(--s-prove)"/>
+                  <text class="crate-name" x="788" y="152">fn64-diff</text>
+                  <text class="crate-role" x="788" y="168">first-divergence · pure</text>
+                </g>
+
+                <!-- ---- PRESENT band (y 230..348) ---- -->
+                <g>
+                  <rect x="430" y="242" width="184" height="52" rx="5" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.2"/>
+                  <rect x="430" y="242" width="5" height="52" rx="2" fill="var(--s-present)"/>
+                  <text class="crate-name" x="448" y="266">fn64-render</text>
+                  <text class="crate-role" x="448" y="282">backend-neutral seam</text>
+                </g>
+                <g>
+                  <rect x="430" y="300" width="184" height="42" rx="5" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.2"/>
+                  <rect x="430" y="300" width="5" height="42" rx="2" fill="var(--s-present)"/>
+                  <text class="crate-name" x="448" y="320">fn64-render-ir</text>
+                  <text class="crate-role" x="448" y="334">render IR · standalone</text>
+                </g>
+                <g>
+                  <rect x="558" y="242" width="180" height="52" rx="5" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.2"/>
+                  <rect x="558" y="242" width="5" height="52" rx="2" fill="var(--s-present)"/>
+                  <text class="crate-name" x="576" y="264" font-size="11">fn64-render-reference</text>
+                  <text class="crate-role" x="576" y="280">software rasterizer</text>
+                </g>
+                <g>
+                  <rect x="738" y="242" width="180" height="52" rx="5" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.2"/>
+                  <rect x="738" y="242" width="5" height="52" rx="2" fill="var(--s-present)"/>
+                  <text class="crate-name" x="756" y="266">fn64-render-rt64</text>
+                  <text class="crate-role" x="756" y="282">RT64 backend bridge</text>
+                </g>
+
+                <!-- ---- EXECUTE band (y 362..460) ---- HUB highlighted ---- -->
+                <g>
+                  <rect x="200" y="384" width="152" height="54" rx="5" fill="var(--panel-2)" stroke="var(--s-execute)" stroke-width="2"/>
+                  <rect x="200" y="384" width="5" height="54" rx="2" fill="var(--s-execute)"/>
+                  <text class="crate-name" x="218" y="406" font-weight="600">fn64-runtime</text>
+                  <text class="crate-role" x="218" y="422">scheduler · queues · DMA</text>
+                  <text class="crate-role" x="218" y="432" fill="var(--s-execute)">the hub · all funnel here</text>
+                </g>
+                <g>
+                  <rect x="466" y="386" width="150" height="48" rx="5" fill="var(--panel-2)" stroke="var(--s-execute)" stroke-width="1.2"/>
+                  <rect x="466" y="386" width="5" height="48" rx="2" fill="var(--s-execute)"/>
+                  <text class="crate-name" x="484" y="408">fn64-abi</text>
+                  <text class="crate-role" x="484" y="424">extern &quot;C&quot; surface</text>
+                </g>
+                <g>
+                  <rect x="636" y="386" width="150" height="48" rx="5" fill="var(--panel-2)" stroke="var(--s-execute)" stroke-width="1.2"/>
+                  <rect x="636" y="386" width="5" height="48" rx="2" fill="var(--s-execute)"/>
+                  <text class="crate-name" x="654" y="408">fn64-audio</text>
+                  <text class="crate-role" x="654" y="424">RSP audio · clean-room</text>
+                </g>
+
+                <!-- ---- DISCOVER band (y 474..624) ---- -->
+                <g>
+                  <rect x="456" y="484" width="160" height="44" rx="5" fill="var(--panel-2)" stroke="var(--s-discover)" stroke-width="1.2"/>
+                  <rect x="456" y="484" width="5" height="44" rx="2" fill="var(--s-discover)"/>
+                  <text class="crate-name" x="474" y="504">fn64-boot-harness</text>
+                  <text class="crate-role" x="474" y="519">brings a title up</text>
+                </g>
+                <g>
+                  <rect x="234" y="484" width="150" height="44" rx="5" fill="var(--panel-2)" stroke="var(--s-discover)" stroke-width="1.2"/>
+                  <rect x="234" y="484" width="5" height="44" rx="2" fill="var(--s-discover)"/>
+                  <text class="crate-name" x="252" y="504">fn64-discover</text>
+                  <text class="crate-role" x="252" y="519">boundaries from ROM</text>
+                </g>
+                <g>
+                  <rect x="456" y="534" width="94" height="44" rx="5" fill="var(--panel-2)" stroke="var(--s-discover)" stroke-width="1.2"/>
+                  <rect x="456" y="534" width="5" height="44" rx="2" fill="var(--s-discover)"/>
+                  <text class="crate-name" x="470" y="554" font-size="10">fn64-recomp-rs</text>
+                  <text class="crate-role" x="470" y="568">typed runners</text>
+                </g>
+                <g>
+                  <rect x="560" y="534" width="120" height="44" rx="5" fill="var(--panel-2)" stroke="var(--s-discover)" stroke-width="1.2"/>
+                  <rect x="560" y="534" width="5" height="44" rx="2" fill="var(--s-discover)"/>
+                  <text class="crate-name" x="574" y="554" font-size="9.5">fn64-recomp-rs-codegen</text>
+                  <text class="crate-role" x="574" y="568">runner codegen</text>
+                </g>
+                <g>
+                  <rect x="790" y="534" width="120" height="44" rx="5" fill="var(--panel-2)" stroke="var(--s-discover)" stroke-width="1.2"/>
+                  <rect x="790" y="534" width="5" height="44" rx="2" fill="var(--s-discover)"/>
+                  <text class="crate-name" x="804" y="554">fn64-recomp</text>
+                  <text class="crate-role" x="804" y="568">MIPS decode core</text>
+                </g>
+
+                <!-- ---- ROM INPUT (pipeline origin, below/left of DISCOVER) ---- -->
+                <!-- arrow: ROM up into fn64-discover (box at x234..384, bottom y528) -->
+                <path d="M250 632 C 262 596, 285 556, 300 534"
+                      fill="none" stroke="var(--s-discover)" stroke-width="1.6"
+                      stroke-dasharray="5 4" marker-end="url(#arrowIn)"/>
+                <g>
+                  <!-- cartridge-ish input chip: rounded, dashed, distinct fill — NOT a crate box -->
+                  <rect x="150" y="640" width="182" height="60" rx="14"
+                        fill="var(--panel)" stroke="var(--s-discover)" stroke-width="1.6" stroke-dasharray="5 4"/>
+                  <!-- little cartridge notch on top -->
+                  <rect x="215" y="632" width="52" height="12" rx="3"
+                        fill="var(--panel)" stroke="var(--s-discover)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                  <text class="crate-name" x="241" y="664" font-size="12.5" text-anchor="middle">your ROM / cartridge</text>
+                  <text class="crate-role" x="241" y="681" text-anchor="middle" font-size="9">local · stays on disk · never shipped</text>
+                  <text x="241" y="694" text-anchor="middle" font-size="9"
+                        font-family="'IBM Plex Mono',monospace" fill="var(--s-discover)">recompile in ↑</text>
+                </g>
+                </g>
+                <!-- ================= end shifted 5-band group ================= -->
+
+                <!-- ================= OUTPUT BRANCH (above HOST) ================= -->
+                <!-- HOST band (post-shift) sits y 144..232; fn64-shell box x270..470, top y162.
+                     The native-app node feeds up from fn64-shell, forks by backend, then to platforms. -->
+
+                <!-- fn64-shell (post-shift top y162) -> native app -->
+                <path d="M370 162 C 370 140, 370 128, 370 116" fill="none" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arrowOut)"/>
+
+                <!-- native app node -->
+                <g>
+                  <rect x="270" y="72" width="200" height="42" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.4"/>
+                  <text x="290" y="90" font-size="10.5" font-weight="600" fill="var(--accent)">OUTPUT</text>
+                  <text class="crate-name" x="370" y="90" font-size="12" text-anchor="middle">native app</text>
+                  <text class="crate-role" x="370" y="106" text-anchor="middle" font-size="9">one binary → your machine</text>
+                </g>
+
+                <!-- backend fork annotation (references existing PRESENT crates; does NOT duplicate boxes) -->
+                <g>
+                  <rect x="506" y="70" width="290" height="46" rx="7" fill="var(--panel)" stroke="var(--s-present)" stroke-width="1" opacity="0.9"/>
+                  <text x="518" y="86" font-size="9.5" font-weight="600" fill="var(--s-present)">RENDER BACKENDS fork</text>
+                  <text class="crate-role" x="518" y="99" font-size="9">reference · software · portable, any platform</text>
+                  <text class="crate-role" x="518" y="110" font-size="9">rt64 · GPU fast path · Metal (macOS) / D3D12 (Win)</text>
+                </g>
+                <!-- native app -> backend annotation -->
+                <path d="M470 93 L 504 93" fill="none" stroke="var(--ink-3)" stroke-width="1.1" opacity="0.55" marker-end="url(#arrowFaint)"/>
+
+                <!-- platform target nodes (row at top y 20..56) -->
+                <!-- fork lines from native app up to each platform -->
+                <g fill="none" stroke="var(--ink-3)" stroke-width="1.2">
+                  <path d="M330 72 C 300 62, 210 60, 175 58" marker-end="url(#arrow)"/>
+                  <path d="M350 72 C 340 64, 335 62, 335 58" marker-end="url(#arrow)"/>
+                  <path d="M400 72 C 440 64, 480 60, 500 58" marker-end="url(#arrow)"/>
+                </g>
+                <!-- Web fork: dashed / faint (aspirational) -->
+                <path d="M420 72 C 560 60, 640 56, 668 58" fill="none" stroke="var(--ink-3)" stroke-width="1.1"
+                      stroke-dasharray="5 4" opacity="0.55" marker-end="url(#arrowFaint)"/>
+
+                <!-- macOS — supported (green) -->
+                <g>
+                  <rect x="96" y="20" width="150" height="38" rx="7" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+                  <circle cx="112" cy="39" r="4" fill="var(--ok)"/>
+                  <text class="crate-name" x="124" y="36" font-size="11.5">macOS</text>
+                  <text class="crate-role" x="124" y="49" font-size="8.5" fill="var(--ok)">supported</text>
+                </g>
+                <!-- Linux — supported (green) -->
+                <g>
+                  <rect x="260" y="20" width="150" height="38" rx="7" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+                  <circle cx="276" cy="39" r="4" fill="var(--ok)"/>
+                  <text class="crate-name" x="288" y="36" font-size="11.5">Linux</text>
+                  <text class="crate-role" x="288" y="49" font-size="8.5" fill="var(--ok)">supported</text>
+                </g>
+                <!-- Windows — uncertified · targeted (amber) -->
+                <g>
+                  <rect x="424" y="20" width="192" height="38" rx="7" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.4"/>
+                  <circle cx="440" cy="39" r="4" fill="var(--warn)"/>
+                  <text class="crate-name" x="452" y="36" font-size="11.5">Windows</text>
+                  <text class="crate-role" x="452" y="49" font-size="8.5" fill="var(--warn)">uncertified · targeted soon</text>
+                </g>
+                <!-- Web / WASM — aspirational (dashed, faint) -->
+                <g opacity="0.72">
+                  <rect x="630" y="20" width="212" height="38" rx="7" fill="var(--panel)" stroke="var(--ink-3)" stroke-width="1.3" stroke-dasharray="5 4"/>
+                  <circle cx="646" cy="39" r="4" fill="none" stroke="var(--ink-3)" stroke-width="1.3"/>
+                  <text class="crate-name" x="658" y="36" font-size="11.5" fill="var(--ink-2)">Web / WASM</text>
+                  <text class="crate-role" x="658" y="49" font-size="8.5">on the horizon · wgpu ready · coroutine blocker</text>
+                </g>
+
+              </svg>
+        </div>
+      <figcaption>
+        Data flow, ROM in to platform out: <b>your ROM / cartridge</b> (local, never shipped) enters at the bottom and is
+        <span class="mono">discover</span>ed into typed Rust runners, which the runtime core runs, the render seam draws, the
+        gates certify, and the <span class="mono">fn64-shell</span> host brings on screen. The native app forks by render backend —
+        <span class="mono">reference</span> (software, portable) or <span class="mono">rt64</span> (GPU fast path: Metal / D3D12) — into
+        platform targets: macOS and Linux <span style="color:var(--ok)">supported</span>, Windows
+        <span style="color:var(--warn)">uncertified but targeted soon</span>, and Web / WASM still <b>on the horizon</b>
+        (wgpu ready, the coroutine runtime is the blocker). Faint lines are the many dependencies converging on the
+        <span class="mono">fn64-runtime</span> hub; <span class="mono">fn64-diff</span> is standalone.
+      </figcaption>
+      </figure>
+      <ul class="diag-legend" aria-label="Stage and endpoint colour legend">
+        <li><span class="sw" style="background:var(--s-discover)"></span>Discover — recompile in</li>
+        <li><span class="sw" style="background:var(--s-execute)"></span>Execute — runtime core</li>
+        <li><span class="sw" style="background:var(--s-present)"></span>Present — render seam</li>
+        <li><span class="sw" style="background:var(--s-prove)"></span>Prove — gates &amp; diff</li>
+        <li><span class="sw" style="background:var(--accent)"></span>Host — the shell</li>
+        <li><span class="sw" style="background:transparent;border:1.5px dashed var(--s-discover)"></span>ROM in — local, never shipped</li>
+        <li><span class="sw" style="background:var(--ok)"></span>platform · supported</li>
+        <li><span class="sw" style="background:var(--warn)"></span>platform · uncertified, targeted</li>
+        <li><span class="sw" style="background:transparent;border:1.5px dashed var(--ink-3)"></span>platform · on the horizon</li>
+      </ul>
     </div>
   </section>
 
