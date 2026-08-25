@@ -33,6 +33,19 @@ svg.diagram{display:block;min-width:940px;width:100%;height:auto}
 .node-role{font-family:"IBM Plex Sans",sans-serif;font-size:9.5px;fill:var(--ink-3)}
 .rank-lbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;fill:var(--ink-3);text-transform:uppercase}
 .rank-sep{stroke:var(--hair);stroke-width:1;stroke-dasharray:1 5;opacity:.7}
+.io-box{fill:var(--panel);stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:4 3}
+.io-name{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;fill:var(--ink)}
+.io-sub{font-family:"IBM Plex Sans",sans-serif;font-size:9.5px;fill:var(--ink-3)}
+.io-lbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;fill:var(--ink-3);text-transform:uppercase}
+.plat-box{fill:var(--panel-2);stroke:var(--hair);stroke-width:1}
+.plat-name{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;fill:var(--ink)}
+.plat-sub{font-family:"IBM Plex Sans",sans-serif;font-size:9px;fill:var(--ink-3)}
+.plat-ok{stroke:var(--ok)}
+.plat-warn{stroke:var(--warn)}
+.plat-web{stroke:var(--ink-3);stroke-dasharray:4 3;opacity:.75}
+.plat-dot{stroke:none}
+.io-edge{fill:none;stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:4 3;opacity:.7}
+.back-edge{fill:none;stroke:var(--ink-3);stroke-width:.8;opacity:.28;stroke-dasharray:2 4}
 .edge{fill:none;stroke:var(--ink-3);stroke-width:1.2;opacity:.55}
 .edge.hub{stroke-width:.8;opacity:.2}
 .edge.bidir{stroke:var(--s-discover);stroke-width:1.4;opacity:.85}
@@ -66,8 +79,8 @@ svg.diagram{display:block;min-width:940px;width:100%;height:auto}
 
   <div class="panel">
     <div class="scroll">
-      <svg class="diagram" viewBox="0 0 980 760" role="img"
-        aria-label="Complete fn64 crate dependency graph as a layered directed acyclic graph. Seven ranks flow top to bottom, an arrow from A to B meaning A depends on B. Rank 0 leaves with no fn64 dependencies: fn64-recomp (discover hue), fn64-render-ir (present hue), fn64-diff (prove hue, fully standalone). Rank 1: fn64-recomp-rs and fn64-recomp-rs-codegen joined by one bidirectional edge and both depending on fn64-recomp, plus fn64-runtime the common hub depending on fn64-recomp-rs. Rank 2: fn64-audio and fn64-render, both depending on fn64-runtime. Rank 3: fn64-abi depending on audio, recomp-rs, render, render-reference and runtime; fn64-render-reference depending on render and runtime. Rank 4: fn64-boot-harness depending on abi, audio, recomp-rs, recomp-rs-codegen, render and runtime; fn64-render-rt64 depending on abi, boot-harness, render, render-reference and runtime; fn64-discover depending on boot-harness, recomp-rs, recomp-rs-codegen and runtime. Rank 5: fn64-certification depending on abi, boot-harness, render, render-reference, render-rt64 and runtime. Rank 6: fn64-shell the top host depending on abi, audio, boot-harness, certification, render, render-reference, render-rt64 and runtime. Edges into fn64-runtime are drawn faint and thin because it is the shared hub.">
+      <svg class="diagram" viewBox="0 0 980 916" role="img"
+        aria-label="Complete fn64 crate dependency graph as a layered directed acyclic graph, with the ROM data source at the top and the platform targets at the bottom. At the very top, above rank 0 and set apart as a dashed input node, is 'your ROM / cartridge — local, stays on disk'; a dashed arrow flows from it down into fn64-discover, the entry to the recompile chain. Seven crate ranks then flow top to bottom, an arrow from A to B meaning A depends on B. Rank 0 leaves with no fn64 dependencies: fn64-recomp (discover hue), fn64-render-ir (present hue), fn64-diff (prove hue, fully standalone). Rank 1: fn64-recomp-rs and fn64-recomp-rs-codegen joined by one bidirectional edge and both depending on fn64-recomp, plus fn64-runtime the common hub depending on fn64-recomp-rs. Rank 2: fn64-audio and fn64-render, both depending on fn64-runtime. Rank 3: fn64-abi depending on audio, recomp-rs, render, render-reference and runtime; fn64-render-reference depending on render and runtime. Rank 4: fn64-boot-harness depending on abi, audio, recomp-rs, recomp-rs-codegen, render and runtime; fn64-render-rt64 depending on abi, boot-harness, render, render-reference and runtime; fn64-discover depending on boot-harness, recomp-rs, recomp-rs-codegen and runtime. Rank 5: fn64-certification depending on abi, boot-harness, render, render-reference, render-rt64 and runtime. Rank 6: fn64-shell the top host depending on abi, audio, boot-harness, certification, render, render-reference, render-rt64 and runtime. Edges into fn64-runtime are drawn faint and thin because it is the shared hub. Below fn64-shell, an output row: fn64-shell builds a native app, which forks to four platform targets with honest traffic-light status — macOS supported (green), Linux supported (green), Windows uncertified and targeted soon (amber), and Web slash WASM on the horizon (dashed and faint: wgpu ready, coroutine runtime the blocker). Thin dashed hints show the reference backend as the portable software path and RT64 as the GPU fast-path (Metal on macOS, D3D12 on Windows) feeding the native app. No Switch, console, or mobile targets exist.">
 
         <defs>
           <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
@@ -79,20 +92,32 @@ svg.diagram{display:block;min-width:940px;width:100%;height:auto}
           <marker id="ah-bd" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M0 0 L10 5 L0 10 z" fill="var(--s-discover)"/>
           </marker>
+          <marker id="ah-io" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/>
+          </marker>
+          <marker id="ah-back" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)" opacity="0.5"/>
+          </marker>
         </defs>
 
         <!-- rank guides + labels -->
         <g id="ranks"></g>
+
+        <!-- ROM input + platform output edges (under nodes) -->
+        <g id="io-edges"></g>
 
         <!-- edges under nodes -->
         <g id="edges"></g>
 
         <!-- nodes over edges -->
         <g id="nodes"></g>
+
+        <!-- ROM input + platform output nodes (over edges) -->
+        <g id="io-nodes"></g>
       </svg>
     </div>
 
-    <p class="caption"><b>Complete dependency graph.</b> Every arrow is a real Cargo dependency (A → B = A depends on B); ranks assigned by dependency depth. The recomp-rs ↔ codegen mutual dependency is drawn as one bidirectional edge; the many edges into <span style="font-family:'IBM Plex Mono',monospace">fn64-runtime</span> (the common hub) are faint so the rest of the structure stays readable.</p>
+    <p class="caption"><b>Complete dependency graph, ROM in → platforms out.</b> Every solid arrow is a real Cargo dependency (A → B = A depends on B); ranks assigned by dependency depth. The recomp-rs ↔ codegen mutual dependency is drawn as one bidirectional edge; the many edges into <span style="font-family:'IBM Plex Mono',monospace">fn64-runtime</span> (the common hub) are faint so the rest of the structure stays readable. Dashed arrows are the data flow, not a crate link: your <b>ROM / cartridge</b> (top, local and never shipped) enters at <span style="font-family:'IBM Plex Mono',monospace">fn64-discover</span>, and the <span style="font-family:'IBM Plex Mono',monospace">fn64-shell</span> <b>native app</b> (bottom) forks to platform targets — <b>macOS</b> and <b>Linux</b> supported, <b>Windows</b> uncertified but targeted soon, <b>Web / WASM</b> on the horizon (wgpu ready, the coroutine runtime the blocker). Thin dashed hints show the reference backend as the portable software path and RT64 as the GPU fast-path feeding the app.</p>
 
     <div class="legend" aria-hidden="true">
       <span class="it"><span class="sw" style="background:var(--s-discover)"></span>DISCOVER</span>
@@ -103,6 +128,10 @@ svg.diagram{display:block;min-width:940px;width:100%;height:auto}
       <span class="it" style="margin-left:6px"><span class="ln"></span>depends on</span>
       <span class="it"><span class="ln bd"></span>mutual</span>
       <span class="it"><span class="ln hub"></span>→ runtime hub</span>
+      <span class="it" style="margin-left:6px"><span class="ln" style="border-top-style:dashed"></span>data flow (ROM in / app out)</span>
+      <span class="it"><span class="sw" style="background:var(--ok)"></span>supported</span>
+      <span class="it"><span class="sw" style="background:var(--warn)"></span>uncertified · targeted</span>
+      <span class="it"><span class="sw" style="background:var(--ink-3);opacity:.6"></span>on the horizon</span>
     </div>
   </div>
 </div>
@@ -121,8 +150,8 @@ svg.diagram{display:block;min-width:940px;width:100%;height:auto}
 // ---- layout data ----
 var STAGE={discover:'var(--s-discover)',execute:'var(--s-execute)',present:'var(--s-present)',prove:'var(--s-prove)',host:'var(--accent)'};
 var W=176, H=42; // node box
-// rank Y positions (top of box)
-var RY=[52,148,244,340,436,532,628];
+// rank Y positions (top of box). Top ranks shifted down to leave room for the ROM input row.
+var RY=[144,240,336,432,528,624,720];
 var RANK_LABEL=['RANK 0 · leaves','RANK 1 · core','RANK 2','RANK 3','RANK 4','RANK 5','RANK 6 · host'];
 
 // nodes: id, short name, role, stage, rank, x-center
@@ -249,6 +278,75 @@ Object.keys(N).forEach(function(k){
   g.appendChild(pop);
   gN.appendChild(g);
 });
+
+// ---- ROM input (source, above rank 0) + platform output (below rank 6) ----
+var gIoE=document.getElementById('io-edges');
+var gIoN=document.getElementById('io-nodes');
+
+// path helper: bottom-of-a to top-of-b, gentle bezier
+function ioPath(x1,y1,x2,y2){
+  var span=y2-y1, mid=(x1+x2)/2;
+  var c1x=x1+(mid-x1)*0.4, c2x=x2+(mid-x2)*0.4;
+  return 'M'+x1+' '+y1+' C'+c1x+' '+(y1+span*0.45)+' '+c2x+' '+(y2-span*0.45)+' '+x2+' '+y2;
+}
+
+// -- INPUT: ROM / cartridge, dashed source node, above rank 0 --
+(function(){
+  var rw=250, rh=44, ry=44, rx=830-rw/2; // centered over the discover column (x=830)
+  gIoN.appendChild(el('text',{x:rx,y:ry-9,'class':'io-lbl'})).textContent='INPUT · YOUR DATA';
+  gIoN.appendChild(el('rect',{x:rx,y:ry,width:rw,height:rh,rx:7,'class':'io-box'}));
+  gIoN.appendChild(el('text',{x:rx+16,y:ry+19,'class':'io-name'})).textContent='your ROM / cartridge';
+  gIoN.appendChild(el('text',{x:rx+16,y:ry+34,'class':'io-sub'})).textContent='local, stays on disk · never shipped';
+  // arrow into fn64-discover (rank 4, x=830). Route down the right margin.
+  var disc=N['discover'];
+  gIoE.appendChild(el('path',{d:ioPath(830, ry+rh, disc.x, disc.y),'class':'io-edge','marker-end':'url(#ah-io)'}));
+})();
+
+// -- OUTPUT: native app -> platform fork, below rank 6 (shell) --
+(function(){
+  var shell=N['shell'];                 // x=490, bottom = shell.y + H
+  var appW=150, appH=40;
+  var appX=shell.x-appW/2, appY=shell.y+H+30;
+  var appCx=shell.x, appCy=appY+appH/2;
+  gIoN.appendChild(el('text',{x:appX,y:appY-9,'class':'io-lbl'})).textContent='OUTPUT · PLATFORM TARGETS';
+  // shell -> native app
+  gIoE.appendChild(el('path',{d:ioPath(shell.x, shell.y+H, shell.x, appY),'class':'io-edge','marker-end':'url(#ah-io)'}));
+  // native app node
+  gIoN.appendChild(el('rect',{x:appX,y:appY,width:appW,height:appH,rx:7,'class':'plat-box'}));
+  gIoN.appendChild(el('rect',{x:appX,y:appY,width:5,height:appH,rx:2.5,'class':'plat-dot',fill:'var(--accent)'}));
+  gIoN.appendChild(el('text',{x:appX+15,y:appY+18,'class':'plat-name'})).textContent='native app';
+  gIoN.appendChild(el('text',{x:appX+15,y:appY+31,'class':'plat-sub'})).textContent='fn64-shell build';
+
+  // thin dashed hints: render backends feed the native app (don't duplicate the crate nodes)
+  var ref=N['render-ref'], rt64=N['rt64'];
+  gIoE.appendChild(el('path',{d:ioPath(ref.x-W*0.15, ref.y+H, appCx-40, appY),'class':'back-edge','marker-end':'url(#ah-back)'}));
+  gIoE.appendChild(el('path',{d:ioPath(rt64.x-W*0.15, rt64.y+H, appCx+40, appY),'class':'back-edge','marker-end':'url(#ah-back)'}));
+
+  // four platform targets, honest traffic-light status
+  var pw=210, ph=42, gap=14;
+  var plats=[
+    {n:'macOS',     sub:'supported · RT64 Metal + reference', cls:'plat-ok',   dot:'var(--ok)'},
+    {n:'Linux',     sub:'supported · reference (software)',   cls:'plat-ok',   dot:'var(--ok)'},
+    {n:'Windows',   sub:'uncertified · targeted soon · D3D12',cls:'plat-warn', dot:'var(--warn)'},
+    {n:'Web / WASM',sub:'on the horizon · wgpu ready, coroutine blocker', cls:'plat-web', dot:'var(--ink-3)'}
+  ];
+  var totalW=plats.length*pw+(plats.length-1)*gap;
+  var startX=490-totalW/2;
+  var py=appY+appH+34;
+  plats.forEach(function(p,i){
+    var x=startX+i*(pw+gap), cx=x+pw/2;
+    // app -> platform
+    var web=(p.cls==='plat-web');
+    gIoE.appendChild(el('path',{d:ioPath(appCx, appY+appH, cx, py),'class': web?'io-edge':'io-edge','marker-end':'url(#ah-io)', opacity: web?0.45:0.7}));
+    var box=el('rect',{x:x,y:py,width:pw,height:ph,rx:6,'class':'plat-box '+p.cls});
+    gIoN.appendChild(box);
+    gIoN.appendChild(el('rect',{x:x,y:py,width:5,height:ph,rx:2.5,'class':'plat-dot',fill:p.dot}));
+    var nm=el('text',{x:x+15,y:py+18,'class':'plat-name'}); nm.textContent=p.n;
+    if(web) nm.setAttribute('opacity','0.8');
+    gIoN.appendChild(nm);
+    var sb=el('text',{x:x+15,y:py+32,'class':'plat-sub'}); sb.textContent=p.sub; gIoN.appendChild(sb);
+  });
+})();
 </script>
 </body>
 </html>
