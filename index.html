@@ -527,45 +527,93 @@
             <span class="stage-k">Discover</span>
             <span class="stage-role">recover boundaries from the ROM</span>
             <ul class="chips">
-              <li>fn64-discover</li>
-              <li>fn64-recomp</li>
-              <li>fn64-recomp-rs</li>
-              <li>fn64-recomp-rs-codegen</li>
-              <li>fn64-boot-harness</li>
+              <li class="featured">
+                <span class="chip-name">fn64-discover</span>
+                <span class="chip-role">boundaries from ROM</span>
+                <ul class="chip-points">
+                  <li>mechanical, zero-LLM ROM recovery</li>
+                  <li>never emits a guessed symbol file</li>
+                  <li>proven facts, rejected candidates, open frontier</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-recomp</span><span class="chip-role">MIPS decode core</span></li>
+              <li><span class="chip-name">fn64-recomp-rs</span><span class="chip-role">typed runners</span></li>
+              <li><span class="chip-name">fn64-recomp-rs-codegen</span><span class="chip-role">runner codegen</span></li>
+              <li><span class="chip-name">fn64-boot-harness</span><span class="chip-role">brings a title up</span></li>
             </ul>
           </li>
           <li class="stage" style="--tone:var(--s-execute)">
             <span class="stage-k">Execute</span>
             <span class="stage-role">the runtime core every crate funnels into</span>
             <ul class="chips">
-              <li class="hub">fn64-runtime</li>
-              <li>fn64-abi</li>
-              <li>fn64-audio</li>
+              <li class="featured hub">
+                <span class="chip-name">fn64-runtime</span>
+                <span class="chip-role">the runtime hub</span>
+                <ul class="chip-points">
+                  <li>scheduler, message queues, timers</li>
+                  <li>DMA, rdram model, PI/SI/VI/AI plumbing</li>
+                  <li>the independently-testable core</li>
+                </ul>
+              </li>
+              <li class="featured">
+                <span class="chip-name">fn64-abi</span>
+                <span class="chip-role">extern “C” surface</span>
+                <ul class="chip-points">
+                  <li>what recompiled game code links against</li>
+                  <li>a thin marshalling adapter, never new policy</li>
+                  <li>signatures verified against real generated C</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-audio</span><span class="chip-role">RSP audio, clean-room</span></li>
             </ul>
           </li>
           <li class="stage" style="--tone:var(--s-present)">
             <span class="stage-k">Present</span>
             <span class="stage-role">draw frames through the render seam</span>
             <ul class="chips">
-              <li>fn64-render</li>
-              <li>fn64-render-ir</li>
-              <li>fn64-render-reference</li>
-              <li>fn64-render-rt64</li>
+              <li class="featured">
+                <span class="chip-name">fn64-render</span>
+                <span class="chip-role">backend-neutral seam</span>
+                <ul class="chip-points">
+                  <li>the one boundary gfx work passes through</li>
+                  <li>no backend implementation lives here</li>
+                  <li>content-addressed microcode admission</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-render-ir</span><span class="chip-role">render IR, standalone</span></li>
+              <li><span class="chip-name">fn64-render-reference</span><span class="chip-role">software rasterizer</span></li>
+              <li><span class="chip-name">fn64-render-rt64</span><span class="chip-role">RT64 backend bridge</span></li>
             </ul>
           </li>
           <li class="stage" style="--tone:var(--s-prove)">
             <span class="stage-k">Prove</span>
             <span class="stage-role">grade the output against evidence</span>
             <ul class="chips">
-              <li>fn64-certification</li>
-              <li>fn64-diff</li>
+              <li class="featured">
+                <span class="chip-name">fn64-certification</span>
+                <span class="chip-role">certification gates, not a release authority</span>
+                <ul class="chip-points">
+                  <li>executable behavioral gates for backends</li>
+                  <li>a consumer of renderer APIs, never an authority</li>
+                  <li>versioned, identity-bound evidence</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-diff</span><span class="chip-role">first-divergence, pure</span></li>
             </ul>
           </li>
           <li class="stage" style="--tone:var(--accent)">
             <span class="stage-k">Host</span>
             <span class="stage-role">bring it on screen</span>
             <ul class="chips">
-              <li>fn64-shell</li>
+              <li class="featured">
+                <span class="chip-name">fn64-shell</span>
+                <span class="chip-role">windowed host — on screen</span>
+                <ul class="chip-points">
+                  <li>the windowed harness that makes a game playable</li>
+                  <li>presents the live VI framebuffer to a window</li>
+                  <li>live keyboard input, cpal audio out</li>
+                </ul>
+              </li>
             </ul>
           </li>
         </ol>
