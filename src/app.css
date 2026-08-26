@@ -1097,41 +1097,77 @@ footer {
 #rendering .checks { margin-bottom: 0; }
 
 /* ---------- crates dependency data-flow diagram (Crates section) ---------- */
-/* Reuses the .diagram / .diagram .scroll shell. These style the inline SVG and
-   the HTML legend below it. Tokens already defined above; theme-aware. */
-/* Faint N64 controller wireframe behind the crate data-flow diagram. Masked so
-   it wears the --hair token and adapts to theme; sits under the SVG content. */
-.crates-diagram { position: relative; }
-.crates-diagram::before {
-  content: "";
-  position: absolute;
-  right: 3%; top: 50%;
-  width: 340px; height: 234px;
-  transform: translateY(-50%);
-  background: var(--hair-2);
-  -webkit-mask: var(--n64-mask) center / contain no-repeat;
-  mask: var(--n64-mask) center / contain no-repeat;
-  opacity: .72;
-  pointer-events: none;
-  z-index: 0;
+/* ---------- crate pipeline (the diagram IS the crate list) ----------
+   ROM in · five stage cards · app out. Horizontal on desktop, stacks on
+   mobile. Each stage carries its pipeline hue via --tone. */
+.pipe {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px; align-items: stretch;
+  margin: 4px 0 0;
 }
-.crates-diagram .scroll { position: relative; z-index: 1; }
-.crates-diagram svg { min-width: 760px; }
-.crates-diagram text { font-family: "IBM Plex Mono", ui-monospace, monospace; }
-.crates-diagram .band-label { font-weight: 600; letter-spacing: .06em; }
-.crates-diagram .crate-name { font-size: 12.5px; font-weight: 500; fill: var(--ink); }
-.crates-diagram .crate-role { font-size: 9.5px; font-family: "IBM Plex Sans", sans-serif; fill: var(--ink-3); }
-.crates-diagram .band-sub { font-size: 9px; font-family: "IBM Plex Sans", sans-serif; letter-spacing: .02em; fill: var(--ink-3); }
-.diag-legend {
-  display: flex; flex-wrap: wrap; gap: 7px 16px;
-  margin: 14px 0 0; padding: 0; list-style: none;
+.pipe-stages {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
 }
-.diag-legend li {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 12px; color: var(--ink-2);
+.stage {
+  border: 1px solid var(--hair); border-top: 3px solid var(--tone);
+  border-radius: 10px; background: var(--panel-2);
+  padding: 13px 13px 14px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stage-k {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--tone);
 }
-.diag-legend .sw {
-  width: 12px; height: 12px; border-radius: 3px; flex: 0 0 auto;
-  border: 1px solid rgba(128,128,128,.35);
+.stage-role { font-size: 11px; line-height: 1.4; color: var(--ink-3); margin-bottom: 6px; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.chips li {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px; color: var(--ink);
+  padding: 4px 8px; border-radius: 5px;
+  background: var(--panel); border: 1px solid var(--hair);
+  overflow-wrap: anywhere;
 }
+.chips li.hub {
+  border-color: color-mix(in oklab, var(--tone) 55%, transparent);
+  color: var(--tone); font-weight: 600;
+}
+/* ROM in / App out end-caps */
+.pipe-end {
+  display: flex; flex-direction: column; justify-content: center; gap: 3px;
+  min-width: 120px; max-width: 148px;
+  padding: 13px; border-radius: 10px;
+  border: 1.5px dashed var(--hair-2); background: transparent;
+}
+.pipe-in  { border-color: color-mix(in oklab, var(--s-discover) 55%, transparent); }
+.pipe-out { border-color: color-mix(in oklab, var(--accent) 55%, transparent); border-style: solid; background: var(--panel-2); }
+.pipe-end-k {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3);
+}
+.pipe-in .pipe-end-k  { color: var(--s-discover); }
+.pipe-out .pipe-end-k { color: var(--accent); }
+.pipe-end-v { font-size: 14px; font-weight: 600; color: var(--ink); }
+.pipe-end-note { font-size: 10.5px; line-height: 1.4; color: var(--ink-3); }
+
+@media (max-width: 900px) {
+  .pipe { grid-template-columns: 1fr; }
+  .pipe-stages { grid-template-columns: 1fr 1fr; }
+  .pipe-end { max-width: none; }
+}
+@media (max-width: 560px) {
+  .pipe-stages { grid-template-columns: 1fr; }
+}
+
+/* ---------- closing CTA ---------- */
+.closer { padding: 64px 0 8px; }
+.closer-in {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px;
+}
+.closer-lede {
+  margin: 0; max-width: 22ch;
+  font-size: clamp(24px, 3.4vw, 34px); line-height: 1.15; font-weight: 600;
+  letter-spacing: -0.01em; color: var(--ink);
+}
+.closer .cta { justify-content: center; }
