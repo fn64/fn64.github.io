@@ -22,6 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;450;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script>try{var t=localStorage.getItem('fn64-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
   </head>
   <body>
 
@@ -63,7 +64,7 @@
     <div class="wrap">
       <span class="eyebrow">How it works · two ways in</span>
       <h1>Two ways <span class="grad">in.</span></h1>
-      <p class="lede">A port needs two things fn64 provides and your game does not: native code for the game’s functions, and a runtime for everything those functions call. Which route you take depends on what you already have.</p>
+      <p class="lede">A native port needs two things your game does not ship with: native code for its functions, and a runtime for everything those functions call into. fn64 supplies both. Which route you take in depends on what you already have in hand.</p>
       <div class="cta">
         <a class="btn primary" href="#routes">Pick a route →</a>
         <a class="btn ghost" href="#stages">See the stages</a>
@@ -154,7 +155,7 @@
                 <rect x="204" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-recompile)" stroke-width="1.5"/>
                 <rect x="204" y="52" width="4" height="66" rx="2" fill="var(--s-recompile)"/>
                 <text x="222" y="80" fill="var(--ink)" font-size="14" font-weight="600">Recompile</text>
-                <text x="222" y="100" fill="var(--ink-3)" font-size="10.5">host-native code</text>
+                <text x="222" y="100" fill="var(--ink-3)" font-size="10.5">native code</text>
                 <line x1="279" y1="118" x2="279" y2="150" stroke="var(--s-recompile)" stroke-width="1.5"/>
                 <circle cx="279" cy="150" r="3.5" fill="var(--s-recompile)"/>
               </g>
@@ -164,7 +165,7 @@
                 <rect x="384" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-execute)" stroke-width="1.5"/>
                 <rect x="384" y="52" width="4" height="66" rx="2" fill="var(--s-execute)"/>
                 <text x="402" y="80" fill="var(--ink)" font-size="14" font-weight="600">Execute</text>
-                <text x="402" y="100" fill="var(--ink-3)" font-size="10.5">running game logic</text>
+                <text x="402" y="100" fill="var(--ink-3)" font-size="10.5">frame + audio census</text>
                 <line x1="459" y1="118" x2="459" y2="150" stroke="var(--s-execute)" stroke-width="1.5"/>
                 <circle cx="459" cy="150" r="3.5" fill="var(--s-execute)"/>
               </g>
@@ -174,7 +175,7 @@
                 <rect x="564" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.5"/>
                 <rect x="564" y="52" width="4" height="66" rx="2" fill="var(--s-present)"/>
                 <text x="582" y="80" fill="var(--ink)" font-size="14" font-weight="600">Present</text>
-                <text x="582" y="100" fill="var(--ink-3)" font-size="10.5">native application</text>
+                <text x="582" y="100" fill="var(--ink-3)" font-size="10.5">rendered frame</text>
                 <line x1="639" y1="118" x2="639" y2="150" stroke="var(--s-present)" stroke-width="1.5"/>
                 <circle cx="639" cy="150" r="3.5" fill="var(--s-present)"/>
               </g>
@@ -184,7 +185,7 @@
                 <rect x="744" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-prove)" stroke-width="1.5"/>
                 <rect x="744" y="52" width="4" height="66" rx="2" fill="var(--s-prove)"/>
                 <text x="762" y="80" fill="var(--ink)" font-size="14" font-weight="600">Prove</text>
-                <text x="762" y="100" fill="var(--ink-3)" font-size="10.5">reviewable evidence</text>
+                <text x="762" y="100" fill="var(--ink-3)" font-size="10.5">graded evidence</text>
                 <line x1="819" y1="118" x2="819" y2="150" stroke="var(--s-prove)" stroke-width="1.5"/>
                 <circle cx="819" cy="150" r="3.5" fill="var(--s-prove)"/>
               </g>
@@ -197,10 +198,10 @@
 
       <div class="stages">
         <div class="stage"><span class="marker"><span class="sq"></span>01 Discover</span><p>Analyze a local ROM, retain proven facts, name unresolved ownership. <b>Out:</b> content-free metadata.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>02 Recompile</span><p>Turn MIPS functions into typed Rust runners, one per MIPS function. <b>Out:</b> host-native code.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>03 Execute</span><p>Link recompiled code to a clean-room Rust implementation of its expected runtime surface. <b>Out:</b> running game logic.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>04 Present</span><p>Graphics, audio, input and platform integration through explicit backend seams. <b>Out:</b> native application.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>05 Prove</span><p>Grade ABI shape, code generation and deterministic behavior with executable checks. <b>Out:</b> reviewable evidence.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>02 Recompile</span><p>Turn MIPS functions into typed Rust runners, one per MIPS function. <b>Out:</b> native code.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>03 Execute</span><p>Link recompiled code to a clean-room Rust implementation of the runtime surface it expects. <b>Out:</b> a frame and audio census.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>04 Present</span><p>Draw graphics and mix audio through explicit, swappable backend seams. <b>Out:</b> a rendered frame.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>05 Prove</span><p>Grade ABI shape, code generation and deterministic behaviour against executable checks. <b>Out:</b> graded evidence.</p></div>
       </div>
     </div>
   </section>
@@ -296,7 +297,7 @@
 
 <footer>
   <div class="wrap foot-grid">
-    <div style="display:flex;align-items:center;gap:12px">
+    <div class="foot-brand">
       <svg class="mark" width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
         <path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z M8.878 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M19.78 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M30.682 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0"/>
       </svg>
@@ -324,15 +325,19 @@
     if (t === 'dark' || t === 'light') return t;
     return systemDark() ? 'dark' : 'light';
   }
-  function apply(t) {
-    root.setAttribute('data-theme', t);
+  function label(t) {
     if (btn) btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
   }
-  apply(current());
+  function choose(t) {
+    root.setAttribute('data-theme', t);
+    try { localStorage.setItem('fn64-theme', t); } catch (e) {}
+    label(t);
+  }
+  label(current());
 
   if (btn) {
     btn.addEventListener('click', function () {
-      apply(current() === 'dark' ? 'light' : 'dark');
+      choose(current() === 'dark' ? 'light' : 'dark');
     });
   }
 
@@ -350,7 +355,15 @@
         menuBtn.setAttribute('aria-expanded', 'false');
       });
     });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.focus();
+      }
+    });
   }
 })();
 </script>
+</body>
 </html>

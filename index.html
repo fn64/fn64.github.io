@@ -22,6 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;450;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script>try{var t=localStorage.getItem('fn64-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
   </head>
   <body>
 
@@ -63,9 +64,9 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">Clean-room · Rust · N64 static recompilation</span>
+        <span class="eyebrow">The layer under the game · clean-room Rust</span>
         <h1>Run your recompiled ROM as a <span class="grad">native app.</span></h1>
-        <p class="lede">fn64 is a Rust runtime for Nintendo 64 static recompilation. Your recompiled ROM calls into it for the scheduler, message queues, timers, <code>DMA</code> and overlay lifecycle, save, input and audio.</p>
+        <p class="lede">Static recompilation turns a Nintendo&nbsp;64 game into native code. fn64 is what it lands on — a clean-room Rust runtime that answers every call the game used to make to hardware: scheduler, message queues, timers, <code>DMA</code>, save, input and audio.</p>
 
         <div class="chips">
           <span class="chip pa"><span class="led"></span>Pre-alpha</span>
@@ -166,7 +167,7 @@
       <div class="section-hd">
         <span class="eyebrow">01 · What it is</span>
         <h2>Not an emulator</h2>
-        <p>An emulator reads the game's MIPS instructions and interprets or JITs them while it runs. Static recompilation does that work once, ahead of time.</p>
+        <p>An emulator reads the game's MIPS instructions and interprets or JITs them every frame, for as long as it runs. Static recompilation does that translation once, ahead of time — so there is no interpreter left in the loop.</p>
       </div>
 
       <div class="emu">
@@ -222,7 +223,7 @@
       <div class="section-hd">
         <span class="eyebrow">03 · Stages</span>
         <h2>Five stages. Each writes a file you can look at.</h2>
-        <p>Discover, Recompile, Execute, Present, Prove. Re-run one without rebuilding the others. Hue encodes stage — the same color follows each stage everywhere on this page.</p>
+        <p>Discover, Recompile, Execute, Present, Prove. Every stage writes an artifact to disk, so you can read what one produced, re-run that stage alone, and leave the rest untouched. Hue encodes stage — the same colour follows it everywhere on this page.</p>
       </div>
 
       <figure class="diagram" role="img" aria-label="Five-stage pipeline: Discover recovers boundaries, Recompile emits native code, Execute runs the runtime, Present draws through the render seam, Prove grades the result. Each stage writes an artifact.">
@@ -241,7 +242,7 @@
                 <rect x="24" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-discover)" stroke-width="1.5"/>
                 <rect x="24" y="52" width="4" height="66" rx="2" fill="var(--s-discover)"/>
                 <text x="42" y="80" fill="var(--ink)" font-size="14" font-weight="600">Discover</text>
-                <text x="42" y="100" fill="var(--ink-3)" font-size="10.5">boundaries.json</text>
+                <text x="42" y="100" fill="var(--ink-3)" font-size="10.5">content-free metadata</text>
                 <line x1="99" y1="118" x2="99" y2="150" stroke="var(--s-discover)" stroke-width="1.5"/>
                 <circle cx="99" cy="150" r="3.5" fill="var(--s-discover)"/>
               </g>
@@ -251,7 +252,7 @@
                 <rect x="204" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-recompile)" stroke-width="1.5"/>
                 <rect x="204" y="52" width="4" height="66" rx="2" fill="var(--s-recompile)"/>
                 <text x="222" y="80" fill="var(--ink)" font-size="14" font-weight="600">Recompile</text>
-                <text x="222" y="100" fill="var(--ink-3)" font-size="10.5">native .rs / .o</text>
+                <text x="222" y="100" fill="var(--ink-3)" font-size="10.5">native code</text>
                 <line x1="279" y1="118" x2="279" y2="150" stroke="var(--s-recompile)" stroke-width="1.5"/>
                 <circle cx="279" cy="150" r="3.5" fill="var(--s-recompile)"/>
               </g>
@@ -261,7 +262,7 @@
                 <rect x="384" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-execute)" stroke-width="1.5"/>
                 <rect x="384" y="52" width="4" height="66" rx="2" fill="var(--s-execute)"/>
                 <text x="402" y="80" fill="var(--ink)" font-size="14" font-weight="600">Execute</text>
-                <text x="402" y="100" fill="var(--ink-3)" font-size="10.5">frame census</text>
+                <text x="402" y="100" fill="var(--ink-3)" font-size="10.5">frame + audio census</text>
                 <line x1="459" y1="118" x2="459" y2="150" stroke="var(--s-execute)" stroke-width="1.5"/>
                 <circle cx="459" cy="150" r="3.5" fill="var(--s-execute)"/>
               </g>
@@ -271,7 +272,7 @@
                 <rect x="564" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.5"/>
                 <rect x="564" y="52" width="4" height="66" rx="2" fill="var(--s-present)"/>
                 <text x="582" y="80" fill="var(--ink)" font-size="14" font-weight="600">Present</text>
-                <text x="582" y="100" fill="var(--ink-3)" font-size="10.5">render seam</text>
+                <text x="582" y="100" fill="var(--ink-3)" font-size="10.5">rendered frame</text>
                 <line x1="639" y1="118" x2="639" y2="150" stroke="var(--s-present)" stroke-width="1.5"/>
                 <circle cx="639" cy="150" r="3.5" fill="var(--s-present)"/>
               </g>
@@ -281,7 +282,7 @@
                 <rect x="744" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-prove)" stroke-width="1.5"/>
                 <rect x="744" y="52" width="4" height="66" rx="2" fill="var(--s-prove)"/>
                 <text x="762" y="80" fill="var(--ink)" font-size="14" font-weight="600">Prove</text>
-                <text x="762" y="100" fill="var(--ink-3)" font-size="10.5">graded report</text>
+                <text x="762" y="100" fill="var(--ink-3)" font-size="10.5">graded evidence</text>
                 <line x1="819" y1="118" x2="819" y2="150" stroke="var(--s-prove)" stroke-width="1.5"/>
                 <circle cx="819" cy="150" r="3.5" fill="var(--s-prove)"/>
               </g>
@@ -293,10 +294,10 @@
       </figure>
 
       <div class="stages">
-        <div class="stage"><span class="marker"><span class="sq"></span>Discover</span><p>Recover function &amp; section metadata from a local ROM.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>Recompile</span><p>Emit native code — no interpreter in the loop.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>Execute</span><p>Run under the typed runtime; unknowns trap loudly.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>Present</span><p>Draw through the render seam to reference or RT64.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>Discover</span><p>Recover function and section boundaries from a local ROM.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>Recompile</span><p>Turn MIPS functions into native code — no interpreter in the loop.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>Execute</span><p>Run under the typed runtime; unknowns trap instead of guessing.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>Present</span><p>Draw through the render seam to the reference backend or RT64.</p></div>
         <div class="stage"><span class="marker"><span class="sq"></span>Prove</span><p>Grade the result against named evidence gates.</p></div>
       </div>
     </div>
@@ -310,7 +311,7 @@
       <div class="section-hd">
         <span class="eyebrow">04 · Discovery</span>
         <h2>Graded, not blind.</h2>
-        <p><code style="font-family:'IBM Plex Mono',monospace">fn64-discover</code> reads a local ROM and recovers function and section metadata — no finished decomp needed. Recall on six titles, measured:</p>
+        <p><code>fn64-discover</code> reads a local ROM and recovers function and section metadata — no finished decompilation required. Here is the recall on six titles, graded against public answer keys:</p>
       </div>
 
       <div class="readout">
@@ -327,7 +328,7 @@
           </thead>
           <tbody>
             <tr>
-              <td class="c-status"><span class="sled green" title="Boots in a window"></span></td>
+              <td class="c-status"><span class="sled green" title="Boots in a window"></span><span class="sr-only">Boots in a window</span></td>
               <th scope="row" class="c-title">Ocarina of Time</th>
               <td class="c-bar"><span class="track"><span class="fill" style="--w:86.9%"></span></span></td>
               <td class="c-val">86.9%</td>
@@ -335,7 +336,7 @@
               <td class="c-wrong"><span class="zero">0</span></td>
             </tr>
             <tr>
-              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span></td>
+              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span><span class="sr-only">Recompile and discovery coverage</span></td>
               <th scope="row" class="c-title">Super Mario 64</th>
               <td class="c-bar"><span class="track"><span class="fill" style="--w:92.9%"></span></span></td>
               <td class="c-val">92.9%</td>
@@ -343,7 +344,7 @@
               <td class="c-wrong"><span class="zero">0</span></td>
             </tr>
             <tr>
-              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span></td>
+              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span><span class="sr-only">Recompile and discovery coverage</span></td>
               <th scope="row" class="c-title">No Mercy</th>
               <td class="c-bar"><span class="track"><span class="fill" style="--w:84.8%"></span></span></td>
               <td class="c-val">84.8%</td>
@@ -351,7 +352,7 @@
               <td class="c-wrong"><span class="zero">0</span></td>
             </tr>
             <tr>
-              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span></td>
+              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span><span class="sr-only">Recompile and discovery coverage</span></td>
               <th scope="row" class="c-title">Majora's Mask</th>
               <td class="c-bar"><span class="track"><span class="fill" style="--w:82.7%"></span></span></td>
               <td class="c-val">82.7%</td>
@@ -359,7 +360,7 @@
               <td class="c-wrong"><span class="zero">0</span></td>
             </tr>
             <tr>
-              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span></td>
+              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span><span class="sr-only">Recompile and discovery coverage</span></td>
               <th scope="row" class="c-title">WM2000</th>
               <td class="c-bar"><span class="track"><span class="fill" style="--w:82.4%"></span></span></td>
               <td class="c-val">82.4%</td>
@@ -367,7 +368,7 @@
               <td class="c-wrong"><span class="zero">0</span></td>
             </tr>
             <tr>
-              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span></td>
+              <td class="c-status"><span class="sled amber" title="Recompile & discovery coverage"></span><span class="sr-only">Recompile and discovery coverage</span></td>
               <th scope="row" class="c-title">Kirby 64</th>
               <td class="c-bar"><span class="track"><span class="fill" style="--w:75.7%"></span></span></td>
               <td class="c-val">75.7%</td>
@@ -383,7 +384,7 @@
           <span class="ok-key"><span class="zero">0</span>Wrong on every title</span>
         </div>
         <div class="note">
-          <p style="margin:0"><b>Wrong is zero on every title.</b> Missing a function costs you work. Claiming a boundary that is not there costs you a debugging session — so that column is held at <span class="wrong0"><span class="zero">0</span></span> and graded, not blind.</p>
+          <p><b>Wrong is zero on every title.</b> A missing function costs you some work. A boundary claimed where none exists costs you a debugging session chasing a ghost — so discovery only claims what it can prove, and the wrong column stays at <span class="wrong0"><span class="zero">0</span></span>.</p>
         </div>
       </div>
     </div>
@@ -462,9 +463,9 @@
     <div class="wrap">
       <div class="ai-shell">
         <span class="eyebrow">06 · Method</span>
-        <h2 style="font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);letter-spacing:-.015em;margin:14px 0 0;color:var(--ink)">Built with AI, held to proof.</h2>
-        <p style="color:var(--ink-2);font-size:15.5px;max-width:64ch;margin:12px 0 0">
-          Most of this code is written by AI agents in orchestrated waves. A software engineer with <b style="color:var(--ink)">30 years of experience</b> directs the work and reviews and merges <b style="color:var(--ink)">every</b> change. AI contributions are welcome — humans and agents follow the same contract (<a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">AGENTS.md</a>), written from first-hand debugging, public docs and MIT source, <b style="color:var(--ink)">never GPL code</b>.
+        <h2 class="ai-h2">Built with AI, held to proof.</h2>
+        <p class="ai-lede">
+          AI-written code is only as trustworthy as the checks around it — so fn64 leads with the checks. Most of this code is written by AI agents in orchestrated waves. A software engineer with <b>30 years of experience</b> directs the work and reviews and merges <b>every</b> change. Contributions from agents are welcome; humans and agents follow the same contract (<a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">AGENTS.md</a>), written from first-hand debugging, public docs and MIT source — <b>never GPL code</b>.
         </p>
 
         <div class="ai-grid">
@@ -511,7 +512,7 @@
       <div class="section-hd">
         <span class="eyebrow">07 · Crates</span>
         <h2>One workspace, fifteen crates, one runtime underneath.</h2>
-        <p>Each crate is publishable on its own. The graph below is the real Cargo dependency shape — your ROM enters at the bottom and leaves as a native app across platforms.</p>
+        <p>Take only what you need — every crate publishes on its own, and if you want the ABI surface you take <code>fn64-abi</code> and nothing else. The diagram below is the real Cargo graph, not a sketch: your ROM enters at the bottom and leaves as a native app across platforms.</p>
       </div>
       <figure class="diagram crates-diagram" role="group" aria-label="fn64 crate dependency and data-flow diagram">
         <div class="scroll">
@@ -828,8 +829,8 @@
         <span class="mono">discover</span>ed into typed Rust runners, which the runtime core runs, the render seam draws, the
         gates certify, and the <span class="mono">fn64-shell</span> host brings on screen. The native app forks by render backend —
         <span class="mono">reference</span> (software, portable) or <span class="mono">rt64</span> (GPU fast path: Metal / D3D12) — into
-        platform targets: macOS and Linux <span style="color:var(--ok)">supported</span>, Windows
-        <span style="color:var(--warn)">uncertified but targeted soon</span>, and Web / WASM still <b>on the horizon</b>
+        platform targets: macOS and Linux <span class="ok-text">supported</span>, Windows
+        <span class="warn-text">uncertified but targeted soon</span>, and Web / WASM still <b>on the horizon</b>
         (wgpu ready, the coroutine runtime is the blocker). Faint lines are the many dependencies converging on the
         <span class="mono">fn64-runtime</span> hub; <span class="mono">fn64-diff</span> is standalone.
       </figcaption>
@@ -873,7 +874,7 @@
 
 <footer>
   <div class="wrap foot-grid">
-    <div style="display:flex;align-items:center;gap:12px">
+    <div class="foot-brand">
       <svg class="mark" width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
         <path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z M8.878 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M19.78 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M30.682 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0"/>
       </svg>
@@ -901,15 +902,20 @@
     if (t === 'dark' || t === 'light') return t;
     return systemDark() ? 'dark' : 'light';
   }
-  function apply(t) {
-    root.setAttribute('data-theme', t);
+  function label(t) {
     if (btn) btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
   }
-  apply(current());
+  function choose(t) {
+    // explicit user choice: set, persist, and re-label
+    root.setAttribute('data-theme', t);
+    try { localStorage.setItem('fn64-theme', t); } catch (e) {}
+    label(t);
+  }
+  label(current());
 
   if (btn) {
     btn.addEventListener('click', function () {
-      apply(current() === 'dark' ? 'light' : 'dark');
+      choose(current() === 'dark' ? 'light' : 'dark');
     });
   }
 
@@ -926,6 +932,13 @@
         nav.classList.remove('open');
         menuBtn.setAttribute('aria-expanded', 'false');
       });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.focus();
+      }
     });
   }
 
@@ -958,4 +971,5 @@
 
 })();
 </script>
+</body>
 </html>
