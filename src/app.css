@@ -38,6 +38,8 @@
 
   /* The port logomark as a mask, so any element can wear it in the current color. */
   --port-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill-rule='evenodd' d='M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z M8.878 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M19.78 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M30.682 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0'/%3E%3C/svg%3E");
+  /* N64 controller wireframe as a mask, for faint diagram watermarks. */
+  --n64-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20320%20220%22%20fill%3D%22none%22%20stroke%3D%22%235b6774%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22%20M%2096%2060%20Q%20150%2044%20170%2044%20Q%20190%2044%20224%2060%20L%20268%2056%20Q%20292%2056%20296%2080%20L%20300%20120%20Q%20302%20152%20276%20158%20Q%20252%20162%20244%20140%20L%20226%20104%20Q%20220%2096%20212%2098%20Q%20190%20108%20190%20130%20L%20194%20182%20Q%20196%20200%20178%20202%20L%20142%20202%20Q%20124%20200%20126%20182%20L%20130%20130%20Q%20130%20108%20108%2098%20Q%20100%2096%2094%20104%20L%2076%20140%20Q%2068%20162%2044%20158%20Q%2018%20152%2020%20120%20L%2024%2080%20Q%2028%2056%2052%2056%20L%2096%2060%20Z%22%2F%3E%3Cpath%20d%3D%22M%2052%2056%20Q%2040%2060%2036%2076%22%20stroke-width%3D%221.4%22%2F%3E%3Cpath%20d%3D%22M%20268%2056%20Q%20280%2060%20284%2076%22%20stroke-width%3D%221.4%22%2F%3E%3Cg%20stroke-width%3D%221.6%22%3E%3Cpath%20d%3D%22M%2058%2094%20h%2026%20M%2071%2081%20v%2026%22%2F%3E%3Crect%20x%3D%2265%22%20y%3D%2288%22%20width%3D%2212%22%20height%3D%2212%22%20rx%3D%221.5%22%2F%3E%3C%2Fg%3E%3Cg%20stroke-width%3D%221.6%22%3E%3Ccircle%20cx%3D%22160%22%20cy%3D%2292%22%20r%3D%226.5%22%2F%3E%3Ccircle%20cx%3D%22160%22%20cy%3D%22140%22%20r%3D%2218%22%2F%3E%3Ccircle%20cx%3D%22160%22%20cy%3D%22140%22%20r%3D%227.5%22%2F%3E%3C%2Fg%3E%3Cg%20stroke-width%3D%221.6%22%3E%3Ccircle%20cx%3D%22254%22%20cy%3D%2280%22%20r%3D%224.5%22%2F%3E%3Ccircle%20cx%3D%22240%22%20cy%3D%2294%22%20r%3D%224.5%22%2F%3E%3Ccircle%20cx%3D%22268%22%20cy%3D%2294%22%20r%3D%224.5%22%2F%3E%3Ccircle%20cx%3D%22254%22%20cy%3D%22108%22%20r%3D%224.5%22%2F%3E%3Ccircle%20cx%3D%22230%22%20cy%3D%22124%22%20r%3D%228%22%2F%3E%3Ccircle%20cx%3D%22212%22%20cy%3D%22110%22%20r%3D%225.5%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
 
   /* Five pipeline stage hues — the color-system backbone.
      cyan -> teal -> green -> amber -> violet (calibrated) */
@@ -1110,6 +1112,23 @@ footer {
 /* ---------- crates dependency data-flow diagram (Crates section) ---------- */
 /* Reuses the .diagram / .diagram .scroll shell. These style the inline SVG and
    the HTML legend below it. Tokens already defined above; theme-aware. */
+/* Faint N64 controller wireframe behind the crate data-flow diagram. Masked so
+   it wears the --hair token and adapts to theme; sits under the SVG content. */
+.crates-diagram { position: relative; }
+.crates-diagram::before {
+  content: "";
+  position: absolute;
+  right: 3%; top: 50%;
+  width: 340px; height: 234px;
+  transform: translateY(-50%);
+  background: var(--hair-2);
+  -webkit-mask: var(--n64-mask) center / contain no-repeat;
+  mask: var(--n64-mask) center / contain no-repeat;
+  opacity: .5;
+  pointer-events: none;
+  z-index: 0;
+}
+.crates-diagram .scroll { position: relative; z-index: 1; }
 .crates-diagram svg { min-width: 760px; }
 .crates-diagram text { font-family: "IBM Plex Mono", ui-monospace, monospace; }
 .crates-diagram .band-label { font-weight: 600; letter-spacing: .06em; }
