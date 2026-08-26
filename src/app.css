@@ -466,45 +466,46 @@ h1 .grad {
   gap: 12px; flex-wrap: wrap;
 }
 .booting-title {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 10px; letter-spacing: .13em; text-transform: uppercase;
-  color: var(--ink-2); font-weight: 600;
+  display: inline-flex; align-items: center; gap: 9px; margin: 0;
+  font-size: 15px; letter-spacing: .01em; color: var(--ink); font-weight: 600;
 }
 .booting-title .pulse {
-  width: 8px; height: 8px; border-radius: 50%;
+  width: 9px; height: 9px; border-radius: 50%;
   background: var(--s-execute);
   box-shadow: 0 0 0 0 var(--s-execute);
   animation: booting-pulse 2s ease-out infinite;
 }
 @keyframes booting-pulse {
   0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--s-execute) 60%, transparent); }
-  70%  { box-shadow: 0 0 0 7px color-mix(in oklab, var(--s-execute) 0%, transparent); }
+  70%  { box-shadow: 0 0 0 8px color-mix(in oklab, var(--s-execute) 0%, transparent); }
   100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--s-execute) 0%, transparent); }
 }
-.booting-target { font-size: 11px; color: var(--ink-3); }
-.booting-game {
-  margin: 9px 0 12px; font-size: 16px; color: var(--ink); font-weight: 500;
-  display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+.booting-target {
+  font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3);
 }
-.tag-ok {
-  font-size: 9.5px; letter-spacing: .09em; text-transform: uppercase;
-  color: var(--ok); border: 1px solid color-mix(in oklab, var(--ok) 45%, transparent);
-  border-radius: 4px; padding: 2px 6px; font-weight: 600;
+/* One row per booting title: LED · name · tag · tight status line. */
+.booting-games { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 11px; }
+.bgame {
+  display: grid; grid-template-columns: auto auto 1fr; align-items: baseline;
+  gap: 6px 9px;
 }
-.booting-signals { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
-.sig {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 9px;
-  font-size: 12.5px; color: var(--ink-2);
+.bgame-led {
+  width: 8px; height: 8px; border-radius: 50%; align-self: center;
 }
-.sig-led { width: 7px; height: 7px; border-radius: 50%; }
-.sig.ok   .sig-led { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
-.sig.warn .sig-led { background: var(--warn); }
-.sig.down .sig-led { background: var(--danger); box-shadow: 0 0 6px color-mix(in oklab, var(--danger) 55%, transparent); }
-.sig-name { color: var(--ink); }
-.sig.ok   .sig-state { color: var(--ok); }
-.sig.warn .sig-state { color: var(--warn); }
-.sig.down .sig-state { color: var(--danger); }
-.sig-state { font-size: 11px; letter-spacing: .02em; }
+.bgame.ok   .bgame-led { background: var(--ok);     box-shadow: 0 0 7px var(--ok); }
+.bgame.warn .bgame-led { background: var(--warn); }
+.bgame.down .bgame-led { background: var(--danger); box-shadow: 0 0 6px color-mix(in oklab, var(--danger) 55%, transparent); }
+.bgame-name { font-size: 15px; color: var(--ink); font-weight: 500; }
+.bgame-tag {
+  font-size: 9px; letter-spacing: .09em; text-transform: uppercase;
+  border-radius: 4px; padding: 2px 6px; font-weight: 600; align-self: center;
+}
+.bgame-tag.ok   { color: var(--ok);     border: 1px solid color-mix(in oklab, var(--ok) 45%, transparent); }
+.bgame-tag.warn { color: var(--warn);   border: 1px solid color-mix(in oklab, var(--warn) 45%, transparent); }
+.bgame-detail {
+  grid-column: 2 / -1; font-size: 11.5px; color: var(--ink-2); line-height: 1.45;
+}
+.bgame-detail .ref { color: var(--ink-3); font-size: 10.5px; }
 .booting-link {
   display: inline-block; margin-top: 13px;
   font-size: 11.5px; color: var(--ink-2);
@@ -988,6 +989,11 @@ footer {
 .foot-links { display: flex; flex-wrap: wrap; gap: 18px; }
 .foot-links a { color: var(--ink-2); font-size: 13.5px; font-family:"IBM Plex Mono",monospace; }
 .foot-links a:hover { color: var(--ink); }
+.foot-legal {
+  margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hair);
+  display: grid; gap: 5px;
+  font-size: 11.5px; line-height: 1.5; color: var(--ink-3); max-width: 62ch;
+}
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
@@ -1124,7 +1130,7 @@ footer {
   background: var(--hair-2);
   -webkit-mask: var(--n64-mask) center / contain no-repeat;
   mask: var(--n64-mask) center / contain no-repeat;
-  opacity: .5;
+  opacity: .72;
   pointer-events: none;
   z-index: 0;
 }

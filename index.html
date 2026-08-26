@@ -126,15 +126,22 @@
       <!-- NOW BOOTING (live status aside) -->
       <aside class="booting" aria-labelledby="booting-h">
         <div class="booting-head">
-          <span class="booting-title"><span class="pulse" aria-hidden="true"></span><span id="booting-h">Now booting</span></span>
-          <span class="booting-target mono">oot-ntsc-1.0.z64</span>
+          <h2 class="booting-title" id="booting-h"><span class="pulse" aria-hidden="true"></span>Now booting</h2>
+          <span class="booting-target mono">on this machine, today</span>
         </div>
-        <div class="booting-game mono">Ocarina of Time <span class="tag-ok">windowed</span></div>
-        <ul class="booting-signals mono">
-          <li class="sig ok"><span class="sig-led" aria-hidden="true"></span><span class="sig-name">RT64 render</span><span class="sig-state">up</span></li>
-          <li class="sig ok"><span class="sig-led" aria-hidden="true"></span><span class="sig-name">Controller input</span><span class="sig-state">up</span></li>
-          <li class="sig down"><span class="sig-led" aria-hidden="true"></span><span class="sig-name">Audio</span><span class="sig-state">down · R5</span></li>
-          <li class="sig warn"><span class="sig-led" aria-hidden="true"></span><span class="sig-name">Outdoor eye-gate</span><span class="sig-state">unmet · R3b</span></li>
+        <ul class="booting-games mono">
+          <li class="bgame ok">
+            <span class="bgame-led" aria-hidden="true"></span>
+            <span class="bgame-name">Ocarina of Time</span>
+            <span class="bgame-tag ok">windowed</span>
+            <span class="bgame-detail">RT64&nbsp;+&nbsp;input up · audio and eye-gate open <span class="ref">R5 · R3b</span></span>
+          </li>
+          <li class="bgame ok">
+            <span class="bgame-led" aria-hidden="true"></span>
+            <span class="bgame-name">WM2000</span>
+            <span class="bgame-tag ok">playable</span>
+            <span class="bgame-detail">audio up · closing on full speed</span>
+          </li>
         </ul>
         <a class="booting-link mono" href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">open items in the roadmap →</a>
       </aside>
@@ -886,6 +893,10 @@
       <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">Docs</a>
       <a href="https://github.com/fn64/fn64/blob/main/LICENSE">Licence</a>
     </nav>
+  </div>
+  <div class="wrap foot-legal">
+    <span>© 2026 the fn64 authors · code under MIT OR Apache-2.0.</span>
+    <span>Not affiliated with or endorsed by Nintendo. “Nintendo 64” and game titles are trademarks of their owners; used here only to name what the software runs.</span>
   </div>
 </footer>
 
