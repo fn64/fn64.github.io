@@ -153,14 +153,7 @@
   <section class="promises" aria-label="What fn64 stands for: Future, Faithful, Friendly, Fast">
     <div class="wrap promises-row">
       <span class="promises-lead mono">fn64 is</span>
-      <span class="word-cycle" id="fwords" aria-hidden="true" translate="no">
-        <span class="wc-f">f</span><span class="wc-stack">
-          <span class="wc-insert" style="--delay:0s">uture</span>
-          <span class="wc-insert" style="--delay:4s">aithful</span>
-          <span class="wc-insert" style="--delay:8s">riendly</span>
-          <span class="wc-insert" style="--delay:12s">ast</span>
-        </span><span class="wc-tail">n64</span>
-      </span>
+      <span class="word-cycle" id="fwords" aria-hidden="true" translate="no"><span class="wc-f">f</span><span class="wc-word" id="fword">uture</span><span class="wc-tail">n64</span></span>
       <span class="sr-only">fn64 is Future, Faithful, Friendly, and Fast.</span>
       <span class="promises-gloss" id="fgloss" aria-hidden="true">a game-agnostic Rust foundation, built to evolve</span>
     </div>
@@ -673,11 +666,14 @@
     });
   }
 
-  // Sync the promise gloss to the CSS word-cycle (16s loop, 4s per promise).
-  // The CSS animation owns the wordmark morph; JS only swaps the caption text.
+  // One interval drives both the f-word and its gloss, so they can never drift.
+  // The word (uture/aithful/riendly/ast) follows the f; n64 flows after it in
+  // normal inline flow, so it can't collide. Reduced motion shows the first pair.
   var reduceFw = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fword = document.getElementById('fword');
   var fgloss = document.getElementById('fgloss');
-  if (fgloss) {
+  if (fword && fgloss) {
+    var words = ['uture', 'aithful', 'riendly', 'ast'];
     var glosses = [
       'a game-agnostic Rust foundation, built to evolve',
       'unknown behavior traps loudly — graded by evidence, not vibes',
@@ -685,18 +681,18 @@
       'static recompilation emits native code — no interpreter in the loop'
     ];
     if (!reduceFw) {
-      var gi = 0;
-      // each insert expands ~1s into its 4s slot; nudge the caption to match
-      setTimeout(function () {
-        setInterval(function () {
-          gi = (gi + 1) % glosses.length;
-          fgloss.style.opacity = '0';
-          setTimeout(function () {
-            fgloss.textContent = glosses[gi];
-            fgloss.style.opacity = '1';
-          }, 260);
-        }, 4000);
-      }, 1000);
+      var fi = 0;
+      setInterval(function () {
+        fi = (fi + 1) % words.length;
+        fword.style.opacity = '0';
+        fgloss.style.opacity = '0';
+        setTimeout(function () {
+          fword.textContent = words[fi];
+          fgloss.textContent = glosses[fi];
+          fword.style.opacity = '1';
+          fgloss.style.opacity = '1';
+        }, 260);
+      }, 3200);
     }
   }
 

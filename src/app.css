@@ -537,11 +537,11 @@ h1 .grad {
 }
 /* word-cycle: shared 'f', an expanding tail (uture/aithful/...), 'n64' slides.
    Same brand treatment as the wordmark — the word fn64 becomes each promise. */
+/* f + the cycling word + n64, all in normal inline flow so nothing overlaps.
+   Only the middle word fades; JS swaps its text. n64 always follows it. */
 .word-cycle {
   grid-row: 1; grid-column: 2;
-  position: relative;
-  display: block;
-  height: 1.05em;
+  display: inline-flex; align-items: baseline; width: max-content;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-weight: 600;
   font-size: clamp(1.6rem, 3.6vw, 2.3rem);
@@ -549,37 +549,12 @@ h1 .grad {
   line-height: 1;
   white-space: nowrap;
 }
-.wc-f { position: relative; z-index: 1; display: inline-block; color: var(--accent); }
-.wc-stack { position: absolute; top: 0; left: 0.62ch; }
-.wc-insert {
-  position: absolute; top: 0; left: 0;
+.wc-f   { color: var(--accent); }
+.wc-word {
   color: var(--ink);
-  opacity: 0;
-  transform: scaleX(.02);
-  transform-origin: left center;
-  animation: expand-insert 16s var(--delay, 0s) ease-in-out infinite;
+  transition: opacity .26s ease;
 }
-.wc-tail {
-  position: relative; z-index: 1; display: inline-block;
-  color: var(--ink);
-  animation: slide-tail 16s ease-in-out infinite;
-}
-@keyframes expand-insert {
-  0%, 3%   { opacity: 0; transform: scaleX(.02); }
-  6%, 15%  { opacity: 1; transform: scaleX(1); }
-  18%,100% { opacity: 0; transform: scaleX(.02); }
-}
-@keyframes slide-tail {
-  0%, 3%   { transform: translateX(0); }
-  6%, 15%  { transform: translateX(5ch); }
-  18%,28%  { transform: translateX(0); }
-  31%,40%  { transform: translateX(7ch); }
-  43%,53%  { transform: translateX(0); }
-  56%,65%  { transform: translateX(7ch); }
-  68%,78%  { transform: translateX(0); }
-  81%,90%  { transform: translateX(3ch); }
-  93%,100% { transform: translateX(0); }
-}
+.wc-tail { color: var(--ink); }
 .promises-gloss {
   grid-row: 2; grid-column: 2;
   color: var(--ink-2); font-size: 14px; line-height: 1.4;
@@ -592,10 +567,8 @@ h1 .grad {
   .promises-gloss { grid-row: 3; grid-column: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  /* Freeze on the first promise: show 'future', keep n64 shifted, no motion. */
-  .wc-insert { animation: none; }
-  .wc-insert:first-child { opacity: 1; transform: scaleX(1); }
-  .wc-tail { animation: none; transform: translateX(5ch); }
+  /* JS skips the cycle under reduced motion; the word stays on 'future'. */
+  .wc-word { transition: none; }
 }
 
 /* animated trace */
