@@ -991,8 +991,21 @@ footer {
 .foot-links a:hover { color: var(--ink); }
 .foot-legal {
   margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hair);
-  display: grid; gap: 5px;
-  font-size: 11.5px; line-height: 1.5; color: var(--ink-3); max-width: 62ch;
+  display: grid; gap: 8px; max-width: 64ch;
+}
+.foot-copy {
+  margin: 0; font-size: 13px; color: var(--ink-2);
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px;
+}
+.foot-copy .sep { color: var(--hair-2); }
+.foot-license {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11.5px; letter-spacing: .01em; color: var(--ink-3);
+}
+.foot-license a { color: var(--ink-2); border-bottom: 1px solid var(--hair-2); }
+.foot-license a:hover { color: var(--accent); border-color: var(--accent); }
+.foot-tm {
+  margin: 0; font-size: 10.5px; line-height: 1.55; color: var(--ink-3);
 }
 
 @media (prefers-reduced-motion: reduce) {
