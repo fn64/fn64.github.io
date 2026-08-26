@@ -952,27 +952,6 @@ section { padding: 58px 0; position: relative; }
 .gates a:hover { color: var(--ink); border-color: var(--accent); text-decoration: none; }
 .gates a .arw { color: var(--accent); }
 
-/* ---------- status ---------- */
-.status-panel { padding: 24px; }
-.status-panel h3 { margin: 0 0 14px; font-family:"IBM Plex Mono",monospace; font-size: 13px; letter-spacing:.04em; color: var(--ink); }
-.status-list { display: grid; gap: 10px; }
-.status-list .item {
-  display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center;
-  padding: 12px 14px; border: 1px solid var(--hair); border-radius: 8px; background: var(--panel-2);
-}
-.status-list .led { width: 9px; height: 9px; border-radius: 50%; }
-.status-list .item.ok .led { background: var(--ok); box-shadow: 0 0 7px var(--ok); }
-.status-list .item.warn .led { background: var(--warn); box-shadow: 0 0 7px var(--warn); }
-.status-list .item .lbl { font-size: 14px; color: var(--ink); }
-.status-list .item .lbl small { color: var(--ink-3); }
-.status-list .item .tag {
-  font-family:"IBM Plex Mono",monospace; font-size: 11px; letter-spacing:.06em;
-  padding: 3px 8px; border-radius: 5px;
-}
-.status-list .item.ok .tag { color: var(--ok); background: var(--ok-bg); }
-.status-list .item.warn .tag { color: var(--warn); background: var(--warn-bg); }
-.status-panel .foot { margin-top: 14px; font-size: 13.5px; color: var(--ink-2); }
-
 /* ---------- footer ---------- */
 footer {
   border-top: 1px solid var(--hair);
