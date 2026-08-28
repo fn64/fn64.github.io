@@ -16,6 +16,13 @@
     >
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fn64.github.io/how-it-works.html">
+    <meta property="og:image" content="https://fn64.github.io/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How fn64 works — two ways in">
+    <meta name="twitter:description" content="What each stage of fn64 produces and what you can check.">
+    <meta name="twitter:image" content="https://fn64.github.io/og-card.png">
     <title>How fn64 works — two ways in</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,7 +69,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">How it works · two ways in</span>
+      <span class="eyebrow">How it works — two ways in</span>
       <h1>Two ways <span class="grad">in.</span></h1>
       <p class="lede">A native port needs two things your game does not ship with: native code for its functions, and a runtime for everything those functions call into. fn64 supplies both. Which route you take in depends on what you already have in hand.</p>
       <div class="cta">
@@ -78,7 +85,7 @@
   <section id="routes">
     <div class="wrap">
       <div class="section-hd">
-        <span class="eyebrow">01 · Routes</span>
+        <span class="eyebrow">Routes</span>
         <h2>Pick a route</h2>
         <p>Both routes read your locally supplied ROM and converge on the same Rust runtime underneath. The difference is where the game’s functions come from.</p>
       </div>
@@ -87,7 +94,7 @@
         <article class="route-card ra">
           <div class="route-hd">
             <span class="route-tag">Route A</span>
-            <span class="route-lane mono">C lane · N64Recomp</span>
+            <span class="route-lane mono">C lane — N64Recomp</span>
           </div>
           <h3>You already use N64Recomp</h3>
           <p>Keep its generated <code>RecompiledFuncs/*.c</code>. fn64’s build harness prepares and compiles those functions, registers their sections, and links their <code>_recomp</code> calls to the Rust ABI implementation.</p>
@@ -104,7 +111,7 @@
         <article class="route-card rb">
           <div class="route-hd">
             <span class="route-tag">Route B</span>
-            <span class="route-lane mono">Rust lane · fn64-discover</span>
+            <span class="route-lane mono">Rust lane — fn64-discover</span>
           </div>
           <h3>You do not have a finished decomp</h3>
           <p>fn64’s Rust lane recompiles the locally supplied ROM into typed runners. <code>fn64-discover</code> recovers supporting function and section metadata without treating incomplete evidence as certainty.</p>
@@ -127,7 +134,7 @@
   <section id="stages">
     <div class="wrap">
       <div class="section-hd">
-        <span class="eyebrow">02 · Stages</span>
+        <span class="eyebrow">Stages</span>
         <h2>What each stage produces</h2>
         <p>Five stages, separate crates. Each writes something you can look at, so you can swap or re-run any one without rebuilding the others. Hue encodes stage — the same color follows each stage everywhere on this page and the home page.</p>
       </div>
@@ -212,7 +219,7 @@
   <section id="check">
     <div class="wrap">
       <div class="section-hd">
-        <span class="eyebrow">03 · Checks</span>
+        <span class="eyebrow">Checks</span>
         <h2>What you can check yourself</h2>
         <p>Five things in the repo you can run or read if you want to disagree with us. A deterministic fix needs 10 consecutive clean runs before it counts; a concurrency fix needs 20 or more. One green run proves nothing.</p>
       </div>
@@ -238,7 +245,7 @@
   <section id="rendering">
     <div class="wrap">
       <div class="section-hd">
-        <span class="eyebrow">04 · Rendering</span>
+        <span class="eyebrow">Rendering</span>
         <h2>Present is a swappable seam</h2>
         <p>Graphics go through a backend-neutral seam, so the thing that draws is swappable and the thing that decides what to draw is not.</p>
       </div>
@@ -264,7 +271,7 @@
   <section id="content">
     <div class="wrap">
       <div class="section-hd">
-        <span class="eyebrow">05 · Your content</span>
+        <span class="eyebrow">Your content</span>
         <h2>Your content stays local</h2>
       </div>
       <div class="note-panel">
@@ -280,7 +287,7 @@
   <section id="licence">
     <div class="wrap">
       <div class="section-hd">
-        <span class="eyebrow">06 · Licence</span>
+        <span class="eyebrow">Licence</span>
         <h2>Permissive, and enforced by the build</h2>
         <p>fn64’s own code is MIT OR Apache-2.0. Ship it, fork it, embed it in a commercial product, relicense your own work on top of it.</p>
       </div>
