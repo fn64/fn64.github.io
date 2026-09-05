@@ -139,7 +139,7 @@
         <p>Five stages, separate crates. Each writes something you can look at, so you can swap or re-run any one without rebuilding the others. Hue encodes stage — the same color follows each stage everywhere on this page and the home page.</p>
       </div>
 
-      <figure class="diagram" role="img" aria-label="Five-stage pipeline: Discover retains proven facts, Recompile emits typed Rust runners, Execute links to the clean-room runtime, Present draws through backend seams, Prove grades with executable checks. Each stage writes an artifact.">
+      <figure class="diagram" role="img" aria-label="Five-stage pipeline: Discover retains proven facts, Recompile emits typed Rust runners, Execute links to the platform runtime, Present draws through backend seams, Prove grades with executable checks. Each stage writes an artifact.">
         <div class="scroll">
           <svg viewBox="0 0 960 200">
             <defs>
@@ -206,7 +206,7 @@
       <div class="stages">
         <div class="stage"><span class="marker"><span class="sq"></span>01 Discover</span><p>Analyze a local ROM, retain proven facts, name unresolved ownership. <b>Out:</b> content-free metadata.</p></div>
         <div class="stage"><span class="marker"><span class="sq"></span>02 Recompile</span><p>Turn MIPS functions into typed Rust runners, one per MIPS function. <b>Out:</b> native code.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>03 Execute</span><p>Link recompiled code to a clean-room Rust implementation of the runtime surface it expects. <b>Out:</b> a frame and audio census.</p></div>
+        <div class="stage"><span class="marker"><span class="sq"></span>03 Execute</span><p>Link recompiled code to fn64’s Rust implementation of the N64 platform runtime it expects. <b>Out:</b> a frame and audio census.</p></div>
         <div class="stage"><span class="marker"><span class="sq"></span>04 Present</span><p>Draw graphics and mix audio through explicit, swappable backend seams. <b>Out:</b> a rendered frame.</p></div>
         <div class="stage"><span class="marker"><span class="sq"></span>05 Prove</span><p>Grade ABI shape, code generation and deterministic behaviour against executable checks. <b>Out:</b> graded evidence.</p></div>
       </div>
@@ -293,7 +293,7 @@
       </div>
       <div class="note-panel">
         <p>The dependency tree is permissive throughout, with no copyleft, but it is not MIT-only: <code>winit</code> and <code>cpal</code> are Apache-2.0, so a build that wants a window and audio takes Apache terms. The debug overlay also embeds egui’s default fonts, which carry OFL-1.1 and the Ubuntu Font Licence. Neither is onerous, and both want attribution in anything you distribute.</p>
-        <p>The runtime is written clean-room: from our own debugging notes, public documentation and MIT source. GPL implementation code is not read, not referenced, not laundered.</p>
+        <p>The runtime is written clean-room — meaning from our own debugging notes, public documentation and MIT source only. GPL implementation code is not read, not referenced, not laundered.</p>
         <p>That is enforced by the build rather than promised. N64Recomp’s generated C emits <code>#include "librecomp/sections.h"</code> unconditionally, because it was written for a GPL-3.0 runtime. fn64 ships its own header at that path and puts its include directory first, so the compiler resolves to the clean-room version even if the original is installed. Your generated code links against the Rust runtime unchanged, and the GPL implementation is never compiled in.</p>
         <p>RT64 is MIT and stays behind an FFI boundary in its own crate, so a port that does not want the C++ dependency can take the reference backend and never link it.</p>
       </div>
@@ -308,7 +308,7 @@
       <svg class="mark" width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
         <path fill-rule="evenodd" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z M8.878 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M19.78 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M30.682 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0"/>
       </svg>
-      <span class="foot-tag">Clean-room N64 static recompilation in Rust.</span>
+      <span class="foot-tag">The N64 platform runtime, in Rust.</span>
     </div>
     <nav class="foot-links" aria-label="Footer">
       <a href="index.html">Home</a>
