@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fn64 Crates — Full Dependency Graph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{ --bg:#eef1f4;--panel:#f8fafb;--panel-2:#fff;--ink:#10151b;--ink-2:#3a444f;--ink-3:#6a7683;--hair:#d3dae1;--accent:#0b6b8c;--ok:#147a3f;--warn:#9a5b00;
+  --s-discover:#0a95c4;--s-recompile:#17a8a0;--s-execute:#2ba24a;--s-present:#c98a10;--s-prove:#7d5cd6; }
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){ --bg:#070a0f;--panel:#0c1119;--panel-2:#0f1620;--ink:#e6edf3;--ink-2:#aeb9c6;--ink-3:#6d7a89;--hair:#1b2531;--accent:#37d0f2;--ok:#3ddc84;--warn:#f0b23a;
+  --s-discover:#37d0f2;--s-recompile:#2ad6c4;--s-execute:#46e07a;--s-present:#f0b23a;--s-prove:#a98bff; }}
+:root[data-theme=dark]{ --bg:#070a0f;--panel:#0c1119;--panel-2:#0f1620;--ink:#e6edf3;--ink-2:#aeb9c6;--ink-3:#6d7a89;--hair:#1b2531;--accent:#37d0f2;--ok:#3ddc84;--warn:#f0b23a;
+  --s-discover:#37d0f2;--s-recompile:#2ad6c4;--s-execute:#46e07a;--s-present:#f0b23a;--s-prove:#a98bff; }
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 40px}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{font-size:17px;font-weight:600;letter-spacing:.01em;margin:0 0 4px}
+.sub{font-size:12.5px;color:var(--ink-2);margin:0;max-width:62ch}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+.tog{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);background:var(--panel-2);border:1px solid var(--hair);border-radius:5px;padding:6px 11px;cursor:pointer;line-height:1;white-space:nowrap}
+.tog:hover{border-color:var(--accent);color:var(--ink)}
+.panel{margin-top:18px;background:var(--panel);border:1px solid var(--hair);border-radius:8px;padding:6px}
+.scroll{overflow-x:auto;overflow-y:hidden;border-radius:5px}
+svg.diagram{display:block;min-width:940px;width:100%;height:auto}
+.node-box{fill:var(--panel-2);stroke:var(--hair);stroke-width:1}
+.node-tab{stroke:none}
+.node-name{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;fill:var(--ink)}
+.node-role{font-family:"IBM Plex Sans",sans-serif;font-size:9.5px;fill:var(--ink-3)}
+.rank-lbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.1em;fill:var(--ink-3);text-transform:uppercase}
+.rank-sep{stroke:var(--hair);stroke-width:1;stroke-dasharray:1 5;opacity:.7}
+.io-box{fill:var(--panel);stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:4 3}
+.io-name{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;fill:var(--ink)}
+.io-sub{font-family:"IBM Plex Sans",sans-serif;font-size:9.5px;fill:var(--ink-3)}
+.io-lbl{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.12em;fill:var(--ink-3);text-transform:uppercase}
+.plat-box{fill:var(--panel-2);stroke:var(--hair);stroke-width:1}
+.plat-name{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;fill:var(--ink)}
+.plat-sub{font-family:"IBM Plex Sans",sans-serif;font-size:9px;fill:var(--ink-3)}
+.plat-ok{stroke:var(--ok)}
+.plat-warn{stroke:var(--warn)}
+.plat-web{stroke:var(--ink-3);stroke-dasharray:4 3;opacity:.75}
+.plat-dot{stroke:none}
+.io-edge{fill:none;stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:4 3;opacity:.7}
+.back-edge{fill:none;stroke:var(--ink-3);stroke-width:.8;opacity:.28;stroke-dasharray:2 4}
+.edge{fill:none;stroke:var(--ink-3);stroke-width:1.2;opacity:.55}
+.edge.hub{stroke-width:.8;opacity:.2}
+.edge.bidir{stroke:var(--s-discover);stroke-width:1.4;opacity:.85}
+.node-g{cursor:default}
+.node-g:hover .node-box{stroke:var(--accent);stroke-width:1.5}
+.node-g:hover .node-name{fill:var(--accent)}
+.node-g:hover .role-pop{opacity:1}
+.role-pop{opacity:0;transition:opacity .12s}
+.role-pop rect{fill:var(--ink);stroke:none}
+.role-pop text{font-family:"IBM Plex Sans",sans-serif;font-size:10px;fill:var(--bg)}
+.caption{margin:14px 2px 0;font-size:12.5px;color:var(--ink-2)}
+.caption b{color:var(--ink);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:14px 2px 0;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2)}
+.legend .it{display:flex;align-items:center;gap:7px}
+.legend .sw{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
+.legend .ln{display:inline-block;width:20px;height:0;border-top:1.2px solid var(--ink-3);opacity:.55}
+.legend .ln.hub{border-top-width:.8px;opacity:.35}
+.legend .ln.bd{border-top:1.4px solid var(--s-discover);opacity:.85}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <p class="kicker">fn64 · Crates · Shape 2</p>
+      <h1>Complete dependency graph</h1>
+      <p class="sub">All 15 crates and every real Cargo dependency, laid out as a layered DAG — rank set by dependency depth so arrows flow top→bottom. Colored by pipeline stage.</p>
+    </div>
+    <button class="tog" id="tog" aria-label="Toggle light or dark theme">◐ theme</button>
+  </header>
+
+  <div class="panel">
+    <div class="scroll">
+      <svg class="diagram" viewBox="0 0 980 916" role="img"
+        aria-label="Complete fn64 crate dependency graph as a layered directed acyclic graph, with the ROM data source at the top and the platform targets at the bottom. At the very top, above rank 0 and set apart as a dashed input node, is 'your ROM / cartridge — local, stays on disk'; a dashed arrow flows from it down into fn64-discover, the entry to the recompile chain. Seven crate ranks then flow top to bottom, an arrow from A to B meaning A depends on B. Rank 0 leaves with no fn64 dependencies: fn64-recomp (discover hue), fn64-render-ir (present hue), fn64-diff (prove hue, fully standalone). Rank 1: fn64-recomp-rs and fn64-recomp-rs-codegen joined by one bidirectional edge and both depending on fn64-recomp, plus fn64-runtime the common hub depending on fn64-recomp-rs. Rank 2: fn64-audio and fn64-render, both depending on fn64-runtime. Rank 3: fn64-abi depending on audio, recomp-rs, render, render-reference and runtime; fn64-render-reference depending on render and runtime. Rank 4: fn64-boot-harness depending on abi, audio, recomp-rs, recomp-rs-codegen, render and runtime; fn64-render-rt64 depending on abi, boot-harness, render, render-reference and runtime; fn64-discover depending on boot-harness, recomp-rs, recomp-rs-codegen and runtime. Rank 5: fn64-certification depending on abi, boot-harness, render, render-reference, render-rt64 and runtime. Rank 6: fn64-shell the top host depending on abi, audio, boot-harness, certification, render, render-reference, render-rt64 and runtime. Edges into fn64-runtime are drawn faint and thin because it is the shared hub. Below fn64-shell, an output row: fn64-shell builds a native app, which forks to four platform targets with honest traffic-light status — macOS supported (green), Linux supported (green), Windows uncertified and targeted soon (amber), and Web slash WASM on the horizon (dashed and faint: wgpu ready, coroutine runtime the blocker). Thin dashed hints show the reference backend as the portable software path and RT64 as the GPU fast-path (Metal on macOS, D3D12 on Windows) feeding the native app. No Switch, console, or mobile targets exist.">
+
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/>
+          </marker>
+          <marker id="ah-hub" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)" opacity="0.45"/>
+          </marker>
+          <marker id="ah-bd" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--s-discover)"/>
+          </marker>
+          <marker id="ah-io" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/>
+          </marker>
+          <marker id="ah-back" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)" opacity="0.5"/>
+          </marker>
+        </defs>
+
+        <!-- rank guides + labels -->
+        <g id="ranks"></g>
+
+        <!-- ROM input + platform output edges (under nodes) -->
+        <g id="io-edges"></g>
+
+        <!-- edges under nodes -->
+        <g id="edges"></g>
+
+        <!-- nodes over edges -->
+        <g id="nodes"></g>
+
+        <!-- ROM input + platform output nodes (over edges) -->
+        <g id="io-nodes"></g>
+      </svg>
+    </div>
+
+    <p class="caption"><b>Complete dependency graph, ROM in → platforms out.</b> Every solid arrow is a real Cargo dependency (A → B = A depends on B); ranks assigned by dependency depth. The recomp-rs ↔ codegen mutual dependency is drawn as one bidirectional edge; the many edges into <span style="font-family:'IBM Plex Mono',monospace">fn64-runtime</span> (the common hub) are faint so the rest of the structure stays readable. Dashed arrows are the data flow, not a crate link: your <b>ROM / cartridge</b> (top, local and never shipped) enters at <span style="font-family:'IBM Plex Mono',monospace">fn64-discover</span>, and the <span style="font-family:'IBM Plex Mono',monospace">fn64-shell</span> <b>native app</b> (bottom) forks to platform targets — <b>macOS</b> and <b>Linux</b> supported, <b>Windows</b> uncertified but targeted soon, <b>Web / WASM</b> on the horizon (wgpu ready, the coroutine runtime the blocker). Thin dashed hints show the reference backend as the portable software path and RT64 as the GPU fast-path feeding the app.</p>
+
+    <div class="legend" aria-hidden="true">
+      <span class="it"><span class="sw" style="background:var(--s-discover)"></span>DISCOVER</span>
+      <span class="it"><span class="sw" style="background:var(--s-execute)"></span>EXECUTE</span>
+      <span class="it"><span class="sw" style="background:var(--s-present)"></span>PRESENT</span>
+      <span class="it"><span class="sw" style="background:var(--s-prove)"></span>PROVE</span>
+      <span class="it"><span class="sw" style="background:var(--accent)"></span>HOST</span>
+      <span class="it" style="margin-left:6px"><span class="ln"></span>depends on</span>
+      <span class="it"><span class="ln bd"></span>mutual</span>
+      <span class="it"><span class="ln hub"></span>→ runtime hub</span>
+      <span class="it" style="margin-left:6px"><span class="ln" style="border-top-style:dashed"></span>data flow (ROM in / app out)</span>
+      <span class="it"><span class="sw" style="background:var(--ok)"></span>supported</span>
+      <span class="it"><span class="sw" style="background:var(--warn)"></span>uncertified · targeted</span>
+      <span class="it"><span class="sw" style="background:var(--ink-3);opacity:.6"></span>on the horizon</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- theme toggle ----
+(function(){
+  var b=document.getElementById('tog');
+  b.addEventListener('click',function(){
+    var r=document.documentElement, cur=r.getAttribute('data-theme');
+    if(!cur){ cur = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark':'light'; }
+    r.setAttribute('data-theme', cur==='dark'?'light':'dark');
+  });
+})();
+
+// ---- layout data ----
+var STAGE={discover:'var(--s-discover)',execute:'var(--s-execute)',present:'var(--s-present)',prove:'var(--s-prove)',host:'var(--accent)'};
+var W=176, H=42; // node box
+// rank Y positions (top of box). Top ranks shifted down to leave room for the ROM input row.
+var RY=[144,240,336,432,528,624,720];
+var RANK_LABEL=['RANK 0 · leaves','RANK 1 · core','RANK 2','RANK 3','RANK 4','RANK 5','RANK 6 · host'];
+
+// nodes: id, short name, role, stage, rank, x-center
+var N={
+ 'recomp'       :{n:'fn64-recomp',        role:'MIPS decode / recompile core', s:'discover', r:0, x:150},
+ 'render-ir'    :{n:'fn64-render-ir',      role:'render intermediate representation', s:'present', r:0, x:490},
+ 'diff'         :{n:'fn64-diff',           role:'first-divergence comparator (pure)', s:'prove', r:0, x:830},
+
+ 'recomp-rs'    :{n:'fn64-recomp-rs',      role:'typed Rust runner generation', s:'discover', r:1, x:150},
+ 'codegen'      :{n:'fn64-recomp-rs-codegen', role:'runner codegen (mutual w/ recomp-rs)', s:'discover', r:1, x:360},
+ 'runtime'      :{n:'fn64-runtime',        role:'scheduler, queues, timers, DMA, save, input, audio plumbing', s:'execute', r:1, x:640},
+
+ 'audio'        :{n:'fn64-audio',          role:'RSP audio (clean-room)', s:'execute', r:2, x:250},
+ 'render'       :{n:'fn64-render',         role:'backend-neutral render seam', s:'present', r:2, x:620},
+
+ 'abi'          :{n:'fn64-abi',            role:'extern "C" surface recompiled code links against', s:'execute', r:3, x:260},
+ 'render-ref'   :{n:'fn64-render-reference', role:'software rasterizer backend', s:'present', r:3, x:640},
+
+ 'boot'         :{n:'fn64-boot-harness',   role:'brings a title up for tests / boot', s:'discover', r:4, x:210},
+ 'rt64'         :{n:'fn64-render-rt64',    role:'RT64 backend bridge', s:'present', r:4, x:640},
+ 'discover'     :{n:'fn64-discover',       role:'recovers fn/section boundaries from a ROM', s:'discover', r:4, x:830},
+
+ 'cert'         :{n:'fn64-certification',  role:'named release gates', s:'prove', r:5, x:430},
+
+ 'shell'        :{n:'fn64-shell',          role:'windowed host — brings it up on screen', s:'host', r:6, x:490}
+};
+// finalize node y + edges anchors
+Object.keys(N).forEach(function(k){var d=N[k]; d.y=RY[d.r]; d.cx=d.x; d.cy=d.y+H/2;});
+
+// edges: [from,to]; runtime as target => hub-faint
+var E=[
+ ['recomp-rs','recomp'],
+ ['codegen','recomp'],
+ ['runtime','recomp-rs'],
+ ['audio','runtime'],
+ ['abi','audio'],['abi','recomp-rs'],['abi','render'],['abi','render-ref'],['abi','runtime'],
+ ['discover','boot'],['discover','recomp-rs'],['discover','codegen'],['discover','runtime'],
+ ['boot','abi'],['boot','audio'],['boot','recomp-rs'],['boot','codegen'],['boot','render'],['boot','runtime'],
+ ['render','runtime'],
+ ['render-ref','render'],['render-ref','runtime'],
+ ['rt64','abi'],['rt64','boot'],['rt64','render'],['rt64','render-ref'],['rt64','runtime'],
+ ['cert','abi'],['cert','boot'],['cert','render'],['cert','render-ref'],['cert','rt64'],['cert','runtime'],
+ ['shell','abi'],['shell','audio'],['shell','boot'],['shell','cert'],['shell','render'],['shell','render-ref'],['shell','rt64'],['shell','runtime']
+];
+// bidirectional recomp-rs <-> codegen (recomp-rs -> codegen exists; codegen -> recomp-rs mutual)
+var BIDIR=['recomp-rs','codegen'];
+
+var SVGNS='http://www.w3.org/2000/svg';
+function el(t,a){var e=document.createElementNS(SVGNS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+
+// ---- rank guides ----
+var gR=document.getElementById('ranks');
+for(var i=0;i<RY.length;i++){
+  var yy=RY[i]-14;
+  gR.appendChild(el('text',{x:14,y:RY[i]+H/2+3,'class':'rank-lbl'})).textContent=RANK_LABEL[i];
+  if(i>0){ gR.appendChild(el('line',{x1:12,y1:RY[i]-20,x2:966,y2:RY[i]-20,'class':'rank-sep'})); }
+}
+
+// edge geometry: exit bottom of `from` box side, enter top of `to`.
+// choose anchor x offsets to spread arrows; route as cubic bezier.
+function anchorBottom(d, frac){ return {x:d.x - W/2 + W*frac, y:d.y+H}; }
+function anchorTop(d, frac){ return {x:d.x - W/2 + W*frac, y:d.y}; }
+function anchorSide(d, right, fracY){ return {x: right? d.x+W/2 : d.x-W/2, y: d.y + H*fracY}; }
+
+// distribute multiple incoming/outgoing anchors deterministically
+var outCount={},inCount={},outIdx={},inIdx={};
+E.forEach(function(e){ outCount[e[0]]=(outCount[e[0]]||0)+1; inCount[e[1]]=(inCount[e[1]]||0)+1; });
+
+var gE=document.getElementById('edges');
+function drawEdge(from,to,cls,marker){
+  var a=N[from], b=N[to];
+  outIdx[from]=(outIdx[from]||0)+1; inIdx[to]=(inIdx[to]||0)+1;
+  var of=outIdx[from]/(outCount[from]+1);
+  var inf=inIdx[to]/(inCount[to]+1);
+  var p1,p2;
+  // if same-ish rank distance 1 and roughly vertical -> bottom->top; else side routing when far horizontally
+  var dyr = b.r - a.r;
+  // default: leave bottom of `from`, enter top of `to`
+  p1=anchorBottom(a, 0.2+0.6*of);
+  p2=anchorTop(b, 0.2+0.6*inf);
+  // vertical control distance scales with rank gap
+  var span=(p2.y-p1.y);
+  var c1y=p1.y + span*0.45;
+  var c2y=p2.y - span*0.45;
+  // lateral bow to reduce overlap for long edges
+  var mid=(p1.x+p2.x)/2;
+  var c1x=p1.x + (mid-p1.x)*0.35;
+  var c2x=p2.x + (mid-p2.x)*0.35;
+  var dpath='M'+p1.x+' '+p1.y+' C'+c1x+' '+c1y+' '+c2x+' '+c2y+' '+p2.x+' '+p2.y;
+  gE.appendChild(el('path',{d:dpath,'class':cls,'marker-end':marker}));
+}
+// draw ordinary edges (skip the two mutual ones; draw bidir separately)
+E.forEach(function(e){
+  if((e[0]===BIDIR[0]&&e[1]===BIDIR[1])||(e[0]===BIDIR[1]&&e[1]===BIDIR[0])) return;
+  var hub = (e[1]==='runtime');
+  drawEdge(e[0],e[1], hub?'edge hub':'edge', hub?'url(#ah-hub)':'url(#ah)');
+});
+// bidirectional recomp-rs <-> codegen : horizontal double-headed
+(function(){
+  var a=N['recomp-rs'], b=N['codegen'];
+  var y=a.y+H*0.5;
+  var x1=a.x+W/2, x2=b.x-W/2;
+  var p=el('path',{d:'M'+x1+' '+y+' L'+x2+' '+y,'class':'edge bidir','marker-end':'url(#ah-bd)','marker-start':'url(#ah-bd)'});
+  gE.appendChild(p);
+})();
+
+// ---- nodes ----
+var gN=document.getElementById('nodes');
+Object.keys(N).forEach(function(k){
+  var d=N[k];
+  var x=d.x-W/2, y=d.y;
+  var g=el('g',{'class':'node-g'});
+  // stage tab (left color bar)
+  g.appendChild(el('rect',{x:x,y:y,width:5,height:H,rx:2.5,'class':'node-tab',fill:STAGE[d.s]}));
+  g.appendChild(el('rect',{x:x,y:y,width:W,height:H,rx:5,'class':'node-box'}));
+  var t1=el('text',{x:x+14,y:y+18,'class':'node-name'}); t1.textContent=d.n; g.appendChild(t1);
+  var t2=el('text',{x:x+14,y:y+31,'class':'node-role'}); t2.textContent=d.role.length>34?d.role.slice(0,33)+'…':d.role; g.appendChild(t2);
+  // hover role popover (full text)
+  var pop=el('g',{'class':'role-pop'});
+  var pw=Math.min(300, 8+d.role.length*5.4);
+  var px=Math.max(6, Math.min(x, 980-pw-6)), py=y-24;
+  pop.appendChild(el('rect',{x:px,y:py,width:pw,height:18,rx:4}));
+  var pt=el('text',{x:px+8,y:py+12.5}); pt.textContent=d.role; pop.appendChild(pt);
+  g.appendChild(pop);
+  gN.appendChild(g);
+});
+
+// ---- ROM input (source, above rank 0) + platform output (below rank 6) ----
+var gIoE=document.getElementById('io-edges');
+var gIoN=document.getElementById('io-nodes');
+
+// path helper: bottom-of-a to top-of-b, gentle bezier
+function ioPath(x1,y1,x2,y2){
+  var span=y2-y1, mid=(x1+x2)/2;
+  var c1x=x1+(mid-x1)*0.4, c2x=x2+(mid-x2)*0.4;
+  return 'M'+x1+' '+y1+' C'+c1x+' '+(y1+span*0.45)+' '+c2x+' '+(y2-span*0.45)+' '+x2+' '+y2;
+}
+
+// -- INPUT: ROM / cartridge, dashed source node, above rank 0 --
+(function(){
+  var rw=250, rh=44, ry=44, rx=830-rw/2; // centered over the discover column (x=830)
+  gIoN.appendChild(el('text',{x:rx,y:ry-9,'class':'io-lbl'})).textContent='INPUT · YOUR DATA';
+  gIoN.appendChild(el('rect',{x:rx,y:ry,width:rw,height:rh,rx:7,'class':'io-box'}));
+  gIoN.appendChild(el('text',{x:rx+16,y:ry+19,'class':'io-name'})).textContent='your ROM / cartridge';
+  gIoN.appendChild(el('text',{x:rx+16,y:ry+34,'class':'io-sub'})).textContent='local, stays on disk · never shipped';
+  // arrow into fn64-discover (rank 4, x=830). Route down the right margin.
+  var disc=N['discover'];
+  gIoE.appendChild(el('path',{d:ioPath(830, ry+rh, disc.x, disc.y),'class':'io-edge','marker-end':'url(#ah-io)'}));
+})();
+
+// -- OUTPUT: native app -> platform fork, below rank 6 (shell) --
+(function(){
+  var shell=N['shell'];                 // x=490, bottom = shell.y + H
+  var appW=150, appH=40;
+  var appX=shell.x-appW/2, appY=shell.y+H+30;
+  var appCx=shell.x, appCy=appY+appH/2;
+  gIoN.appendChild(el('text',{x:appX,y:appY-9,'class':'io-lbl'})).textContent='OUTPUT · PLATFORM TARGETS';
+  // shell -> native app
+  gIoE.appendChild(el('path',{d:ioPath(shell.x, shell.y+H, shell.x, appY),'class':'io-edge','marker-end':'url(#ah-io)'}));
+  // native app node
+  gIoN.appendChild(el('rect',{x:appX,y:appY,width:appW,height:appH,rx:7,'class':'plat-box'}));
+  gIoN.appendChild(el('rect',{x:appX,y:appY,width:5,height:appH,rx:2.5,'class':'plat-dot',fill:'var(--accent)'}));
+  gIoN.appendChild(el('text',{x:appX+15,y:appY+18,'class':'plat-name'})).textContent='native app';
+  gIoN.appendChild(el('text',{x:appX+15,y:appY+31,'class':'plat-sub'})).textContent='fn64-shell build';
+
+  // thin dashed hints: render backends feed the native app (don't duplicate the crate nodes)
+  var ref=N['render-ref'], rt64=N['rt64'];
+  gIoE.appendChild(el('path',{d:ioPath(ref.x-W*0.15, ref.y+H, appCx-40, appY),'class':'back-edge','marker-end':'url(#ah-back)'}));
+  gIoE.appendChild(el('path',{d:ioPath(rt64.x-W*0.15, rt64.y+H, appCx+40, appY),'class':'back-edge','marker-end':'url(#ah-back)'}));
+
+  // four platform targets, honest traffic-light status
+  var pw=210, ph=42, gap=14;
+  var plats=[
+    {n:'macOS',     sub:'supported · RT64 Metal + reference', cls:'plat-ok',   dot:'var(--ok)'},
+    {n:'Linux',     sub:'supported · reference (software)',   cls:'plat-ok',   dot:'var(--ok)'},
+    {n:'Windows',   sub:'uncertified · targeted soon · D3D12',cls:'plat-warn', dot:'var(--warn)'},
+    {n:'Web / WASM',sub:'on the horizon · wgpu ready, coroutine blocker', cls:'plat-web', dot:'var(--ink-3)'}
+  ];
+  var totalW=plats.length*pw+(plats.length-1)*gap;
+  var startX=490-totalW/2;
+  var py=appY+appH+34;
+  plats.forEach(function(p,i){
+    var x=startX+i*(pw+gap), cx=x+pw/2;
+    // app -> platform
+    var web=(p.cls==='plat-web');
+    gIoE.appendChild(el('path',{d:ioPath(appCx, appY+appH, cx, py),'class': web?'io-edge':'io-edge','marker-end':'url(#ah-io)', opacity: web?0.45:0.7}));
+    var box=el('rect',{x:x,y:py,width:pw,height:ph,rx:6,'class':'plat-box '+p.cls});
+    gIoN.appendChild(box);
+    gIoN.appendChild(el('rect',{x:x,y:py,width:5,height:ph,rx:2.5,'class':'plat-dot',fill:p.dot}));
+    var nm=el('text',{x:x+15,y:py+18,'class':'plat-name'}); nm.textContent=p.n;
+    if(web) nm.setAttribute('opacity','0.8');
+    gIoN.appendChild(nm);
+    var sb=el('text',{x:x+15,y:py+32,'class':'plat-sub'}); sb.textContent=p.sub; gIoN.appendChild(sb);
+  });
+})();
+</script>
+</body>
+</html>

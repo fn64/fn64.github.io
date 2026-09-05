@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" font-family="IBM Plex Sans, Arial, sans-serif">
+  <rect width="1200" height="630" fill="#070a0f"/>
+
+  <!-- faint instrument grid, matches the site's background texture -->
+  <g stroke="#1b2531" stroke-width="1" opacity="0.5">
+    <line x1="0" y1="150" x2="1200" y2="150"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="450" x2="1200" y2="450"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+  </g>
+
+  <!-- logomark -->
+  <g transform="translate(90,96)">
+    <path fill-rule="evenodd" fill="#37d0f2" d="M24 1a23 23 0 1 0 0 46a23 23 0 1 0 0-46Z M9.229 31.438A1.758 1.758 0 0 1 7.587 30.311A17.584 17.584 0 1 1 40.413 30.311A1.758 1.758 0 0 1 38.771 31.438Z M8.878 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M19.78 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0 M30.682 24a4.22 4.22 0 1 0 8.44 0a4.22 4.22 0 1 0-8.44 0"
+      transform="scale(1.9)"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="270" y="150" font-family="IBM Plex Mono, ui-monospace, monospace" font-weight="700" font-size="72" letter-spacing="-2">
+    <tspan fill="#37d0f2">f</tspan><tspan fill="#e6edf3">n64</tspan>
+  </text>
+
+  <!-- eyebrow -->
+  <text x="92" y="248" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="18" letter-spacing="3" fill="#6d7a89">CLEAN-ROOM · RUST · N64 STATIC RECOMPILATION</text>
+
+  <!-- headline -->
+  <text x="90" y="330" font-weight="600" font-size="46" fill="#e6edf3">Run your recompiled ROM</text>
+  <text x="90" y="386" font-weight="600" font-size="46" fill="#e6edf3">as a <tspan fill="#37d0f2">native app.</tspan></text>
+
+  <!-- tagline -->
+  <text x="90" y="446" font-size="24" fill="#aeb9c6">Recompiler, runtime, renderer and evidence — one MIT/Apache stack.</text>
+
+  <!-- hairline + stage-hue ticks (echoes the pipeline) -->
+  <line x1="90" y1="500" x2="1110" y2="500" stroke="#1b2531" stroke-width="1.5"/>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="17" fill="#6d7a89">
+    <rect x="90" y="528" width="10" height="10" fill="#37d0f2"/>
+    <text x="110" y="537">Discover</text>
+    <rect x="240" y="528" width="10" height="10" fill="#2ad6c4"/>
+    <text x="260" y="537">Recompile</text>
+    <rect x="410" y="528" width="10" height="10" fill="#46e07a"/>
+    <text x="430" y="537">Execute</text>
+    <rect x="560" y="528" width="10" height="10" fill="#f0b23a"/>
+    <text x="580" y="537">Present</text>
+    <rect x="710" y="528" width="10" height="10" fill="#a98bff"/>
+    <text x="730" y="537">Prove</text>
+  </g>
+
+  <text x="1110" y="537" text-anchor="end" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="17" fill="#6d7a89">fn64.github.io</text>
+</svg>

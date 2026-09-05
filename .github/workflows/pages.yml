@@ -9,6 +9,7 @@ on:
       - "*.html"
       - "*.css"
       - "*.svg"
+      - "*.png"
       - "src/**"
       - "scripts/**"
       - ".github/workflows/pages.yml"
@@ -57,7 +58,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          cp *.html *.css *.svg .nojekyll _site/
+          cp *.html *.css *.svg *.png .nojekyll _site/
           ls -la _site
       - name: Upload site
         uses: actions/upload-pages-artifact@v4
