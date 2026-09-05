@@ -33,7 +33,6 @@
   --warn:      #9a5b00;
   --warn-bg:   rgba(154,91,0,.12);
   --danger:    #c23b3b;
-  --trace:     #0b6b8c;
   --shadow:    0 1px 0 rgba(16,21,27,.04), 0 8px 30px -18px rgba(16,21,27,.30);
 
   /* The port logomark as a mask, so any element can wear it in the current color. */
@@ -68,7 +67,6 @@
     --warn:      #f0b23a;
     --warn-bg:   rgba(240,178,58,.12);
     --danger:    #ff6b6b;
-    --trace:     #37d0f2;
     --shadow:    0 0 0 1px rgba(55,208,242,.02), 0 24px 60px -30px rgba(0,0,0,.85);
 
     --s-discover:  #37d0f2;
@@ -98,7 +96,6 @@
   --warn:      #f0b23a;
   --warn-bg:   rgba(240,178,58,.12);
   --danger:    #ff6b6b;
-  --trace:     #37d0f2;
   --shadow:    0 0 0 1px rgba(55,208,242,.02), 0 24px 60px -30px rgba(0,0,0,.85);
 
   --s-discover:  #37d0f2;
@@ -408,7 +405,7 @@ h1 .grad {
 .btn.ghost { background: transparent; border-color: var(--hair-2); color: var(--ink); }
 .btn.ghost:hover { border-color: var(--accent); text-decoration: none; }
 
-/* ---------- oscilloscope hero (signature move) ---------- */
+/* ---------- call-path diagram (signature move; a static schematic, not live telemetry) ---------- */
 .scope {
   position: relative;
   border: 1px solid var(--hair-2);
@@ -432,9 +429,6 @@ h1 .grad {
   text-transform: uppercase;
   color: var(--ink-3);
 }
-.scope-head .live { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-2); }
-.scope-head .live .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--s-execute); box-shadow: 0 0 8px var(--s-execute); animation: blink 1.6s steps(1) infinite; }
-@keyframes blink { 50% { opacity: .25; } }
 .scope svg { display: block; width: 100%; height: auto; }
 .scope-foot {
   display: grid;
@@ -451,7 +445,7 @@ h1 .grad {
 .scope-foot .v { font-size: 15px; color: var(--ink); font-weight: 500; margin-top: 3px; }
 .scope-foot .v small { color: var(--ok); font-size: 11px; }
 
-/* ---------- now booting (live status aside) ---------- */
+/* ---------- boot status aside ---------- */
 .hero-side { display: flex; flex-direction: column; gap: 16px; }
 .booting {
   border: 1px solid var(--hair-2);
@@ -466,17 +460,6 @@ h1 .grad {
 .booting-title {
   display: inline-flex; align-items: center; gap: 9px; margin: 0;
   font-size: 15px; letter-spacing: .01em; color: var(--ink); font-weight: 600;
-}
-.booting-title .pulse {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--s-execute);
-  box-shadow: 0 0 0 0 var(--s-execute);
-  animation: booting-pulse 2s ease-out infinite;
-}
-@keyframes booting-pulse {
-  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--s-execute) 60%, transparent); }
-  70%  { box-shadow: 0 0 0 8px color-mix(in oklab, var(--s-execute) 0%, transparent); }
-  100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--s-execute) 0%, transparent); }
 }
 .booting-target {
   font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3);
@@ -509,7 +492,6 @@ h1 .grad {
   font-size: 11.5px; color: var(--ink-2);
 }
 .booting-link:hover { color: var(--accent); }
-@media (prefers-reduced-motion: reduce) { .booting-title .pulse { animation: none; } }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -571,28 +553,6 @@ h1 .grad {
   .wc-word { transition: none; }
 }
 
-/* animated trace */
-.trace-line {
-  stroke: var(--trace);
-  stroke-width: 1.6;
-  fill: none;
-  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--trace) 60%, transparent));
-  stroke-dasharray: 1400;
-  stroke-dashoffset: 1400;
-  animation: draw 3.2s cubic-bezier(.4,0,.2,1) forwards;
-}
-.trace-dot { fill: var(--trace); }
-.sweep {
-  animation: sweep 3.2s linear infinite;
-}
-@keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes sweep {
-  0% { transform: translateX(0); opacity: 0; }
-  6% { opacity: .8; }
-  94% { opacity: .8; }
-  100% { transform: translateX(560px); opacity: 0; }
-}
-
 /* ---------- sections ---------- */
 section { padding: 58px 0; position: relative; }
 .section-hd { max-width: 62ch; margin-bottom: 30px; }
@@ -616,7 +576,7 @@ section { padding: 58px 0; position: relative; }
   box-shadow: var(--shadow);
 }
 
-/* ---------- "not an emulator" ---------- */
+/* ---------- "what it is" ---------- */
 .emu {
   display: grid;
   grid-template-columns: 1.1fr .9fr;
@@ -649,36 +609,6 @@ section { padding: 58px 0; position: relative; }
 .supply .row .txt { font-size: 14px; color: var(--ink-2); }
 .supply .row .txt b { color: var(--ink); font-weight: 600; }
 
-/* ---------- who it's for ---------- */
-.who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-@media (max-width: 820px) { .who { grid-template-columns: 1fr; } }
-.who .card {
-  padding: 22px;
-  border-radius: 12px;
-  background: var(--panel);
-  border: 1px solid var(--hair);
-  position: relative;
-  overflow: hidden;
-}
-.who .card::before {
-  content: "";
-  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: var(--tone, var(--accent));
-}
-.who .card:nth-child(1) { --tone: var(--s-discover); }
-.who .card:nth-child(2) { --tone: var(--s-recompile); }
-.who .card:nth-child(3) { --tone: var(--s-prove); }
-.who .card h3 {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .02em;
-  margin: 0 0 8px;
-  color: var(--ink);
-}
-.who .card p { margin: 0; font-size: 14px; color: var(--ink-2); }
-.who .card p b { color: var(--ink); font-weight: 600; }
-
 /* ---------- pipeline diagram ---------- */
 .diagram {
   margin: 0;
@@ -698,29 +628,30 @@ section { padding: 58px 0; position: relative; }
   font-family: "IBM Plex Mono", monospace;
 }
 
-/* stage legend list */
+/* stage legend list (how-it-works.html #stages — named -card to avoid colliding
+   with the unrelated .stage used by the crate pipeline below) */
 .stages { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 20px; }
 @media (max-width: 820px) { .stages { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .stages { grid-template-columns: 1fr; } }
-.stage {
+.stage-card {
   padding: 14px;
   border: 1px solid var(--hair);
   border-radius: 10px;
   background: var(--panel);
 }
-.stage .marker {
+.stage-card .marker {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px; font-weight: 600; letter-spacing: .02em;
   color: var(--ink);
 }
-.stage .marker .sq { width: 10px; height: 10px; border-radius: 2px; background: var(--tone); box-shadow: 0 0 8px color-mix(in srgb, var(--tone) 50%, transparent); }
-.stage p { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-3); }
-.stage:nth-child(1) { --tone: var(--s-discover); }
-.stage:nth-child(2) { --tone: var(--s-recompile); }
-.stage:nth-child(3) { --tone: var(--s-execute); }
-.stage:nth-child(4) { --tone: var(--s-present); }
-.stage:nth-child(5) { --tone: var(--s-prove); }
+.stage-card .marker .sq { width: 10px; height: 10px; border-radius: 2px; background: var(--tone); box-shadow: 0 0 8px color-mix(in srgb, var(--tone) 50%, transparent); }
+.stage-card p { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.stage-card:nth-child(1) { --tone: var(--s-discover); }
+.stage-card:nth-child(2) { --tone: var(--s-recompile); }
+.stage-card:nth-child(3) { --tone: var(--s-execute); }
+.stage-card:nth-child(4) { --tone: var(--s-present); }
+.stage-card:nth-child(5) { --tone: var(--s-prove); }
 
 /* ---------- discovery recall chart ---------- */
 .readout {
@@ -949,8 +880,6 @@ footer {
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
-  .trace-line { stroke-dashoffset: 0; }
-  .sweep { display: none; }
   .fill { transform: scaleX(1) !important; }
 }
 
@@ -1002,7 +931,7 @@ footer {
   color: var(--ink); margin: 0 0 10px;
 }
 .route-card > p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
-.route-card > p code,
+.route-card > p code, .route-facts dd code,
 .checks code, .note-panel code {
   font-family: "IBM Plex Mono", monospace;
   font-size: .9em; color: var(--ink);
@@ -1138,6 +1067,8 @@ footer {
 .pipe-out .pipe-end-k { color: var(--accent); }
 .pipe-end-v { font-size: 14px; font-weight: 600; color: var(--ink); }
 .pipe-end-note { font-size: 10.5px; line-height: 1.4; color: var(--ink-3); }
+/* fn64-shell rides the App-out endcap: it is the executable, not a pipeline stage. */
+.pipe-out .chips { margin-top: 8px; }
 
 @media (max-width: 900px) {
   .pipe { grid-template-columns: 1fr; }
