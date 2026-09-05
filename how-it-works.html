@@ -105,6 +105,8 @@
             <dd>A real C caller links the static library and exercises the external ABI.</dd>
             <dt>Game data</dt>
             <dd>Your local ROM still supplies it at runtime.</dd>
+            <dt>Crates</dt>
+            <dd><code>fn64-boot-harness</code>, <code>fn64-abi</code>, <code>fn64-runtime</code></dd>
           </dl>
         </article>
 
@@ -122,6 +124,8 @@
             <dd>Stay visible as named blockers rather than guessed boundaries.</dd>
             <dt>Linking</dt>
             <dd>Generated runners link directly to the Rust execution runtime.</dd>
+            <dt>Crates</dt>
+            <dd><code>fn64-discover</code>, <code>fn64-cpu-runtime-codegen</code>, <code>fn64-cpu-runtime</code>, <code>fn64-runtime</code></dd>
           </dl>
         </article>
       </div>
@@ -250,6 +254,67 @@
         <p>Graphics go through a backend-neutral seam, so the thing that draws is swappable and the thing that decides what to draw is not.</p>
       </div>
 
+      <figure class="diagram">
+        <div class="scroll">
+          <svg viewBox="0 0 720 276" role="img" aria-label="Render seam diagram: fn64-render, the backend-neutral seam doing ordered microcode admission, feeds three backends in a row: fn64-render-reference, a deterministic pure-Rust GPU-free oracle; fn64-render-rt64, the faithful lane with C++ behind one FFI crate; and fn64-render-wgpu, an early fixture not yet wired to the shell. Below the row, fn64-render-conformance grades the backends.">
+            <defs>
+              <marker id="ah5" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--ink-3)"/></marker>
+            </defs>
+            <g font-family="IBM Plex Mono, monospace">
+              <!-- seam -->
+              <g>
+                <rect x="260" y="14" width="200" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.5"/>
+                <rect x="260" y="14" width="4" height="66" rx="2" fill="var(--s-present)"/>
+                <text x="276" y="38" fill="var(--ink)" font-size="13" font-weight="600">fn64-render</text>
+                <text x="276" y="56" fill="var(--ink-3)" font-size="10.5">render seam, backend-neutral</text>
+                <text x="276" y="70" fill="var(--ink-3)" font-size="10.5">ordered microcode admission</text>
+              </g>
+              <!-- seam -> backends bus -->
+              <path d="M360 80 L360 96" stroke="var(--ink-3)" stroke-width="1.3"/>
+              <path d="M136 96 L584 96" stroke="var(--ink-3)" stroke-width="1.3"/>
+              <path d="M136 96 L136 114" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah5)"/>
+              <path d="M360 96 L360 114" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah5)"/>
+              <path d="M584 96 L584 114" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah5)"/>
+              <!-- reference -->
+              <g>
+                <rect x="36" y="114" width="200" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.5"/>
+                <rect x="36" y="114" width="4" height="66" rx="2" fill="var(--s-present)"/>
+                <text x="52" y="138" fill="var(--ink)" font-size="13" font-weight="600">fn64-render-reference</text>
+                <text x="52" y="156" fill="var(--ink-3)" font-size="10.5">deterministic, pure Rust,</text>
+                <text x="52" y="170" fill="var(--ink-3)" font-size="10.5">GPU-free oracle</text>
+              </g>
+              <!-- rt64 -->
+              <g>
+                <rect x="260" y="114" width="200" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.5"/>
+                <rect x="260" y="114" width="4" height="66" rx="2" fill="var(--s-present)"/>
+                <text x="276" y="138" fill="var(--ink)" font-size="13" font-weight="600">fn64-render-rt64</text>
+                <text x="276" y="156" fill="var(--ink-3)" font-size="10.5">faithful lane,</text>
+                <text x="276" y="170" fill="var(--ink-3)" font-size="10.5">C++ behind one FFI crate</text>
+              </g>
+              <!-- wgpu -->
+              <g>
+                <rect x="484" y="114" width="200" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.5"/>
+                <rect x="484" y="114" width="4" height="66" rx="2" fill="var(--s-present)"/>
+                <text x="500" y="138" fill="var(--ink)" font-size="13" font-weight="600">fn64-render-wgpu</text>
+                <text x="500" y="156" fill="var(--ink-3)" font-size="10.5">early fixture,</text>
+                <text x="500" y="170" fill="var(--ink-3)" font-size="10.5">not wired to the shell yet</text>
+              </g>
+              <!-- backends -> conformance (dashed) -->
+              <path d="M136 180 L136 194 M360 180 L360 194 M584 180 L584 194" stroke="var(--ink-3)" stroke-width="1.3" stroke-dasharray="4 3"/>
+              <path d="M136 194 L584 194" stroke="var(--ink-3)" stroke-width="1.3" stroke-dasharray="4 3"/>
+              <path d="M360 194 L360 208" stroke="var(--ink-3)" stroke-width="1.3" stroke-dasharray="4 3"/>
+              <!-- conformance -->
+              <g>
+                <rect x="260" y="208" width="200" height="50" rx="9" fill="none" stroke="var(--s-prove)" stroke-width="1.5"/>
+                <text x="276" y="230" fill="var(--ink)" font-size="13" font-weight="600">fn64-render-conformance</text>
+                <text x="276" y="248" fill="var(--ink-3)" font-size="10.5">grades the backends</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <figcaption>// the seam decides what to draw; the backend only draws it. reference is the oracle, RT64 is the faithful lane.</figcaption>
+      </figure>
+
       <dl class="checks">
         <dt class="mono">fn64-render</dt>
         <dd>The seam itself: ordered microcode admission and completion inspection, with no backend assumptions.</dd>
@@ -257,6 +322,10 @@
         <dd>A deterministic pure-Rust backend with a software rasteriser. Slow, but it needs no GPU and produces the same frame every time.</dd>
         <dt class="mono">fn64-render-rt64</dt>
         <dd>An FFI bridge to RT64 for the fast path. All C++ interop is quarantined in this one crate.</dd>
+        <dt class="mono">fn64-render-wgpu</dt>
+        <dd>A pure-Rust wgpu backend, today only the bounded M3.1 headless submission/readback lifecycle fixture: one synthetic 2x2 fill/FullSync packet, not connected to ABI, runtime, shell, VI or general RDP decoding, and no parity or performance claim rests on it yet.</dd>
+        <dt class="mono">fn64-render-conformance</dt>
+        <dd>Rust-decoded replay fixtures and the fail-closed RT64/Rust parity denominator that the backends are graded against.</dd>
       </dl>
 
       <div class="note-panel">
