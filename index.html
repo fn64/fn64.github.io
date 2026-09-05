@@ -87,67 +87,69 @@
       </div>
 
       <div class="hero-side">
-      <!-- OSCILLOSCOPE (signature move) -->
+      <!-- CALL PATH (signature move — a static schematic, not a live measurement) -->
       <div class="scope" aria-hidden="false">
         <div class="scope-head">
-          <span>CH1: runtime call trace</span>
-          <span class="live"><span class="dot"></span>LIVE</span>
+          <span>The call path</span>
+          <span>static diagram</span>
         </div>
-        <svg viewBox="0 0 560 220" role="img" aria-label="Oscilloscope readout showing a runtime signal trace over a calibration grid.">
+        <svg viewBox="0 0 560 150" role="img" aria-label="Diagram: recompiled code calls the fn64 ABI, which dispatches into the fn64 runtime. The runtime answers calls for the scheduler, message queues, timers, DMA, save, input and audio.">
           <defs>
-            <linearGradient id="scanfade" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="var(--trace)" stop-opacity="0"/>
-              <stop offset="1" stop-color="var(--trace)" stop-opacity=".14"/>
-            </linearGradient>
+            <marker id="ah3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--ink-3)"/></marker>
           </defs>
-          <!-- grid -->
-          <g stroke="var(--hair)" stroke-width="1">
-            <line x1="0" y1="55" x2="560" y2="55"/>
-            <line x1="0" y1="110" x2="560" y2="110"/>
-            <line x1="0" y1="165" x2="560" y2="165"/>
-            <line x1="140" y1="0" x2="140" y2="220"/>
-            <line x1="280" y1="0" x2="280" y2="220"/>
-            <line x1="420" y1="0" x2="420" y2="220"/>
-          </g>
-          <!-- baseline -->
-          <line x1="0" y1="110" x2="560" y2="110" stroke="var(--hair-2)" stroke-width="1" stroke-dasharray="3 5"/>
-          <!-- filled area under trace -->
-          <path fill="url(#scanfade)" stroke="none" opacity=".7"
-            d="M0 110 L40 110 L60 70 L90 150 L120 92 L150 118 L180 44 L210 150 L240 96 L270 110 L300 74 L330 150 L360 100 L390 60 L420 132 L450 96 L480 110 L520 110 L560 110 L560 220 L0 220 Z"/>
-          <!-- the trace -->
-          <path class="trace-line"
-            d="M0 110 L40 110 L60 70 L90 150 L120 92 L150 118 L180 44 L210 150 L240 96 L270 110 L300 74 L330 150 L360 100 L390 60 L420 132 L450 96 L480 110 L520 110 L560 110"/>
-          <!-- sweep cursor -->
-          <g class="sweep">
-            <line x1="0" y1="0" x2="0" y2="220" stroke="var(--trace)" stroke-width="1" opacity=".5"/>
-            <circle class="trace-dot" cx="0" cy="110" r="3"/>
+          <g font-family="IBM Plex Mono, monospace">
+            <!-- Recompiled code -->
+            <rect x="8" y="34" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-recompile)" stroke-width="1.5"/>
+            <rect x="8" y="34" width="4" height="66" rx="2" fill="var(--s-recompile)"/>
+            <text x="24" y="62" fill="var(--ink)" font-size="13" font-weight="600">Recompiled code</text>
+            <text x="24" y="82" fill="var(--ink-3)" font-size="10">native, in your binary</text>
+
+            <path d="M158 67 L182 67" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah3)"/>
+
+            <!-- fn64-abi -->
+            <rect x="182" y="34" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--ink-3)" stroke-width="1.5"/>
+            <rect x="182" y="34" width="4" height="66" rx="2" fill="var(--ink-3)"/>
+            <text x="198" y="62" fill="var(--ink)" font-size="13" font-weight="600">fn64-abi</text>
+            <text x="198" y="82" fill="var(--ink-3)" font-size="10">extern "C" surface</text>
+
+            <path d="M332 67 L356 67" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah3)"/>
+
+            <!-- fn64 runtime -->
+            <rect x="356" y="34" width="190" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-execute)" stroke-width="1.5"/>
+            <rect x="356" y="34" width="4" height="66" rx="2" fill="var(--s-execute)"/>
+            <text x="372" y="62" fill="var(--ink)" font-size="13" font-weight="600">fn64 runtime</text>
+            <text x="372" y="82" fill="var(--ink-3)" font-size="10">answers the call</text>
+
+            <line x1="451" y1="100" x2="451" y2="117" stroke="var(--s-execute)" stroke-width="1.5"/>
+            <circle cx="451" cy="117" r="3.5" fill="var(--s-execute)"/>
+            <text x="280" y="136" text-anchor="middle" fill="var(--ink-3)" font-size="10">scheduler, message queues, timers, DMA, save, input and audio</text>
           </g>
         </svg>
         <div class="scope-foot mono">
-          <div class="cell"><div class="k">Titles booting</div><div class="v">6 <small>tracked</small></div></div>
+          <div class="cell"><div class="k">Discovery corpus</div><div class="v">6 <small>titles</small></div></div>
           <div class="cell"><div class="k">Discovery wrong</div><div class="v">0</div></div>
           <div class="cell"><div class="k">Det. bar</div><div class="v">10× <small>clean</small></div></div>
         </div>
       </div>
 
-      <!-- NOW BOOTING (live status aside) -->
+      <!-- BOOT STATUS (a snapshot maintainers update by hand, not live telemetry) -->
       <aside class="booting" aria-labelledby="booting-h">
         <div class="booting-head">
-          <h2 class="booting-title" id="booting-h"><span class="pulse" aria-hidden="true"></span>Now booting</h2>
-          <span class="booting-target mono">on this machine, today</span>
+          <h2 class="booting-title" id="booting-h">Boot status</h2>
+          <span class="booting-target mono">per the roadmap</span>
         </div>
         <ul class="booting-games mono">
-          <li class="bgame ok">
+          <li class="bgame warn">
             <span class="bgame-led" aria-hidden="true"></span>
             <span class="bgame-name">Ocarina of Time</span>
-            <span class="bgame-tag ok">windowed</span>
-            <span class="bgame-detail">RT64&nbsp;+&nbsp;input up, audio and eye-gate open <span class="ref">R5 / R3b</span></span>
+            <span class="bgame-tag warn">windowed</span>
+            <span class="bgame-detail">RT64&nbsp;+&nbsp;input up, audio and the outdoor eye-gate still open <span class="ref">R5 / R3b</span></span>
           </li>
           <li class="bgame ok">
             <span class="bgame-led" aria-hidden="true"></span>
             <span class="bgame-name">WM2000</span>
             <span class="bgame-tag ok">playable</span>
-            <span class="bgame-detail">RT64 render, input, audio — all up</span>
+            <span class="bgame-detail">wgpu render, input, audio — all up, no RT64</span>
           </li>
         </ul>
         <a class="booting-link mono" href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">open items in the roadmap →</a>
@@ -168,19 +170,18 @@
 
   <hr class="rule">
 
-  <!-- ============ NOT AN EMULATOR ============ -->
+  <!-- ============ WHAT IT IS ============ -->
   <section id="what">
     <div class="wrap">
       <div class="section-hd">
         <span class="eyebrow">What it is</span>
-        <h2>Not an emulator</h2>
-        <p>An emulator reads the game's MIPS instructions and interprets or JITs them every frame, for as long as it runs. Static recompilation does that translation once, ahead of time — so there is no interpreter left in the loop.</p>
+        <h2>The runtime recompiled code calls into.</h2>
+        <p>The game's functions become <strong>native code compiled into your binary</strong>, translated once, ahead of time — no interpreter left in the loop. What that code still needs is everything the game used to call into on real hardware: the scheduler, message queues, timers, DMA, save, input and audio. That's fn64.</p>
       </div>
 
       <div class="emu">
         <div class="emu-body">
-          <p>The game's functions become <strong>native code compiled into your binary</strong>, and there is no interpreter in the loop. What that code still needs is everything the game used to call into on real hardware.</p>
-          <p>That is fn64. It does not read your ROM's instructions at runtime; <strong>it answers the calls the recompiled code makes</strong> — the scheduler, message queues, timers, DMA, save, input and audio.</p>
+          <p>An emulator reads the game's MIPS instructions and interprets or JITs them every frame, for as long as it runs. fn64 doesn't do that — <strong>it doesn't read your ROM's instructions at runtime; it answers the calls the recompiled code makes.</strong></p>
         </div>
         <div class="supply">
           <div class="row you">
