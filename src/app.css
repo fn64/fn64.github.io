@@ -609,36 +609,6 @@ section { padding: 58px 0; position: relative; }
 .supply .row .txt { font-size: 14px; color: var(--ink-2); }
 .supply .row .txt b { color: var(--ink); font-weight: 600; }
 
-/* ---------- who it's for ---------- */
-.who { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-@media (max-width: 820px) { .who { grid-template-columns: 1fr; } }
-.who .card {
-  padding: 22px;
-  border-radius: 12px;
-  background: var(--panel);
-  border: 1px solid var(--hair);
-  position: relative;
-  overflow: hidden;
-}
-.who .card::before {
-  content: "";
-  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-  background: var(--tone, var(--accent));
-}
-.who .card:nth-child(1) { --tone: var(--s-recompile); }
-.who .card:nth-child(2) { --tone: var(--s-discover); }
-.who .card:nth-child(3) { --tone: var(--s-prove); }
-.who .card h3 {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .02em;
-  margin: 0 0 8px;
-  color: var(--ink);
-}
-.who .card p { margin: 0; font-size: 14px; color: var(--ink-2); }
-.who .card p b { color: var(--ink); font-weight: 600; }
-
 /* ---------- pipeline diagram ---------- */
 .diagram {
   margin: 0;
@@ -961,7 +931,7 @@ footer {
   color: var(--ink); margin: 0 0 10px;
 }
 .route-card > p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
-.route-card > p code,
+.route-card > p code, .route-facts dd code,
 .checks code, .note-panel code {
   font-family: "IBM Plex Mono", monospace;
   font-size: .9em; color: var(--ink);
@@ -1038,7 +1008,7 @@ footer {
 }
 .pipe-stages {
   list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
 }
 .stage {
   border: 1px solid var(--hair); border-top: 3px solid var(--tone);
@@ -1097,6 +1067,8 @@ footer {
 .pipe-out .pipe-end-k { color: var(--accent); }
 .pipe-end-v { font-size: 14px; font-weight: 600; color: var(--ink); }
 .pipe-end-note { font-size: 10.5px; line-height: 1.4; color: var(--ink-3); }
+/* fn64-shell rides the App-out endcap: it is the executable, not a pipeline stage. */
+.pipe-out .chips { margin-top: 8px; }
 
 @media (max-width: 900px) {
   .pipe { grid-template-columns: 1fr; }
