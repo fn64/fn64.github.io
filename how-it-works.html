@@ -136,12 +136,12 @@
       <div class="section-hd">
         <span class="eyebrow">Stages</span>
         <h2>What each stage produces</h2>
-        <p>Five stages, separate crates. Each writes something you can look at, so you can swap or re-run any one without rebuilding the others. Hue encodes stage — the same color follows each stage everywhere on this page and the home page.</p>
+        <p>Five stages, separate crates. Each writes something you can look at, so you can swap or re-run any one without rebuilding the others. Hue encodes stage — the same colour follows each stage everywhere on this page and the home page.</p>
       </div>
 
-      <figure class="diagram" role="img" aria-label="Five-stage pipeline: Discover retains proven facts, Recompile emits typed Rust runners, Execute links to the platform runtime, Present draws through backend seams, Prove grades with executable checks. Each stage writes an artifact.">
+      <figure class="diagram">
         <div class="scroll">
-          <svg viewBox="0 0 960 200">
+          <svg viewBox="0 0 960 200" role="img" aria-label="Five-stage pipeline: Discover retains proven facts, Recompile emits typed Rust runners, Execute links to the platform runtime, Present draws through backend seams, Prove grades with executable checks. Each stage writes an artifact.">
             <defs>
               <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--ink-3)"/></marker>
             </defs>
@@ -204,11 +204,11 @@
       </figure>
 
       <div class="stages">
-        <div class="stage"><span class="marker"><span class="sq"></span>01 Discover</span><p>Analyze a local ROM, retain proven facts, name unresolved ownership. <b>Out:</b> content-free metadata.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>02 Recompile</span><p>Turn MIPS functions into typed Rust runners, one per MIPS function. <b>Out:</b> native code.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>03 Execute</span><p>Link recompiled code to fn64’s Rust implementation of the N64 platform runtime it expects. <b>Out:</b> a frame and audio census.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>04 Present</span><p>Draw graphics and mix audio through explicit, swappable backend seams. <b>Out:</b> a rendered frame.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>05 Prove</span><p>Grade ABI shape, code generation and deterministic behaviour against executable checks. <b>Out:</b> graded evidence.</p></div>
+        <div class="stage-card"><span class="marker"><span class="sq"></span>01 Discover</span><p>Analyze a local ROM, retain proven facts, name unresolved ownership. <b>Out:</b> content-free metadata.</p></div>
+        <div class="stage-card"><span class="marker"><span class="sq"></span>02 Recompile</span><p>Turn MIPS functions into typed Rust runners, one per MIPS function. <b>Out:</b> native code.</p></div>
+        <div class="stage-card"><span class="marker"><span class="sq"></span>03 Execute</span><p>Link recompiled code to fn64’s Rust implementation of the N64 platform runtime it expects. <b>Out:</b> a frame and audio census.</p></div>
+        <div class="stage-card"><span class="marker"><span class="sq"></span>04 Present</span><p>Draw graphics and mix audio through explicit, swappable backend seams. <b>Out:</b> a rendered frame.</p></div>
+        <div class="stage-card"><span class="marker"><span class="sq"></span>05 Prove</span><p>Grade ABI shape, code generation and deterministic behaviour against executable checks. <b>Out:</b> graded evidence.</p></div>
       </div>
     </div>
   </section>
@@ -221,7 +221,7 @@
       <div class="section-hd">
         <span class="eyebrow">Checks</span>
         <h2>What you can check yourself</h2>
-        <p>Five things in the repo you can run or read if you want to disagree with us. A deterministic fix needs 10 consecutive clean runs before it counts; a concurrency fix needs 20 or more. One green run proves nothing.</p>
+        <p>Five things in the repo you can run or read if you want to disagree with us. A deterministic fix needs one fresh regression run plus the suite it sits in; a concurrency or timing fix falls back to repeated runs — twenty by default — only when nothing stronger closes the interleaving. A green run proves only the gate it exercised.</p>
       </div>
 
       <dl class="checks">
@@ -318,7 +318,7 @@
     </nav>
   </div>
   <div class="wrap foot-legal">
-    <p>© 2026 Magic Factory, LLC. Code licensed under <a href="https://github.com/fn64/fn64/blob/main/LICENSE">MIT OR Apache-2.0</a>.</p>
+    <p>© 2026 Magic Factory, LLC. Code licensed under <a href="https://github.com/fn64/fn64/blob/main/Cargo.toml">MIT OR Apache-2.0</a>.</p>
     <p>Not affiliated with or endorsed by Nintendo. “Nintendo&nbsp;64” and game titles are trademarks of their respective owners, used only to name what the software runs.</p>
   </div>
 </footer>

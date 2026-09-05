@@ -44,9 +44,9 @@
 
     <nav class="main" id="nav">
       <a href="#what">What it is</a>
+      <a href="#crates">Crates</a>
       <a href="#who">Who it's for</a>
       <a href="#discovery">Discovery</a>
-      <a href="#crates">Crates</a>
       <a href="./how-it-works.html">How it works</a>
       <a class="gh" href="https://github.com/fn64/fn64" aria-label="fn64 on GitHub">
         <svg class="gh-mark" width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" fill="currentColor">
@@ -88,7 +88,7 @@
 
       <div class="hero-side">
       <!-- CALL PATH (signature move — a static schematic, not a live measurement) -->
-      <div class="scope" aria-hidden="false">
+      <div class="scope">
         <div class="scope-head">
           <span>The call path</span>
           <span>static diagram</span>
@@ -128,7 +128,7 @@
         <div class="scope-foot mono">
           <div class="cell"><div class="k">Discovery corpus</div><div class="v">6 <small>titles</small></div></div>
           <div class="cell"><div class="k">Discovery wrong</div><div class="v">0</div></div>
-          <div class="cell"><div class="k">Det. bar</div><div class="v">10× <small>clean</small></div></div>
+          <div class="cell"><div class="k">GPL in tree</div><div class="v">0</div></div>
         </div>
       </div>
 
@@ -199,6 +199,145 @@
 
   <hr class="rule">
 
+  <!-- ============ CRATES ============ -->
+  <section id="crates">
+    <div class="wrap">
+      <div class="section-hd">
+        <span class="eyebrow">Crates</span>
+        <h2>One workspace, seventeen crates, one runtime underneath.</h2>
+        <p>Take only what you need — every crate publishes on its own. Want just the ABI surface? Take <code>fn64-abi</code> and nothing else. Each stage below writes an artifact you can inspect on disk, so you can re-run any one alone and leave the rest untouched. Your ROM enters on the left and leaves as a native app, one stage at a time.</p>
+      </div>
+
+      <div class="pipe" role="group" aria-label="fn64 crate pipeline: ROM in on the left through the stages to a native app on the right">
+        <div class="pipe-end pipe-in">
+          <span class="pipe-end-k">ROM in</span>
+          <span class="pipe-end-v">your cartridge</span>
+          <span class="pipe-end-note">local — never shipped</span>
+        </div>
+
+        <ol class="pipe-stages">
+          <li class="stage" style="--tone:var(--s-discover)">
+            <span class="stage-k">Discover</span>
+            <span class="stage-role">recover boundaries from the ROM</span>
+            <ul class="chips">
+              <li class="featured">
+                <span class="chip-name">fn64-discover</span>
+                <span class="chip-role">boundaries from ROM</span>
+                <ul class="chip-points">
+                  <li>mechanical, zero-LLM ROM recovery</li>
+                  <li>never emits a guessed symbol file</li>
+                  <li>proven facts, rejected candidates, open frontier</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li class="stage" style="--tone:var(--s-recompile)">
+            <span class="stage-k">Recompile</span>
+            <span class="stage-role">turn MIPS functions into native code</span>
+            <ul class="chips">
+              <li class="featured">
+                <span class="chip-name">fn64-cpu-runtime</span>
+                <span class="chip-role">typed runners, linked execution</span>
+                <ul class="chip-points">
+                  <li>one typed Rust runner per recompiled function</li>
+                  <li>links straight to fn64-runtime — no interpreter</li>
+                  <li>emitted by fn64-cpu-runtime-codegen at build time</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-cpu-runtime-codegen</span><span class="chip-role">whole-ROM Rust emitter</span></li>
+              <li><span class="chip-name">fn64-recomp</span><span class="chip-role">N64Recomp adapter, comparison lane</span></li>
+            </ul>
+          </li>
+          <li class="stage" style="--tone:var(--s-execute)">
+            <span class="stage-k">Execute</span>
+            <span class="stage-role">the runtime core every crate funnels into</span>
+            <ul class="chips">
+              <li class="featured hub">
+                <span class="chip-name">fn64-runtime</span>
+                <span class="chip-role">the runtime hub</span>
+                <ul class="chip-points">
+                  <li>scheduler, message queues, timers</li>
+                  <li>DMA, rdram model, PI/SI/VI/AI plumbing</li>
+                  <li>the independently-testable core</li>
+                </ul>
+              </li>
+              <li class="featured">
+                <span class="chip-name">fn64-abi</span>
+                <span class="chip-role">extern “C” surface</span>
+                <ul class="chip-points">
+                  <li>what recompiled game code links against</li>
+                  <li>a thin marshalling adapter, never new policy</li>
+                  <li>signatures verified against real generated C</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-audio</span><span class="chip-role">RSP audio</span></li>
+              <li><span class="chip-name">fn64-boot-harness</span><span class="chip-role">brings a title up</span></li>
+            </ul>
+          </li>
+          <li class="stage" style="--tone:var(--s-present)">
+            <span class="stage-k">Present</span>
+            <span class="stage-role">draw frames through the render seam</span>
+            <ul class="chips">
+              <li class="featured">
+                <span class="chip-name">fn64-render</span>
+                <span class="chip-role">backend-neutral seam</span>
+                <ul class="chip-points">
+                  <li>the one boundary gfx work passes through</li>
+                  <li>no backend implementation lives here</li>
+                  <li>content-addressed microcode admission</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-render-ir</span><span class="chip-role">render IR, standalone</span></li>
+              <li><span class="chip-name">fn64-render-reference</span><span class="chip-role">software rasteriser</span></li>
+              <li><span class="chip-name">fn64-render-rt64</span><span class="chip-role">RT64 backend bridge</span></li>
+              <li><span class="chip-name">fn64-render-wgpu</span><span class="chip-role">wgpu backend, early fixture</span></li>
+              <li><span class="chip-name">fn64-render-conformance</span><span class="chip-role">replay fixtures, parity denominator</span></li>
+            </ul>
+          </li>
+          <li class="stage" style="--tone:var(--s-prove)">
+            <span class="stage-k">Prove</span>
+            <span class="stage-role">grade the output against evidence</span>
+            <ul class="chips">
+              <li class="featured">
+                <span class="chip-name">fn64-certification</span>
+                <span class="chip-role">certification gates, not a release authority</span>
+                <ul class="chip-points">
+                  <li>executable behavioral gates for backends</li>
+                  <li>a consumer of renderer APIs, never an authority</li>
+                  <li>versioned, identity-bound evidence</li>
+                </ul>
+              </li>
+              <li><span class="chip-name">fn64-diff</span><span class="chip-role">first-divergence, pure</span></li>
+            </ul>
+          </li>
+          <li class="stage" style="--tone:var(--accent)">
+            <span class="stage-k">Host</span>
+            <span class="stage-role">bring it on screen</span>
+            <ul class="chips">
+              <li class="featured">
+                <span class="chip-name">fn64-shell</span>
+                <span class="chip-role">windowed host — on screen</span>
+                <ul class="chip-points">
+                  <li>the windowed harness that makes a game playable</li>
+                  <li>presents the live VI framebuffer to a window</li>
+                  <li>live keyboard input, cpal audio out</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="pipe-end pipe-out">
+          <span class="pipe-end-k">App out</span>
+          <span class="pipe-end-v">native app</span>
+          <span class="pipe-end-note"><span class="ok-text">macOS, Linux</span> today</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
   <!-- ============ WHO IT'S FOR ============ -->
   <section id="who">
     <div class="wrap">
@@ -219,94 +358,6 @@
           <h3>Auditing dependencies</h3>
           <p>Every crate is <b>MIT / Apache</b>, including RSP audio. No GPL anywhere in the tree.</p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="rule">
-
-  <!-- ============ PIPELINE ============ -->
-  <section id="pipeline">
-    <div class="wrap">
-      <div class="section-hd">
-        <span class="eyebrow">Stages</span>
-        <h2>Five stages. Each writes a file you can look at.</h2>
-        <p>Discover, Recompile, Execute, Present, Prove. Every stage writes an artifact to disk, so you can read what one produced, re-run that stage alone, and leave the rest untouched. Hue encodes stage — the same colour follows it everywhere on this page.</p>
-      </div>
-
-      <figure class="diagram" role="img" aria-label="Five-stage pipeline: Discover recovers boundaries, Recompile emits native code, Execute runs the runtime, Present draws through the render seam, Prove grades the result. Each stage writes an artifact.">
-        <div class="scroll">
-          <svg viewBox="0 0 960 200">
-            <defs>
-              <marker id="ah" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--ink-3)"/></marker>
-            </defs>
-            <!-- baseline -->
-            <line x1="24" y1="150" x2="936" y2="150" stroke="var(--hair)" stroke-width="1"/>
-            <!-- stages -->
-            <!-- helper positions: 5 boxes -->
-            <g font-family="IBM Plex Mono, monospace">
-              <!-- Discover -->
-              <g>
-                <rect x="24" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-discover)" stroke-width="1.5"/>
-                <rect x="24" y="52" width="4" height="66" rx="2" fill="var(--s-discover)"/>
-                <text x="42" y="80" fill="var(--ink)" font-size="14" font-weight="600">Discover</text>
-                <text x="42" y="100" fill="var(--ink-3)" font-size="10.5">content-free metadata</text>
-                <line x1="99" y1="118" x2="99" y2="150" stroke="var(--s-discover)" stroke-width="1.5"/>
-                <circle cx="99" cy="150" r="3.5" fill="var(--s-discover)"/>
-              </g>
-              <path d="M174 85 L198 85" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah)"/>
-              <!-- Recompile -->
-              <g>
-                <rect x="204" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-recompile)" stroke-width="1.5"/>
-                <rect x="204" y="52" width="4" height="66" rx="2" fill="var(--s-recompile)"/>
-                <text x="222" y="80" fill="var(--ink)" font-size="14" font-weight="600">Recompile</text>
-                <text x="222" y="100" fill="var(--ink-3)" font-size="10.5">native code</text>
-                <line x1="279" y1="118" x2="279" y2="150" stroke="var(--s-recompile)" stroke-width="1.5"/>
-                <circle cx="279" cy="150" r="3.5" fill="var(--s-recompile)"/>
-              </g>
-              <path d="M354 85 L378 85" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah)"/>
-              <!-- Execute -->
-              <g>
-                <rect x="384" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-execute)" stroke-width="1.5"/>
-                <rect x="384" y="52" width="4" height="66" rx="2" fill="var(--s-execute)"/>
-                <text x="402" y="80" fill="var(--ink)" font-size="14" font-weight="600">Execute</text>
-                <text x="402" y="100" fill="var(--ink-3)" font-size="10.5">frame + audio census</text>
-                <line x1="459" y1="118" x2="459" y2="150" stroke="var(--s-execute)" stroke-width="1.5"/>
-                <circle cx="459" cy="150" r="3.5" fill="var(--s-execute)"/>
-              </g>
-              <path d="M534 85 L558 85" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah)"/>
-              <!-- Present -->
-              <g>
-                <rect x="564" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-present)" stroke-width="1.5"/>
-                <rect x="564" y="52" width="4" height="66" rx="2" fill="var(--s-present)"/>
-                <text x="582" y="80" fill="var(--ink)" font-size="14" font-weight="600">Present</text>
-                <text x="582" y="100" fill="var(--ink-3)" font-size="10.5">rendered frame</text>
-                <line x1="639" y1="118" x2="639" y2="150" stroke="var(--s-present)" stroke-width="1.5"/>
-                <circle cx="639" cy="150" r="3.5" fill="var(--s-present)"/>
-              </g>
-              <path d="M714 85 L738 85" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah)"/>
-              <!-- Prove -->
-              <g>
-                <rect x="744" y="52" width="150" height="66" rx="9" fill="var(--panel-2)" stroke="var(--s-prove)" stroke-width="1.5"/>
-                <rect x="744" y="52" width="4" height="66" rx="2" fill="var(--s-prove)"/>
-                <text x="762" y="80" fill="var(--ink)" font-size="14" font-weight="600">Prove</text>
-                <text x="762" y="100" fill="var(--ink-3)" font-size="10.5">graded evidence</text>
-                <line x1="819" y1="118" x2="819" y2="150" stroke="var(--s-prove)" stroke-width="1.5"/>
-                <circle cx="819" cy="150" r="3.5" fill="var(--s-prove)"/>
-              </g>
-              <text x="24" y="180" fill="var(--ink-3)" font-size="10.5" letter-spacing=".08em">ARTIFACT ↑ per stage — inspect or re-run any one in isolation</text>
-            </g>
-          </svg>
-        </div>
-        <figcaption>// each stage emits an inspectable artifact; stages are independently re-runnable</figcaption>
-      </figure>
-
-      <div class="stages">
-        <div class="stage"><span class="marker"><span class="sq"></span>Discover</span><p>Recover function and section boundaries from a local ROM.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>Recompile</span><p>Turn MIPS functions into native code — no interpreter in the loop.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>Execute</span><p>Run under the typed runtime; unknowns trap instead of guessing.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>Present</span><p>Draw through the render seam to the reference backend or RT64.</p></div>
-        <div class="stage"><span class="marker"><span class="sq"></span>Prove</span><p>Grade the result against named evidence gates.</p></div>
       </div>
     </div>
   </section>
@@ -408,9 +459,9 @@
         <h2>One ROM, two lanes in, one runtime underneath.</h2>
       </div>
 
-      <figure class="diagram" role="img" aria-label="Dual-lane architecture. Your locally supplied ROM feeds two lanes: lane one is N64Recomp in C under MIT; lane two is fn64-discover plus Rust codegen. Both converge on the fn64 runtime, MIT OR Apache-2.0, not ultramodern's GPL-3.0. The runtime reaches a render seam that forks to a reference renderer and RT64.">
+      <figure class="diagram">
         <div class="scroll">
-          <svg viewBox="0 0 720 360">
+          <svg viewBox="0 0 720 360" role="img" aria-label="Dual-lane architecture. Your locally supplied ROM feeds two lanes: lane one is N64Recomp in C under MIT; lane two is fn64-discover plus Rust codegen. Both converge on the fn64 runtime, MIT OR Apache-2.0, not ultramodern's GPL-3.0. The runtime reaches a render seam that forks to a reference renderer and RT64.">
             <defs>
               <marker id="ah2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="var(--ink-3)"/></marker>
             </defs>
@@ -453,9 +504,9 @@
             <!-- forks -->
             <path d="M300 334 C280 348 210 344 190 350" fill="none" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah2)"/>
             <path d="M420 334 C440 348 510 344 530 350" fill="none" stroke="var(--ink-3)" stroke-width="1.3" marker-end="url(#ah2)"/>
-            <rect x="86" y="340" width="120" height="18" rx="6" fill="none" stroke="var(--s-prove)" stroke-width="1.2"/>
+            <rect x="86" y="340" width="120" height="18" rx="6" fill="none" stroke="var(--s-present)" stroke-width="1.2"/>
             <text x="146" y="353" text-anchor="middle" fill="var(--ink-2)" font-family="IBM Plex Mono, monospace" font-size="11">reference</text>
-            <rect x="514" y="340" width="120" height="18" rx="6" fill="none" stroke="var(--s-prove)" stroke-width="1.2"/>
+            <rect x="514" y="340" width="120" height="18" rx="6" fill="none" stroke="var(--s-present)" stroke-width="1.2"/>
             <text x="574" y="353" text-anchor="middle" fill="var(--ink-2)" font-family="IBM Plex Mono, monospace" font-size="11">RT64</text>
           </svg>
         </div>
@@ -473,7 +524,7 @@
         <span class="eyebrow">Rigor</span>
         <h2 class="ai-h2">Rigorous by design.</h2>
         <p class="ai-lede">
-          Strong types, a behavioral test suite, a determinism bar, named gates — <b>every claim on this page is checkable</b>. Designed with <b>decades of engineering experience</b> and built from first-hand debugging, public docs and MIT source — <b>never GPL code</b>. Much of the volume is written by AI agents in orchestrated waves; a human directs the work and reviews <b>every</b> change, and humans and agents clear the same checks under the same contract (<a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">AGENTS.md</a>).
+          Strong types, a behavioral test suite, a validation bar, named gates. Built from first-hand debugging, public docs and MIT source — <b>never GPL code</b>. Much of the volume is written by AI agents in orchestrated waves; humans direct the work and hold the gates, and humans and agents clear the same checks under the same contract (<a href="https://github.com/fn64/fn64/blob/main/AGENTS.md">AGENTS.md</a>).
         </p>
 
         <div class="ai-grid">
@@ -484,22 +535,26 @@
 
           <div class="ai-card">
             <div class="t">Behavioral test suite <span class="badge">ASSERTS BEHAVIOR</span></div>
-            <p class="quote">Where other N64 projects verify correctness mainly by byte-matching the original ROM at build time, fn64 also carries a behavioral test suite that asserts the recompiled output <b>behaves</b> correctly.</p>
+            <p class="quote">A byte-match against the original ROM only proves the build reproduced it. fn64 also carries a behavioral test suite that asserts the recompiled output <b>behaves</b> correctly: <code>c_smoke</code> links the ABI with a real C caller, and the recompiler has per-instruction oracle suites.</p>
           </div>
 
           <div class="ai-card">
-            <div class="t">Determinism bar <span class="badge">CONSECUTIVE CLEAN RUNS</span></div>
-            <p>A deterministic fix needs <span class="big-num">10</span> consecutive clean runs before it counts. A concurrency fix needs <span class="big-num">20+</span>.</p>
+            <div class="t">Validation bar <span class="badge">ONE GATE, ONE CLAIM</span></div>
+            <p>A deterministic fix needs <span class="big-num">1</span> fresh regression run plus the suite it sits in — repeating identical work is not more evidence. A concurrency or timing fix states its failure model and falls back to repeated runs, <span class="big-num">20</span> by default, only when nothing stronger closes the interleaving.</p>
+            <div class="det-bar" aria-hidden="true">
+              <span class="tick"></span>
+              <span class="lbl">deterministic: one run + the enclosing suite</span>
+            </div>
             <div class="det-bar" aria-hidden="true">
               <span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span>
-              <span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span>
-              <span class="lbl">= 1 accepted deterministic fix</span>
+              <span class="tick dim"></span><span class="tick dim"></span><span class="tick dim"></span><span class="tick dim"></span><span class="tick dim"></span>
+              <span class="lbl">concurrency: repeated runs, ×20 default, if nothing stronger closes it</span>
             </div>
           </div>
 
           <div class="ai-card">
             <div class="t">Named evidence gates <span class="badge">CHECK IT YOURSELF</span></div>
-            <p>Every claim on this page is a named gate. If you want to check any of it rather than take it on faith, the checks are listed:</p>
+            <p>If you want to check any of this rather than take it on faith, the checks and the open items are listed:</p>
             <div class="gates">
               <a href="https://github.com/fn64/fn64/blob/main/AGENTS.md"><span class="arw">↗</span>AGENTS.md</a>
               <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md"><span class="arw">↗</span>ROADMAP.md</a>
@@ -507,129 +562,6 @@
               <a href="https://github.com/fn64/fn64"><span class="arw">↗</span>GitHub</a>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="rule">
-
-  <!-- ============ CRATES ============ -->
-  <section id="crates">
-    <div class="wrap">
-      <div class="section-hd">
-        <span class="eyebrow">Crates</span>
-        <h2>One workspace, fifteen crates, one runtime underneath.</h2>
-        <p>Take only what you need — every crate publishes on its own. Want just the ABI surface? Take <code>fn64-abi</code> and nothing else. Below is the real pipeline: your ROM enters on the left and leaves as a native app, one stage at a time.</p>
-      </div>
-
-      <div class="pipe" role="group" aria-label="fn64 crate pipeline: ROM in on the left through five stages to a native app on the right">
-        <div class="pipe-end pipe-in">
-          <span class="pipe-end-k">ROM in</span>
-          <span class="pipe-end-v">your cartridge</span>
-          <span class="pipe-end-note">local — never shipped</span>
-        </div>
-
-        <ol class="pipe-stages">
-          <li class="stage" style="--tone:var(--s-discover)">
-            <span class="stage-k">Discover</span>
-            <span class="stage-role">recover boundaries from the ROM</span>
-            <ul class="chips">
-              <li class="featured">
-                <span class="chip-name">fn64-discover</span>
-                <span class="chip-role">boundaries from ROM</span>
-                <ul class="chip-points">
-                  <li>mechanical, zero-LLM ROM recovery</li>
-                  <li>never emits a guessed symbol file</li>
-                  <li>proven facts, rejected candidates, open frontier</li>
-                </ul>
-              </li>
-              <li><span class="chip-name">fn64-recomp</span><span class="chip-role">MIPS decode core</span></li>
-              <li><span class="chip-name">fn64-recomp-rs</span><span class="chip-role">typed runners</span></li>
-              <li><span class="chip-name">fn64-recomp-rs-codegen</span><span class="chip-role">runner codegen</span></li>
-              <li><span class="chip-name">fn64-boot-harness</span><span class="chip-role">brings a title up</span></li>
-            </ul>
-          </li>
-          <li class="stage" style="--tone:var(--s-execute)">
-            <span class="stage-k">Execute</span>
-            <span class="stage-role">the runtime core every crate funnels into</span>
-            <ul class="chips">
-              <li class="featured hub">
-                <span class="chip-name">fn64-runtime</span>
-                <span class="chip-role">the runtime hub</span>
-                <ul class="chip-points">
-                  <li>scheduler, message queues, timers</li>
-                  <li>DMA, rdram model, PI/SI/VI/AI plumbing</li>
-                  <li>the independently-testable core</li>
-                </ul>
-              </li>
-              <li class="featured">
-                <span class="chip-name">fn64-abi</span>
-                <span class="chip-role">extern “C” surface</span>
-                <ul class="chip-points">
-                  <li>what recompiled game code links against</li>
-                  <li>a thin marshalling adapter, never new policy</li>
-                  <li>signatures verified against real generated C</li>
-                </ul>
-              </li>
-              <li><span class="chip-name">fn64-audio</span><span class="chip-role">RSP audio</span></li>
-            </ul>
-          </li>
-          <li class="stage" style="--tone:var(--s-present)">
-            <span class="stage-k">Present</span>
-            <span class="stage-role">draw frames through the render seam</span>
-            <ul class="chips">
-              <li class="featured">
-                <span class="chip-name">fn64-render</span>
-                <span class="chip-role">backend-neutral seam</span>
-                <ul class="chip-points">
-                  <li>the one boundary gfx work passes through</li>
-                  <li>no backend implementation lives here</li>
-                  <li>content-addressed microcode admission</li>
-                </ul>
-              </li>
-              <li><span class="chip-name">fn64-render-ir</span><span class="chip-role">render IR, standalone</span></li>
-              <li><span class="chip-name">fn64-render-reference</span><span class="chip-role">software rasterizer</span></li>
-              <li><span class="chip-name">fn64-render-rt64</span><span class="chip-role">RT64 backend bridge</span></li>
-            </ul>
-          </li>
-          <li class="stage" style="--tone:var(--s-prove)">
-            <span class="stage-k">Prove</span>
-            <span class="stage-role">grade the output against evidence</span>
-            <ul class="chips">
-              <li class="featured">
-                <span class="chip-name">fn64-certification</span>
-                <span class="chip-role">certification gates, not a release authority</span>
-                <ul class="chip-points">
-                  <li>executable behavioral gates for backends</li>
-                  <li>a consumer of renderer APIs, never an authority</li>
-                  <li>versioned, identity-bound evidence</li>
-                </ul>
-              </li>
-              <li><span class="chip-name">fn64-diff</span><span class="chip-role">first-divergence, pure</span></li>
-            </ul>
-          </li>
-          <li class="stage" style="--tone:var(--accent)">
-            <span class="stage-k">Host</span>
-            <span class="stage-role">bring it on screen</span>
-            <ul class="chips">
-              <li class="featured">
-                <span class="chip-name">fn64-shell</span>
-                <span class="chip-role">windowed host — on screen</span>
-                <ul class="chip-points">
-                  <li>the windowed harness that makes a game playable</li>
-                  <li>presents the live VI framebuffer to a window</li>
-                  <li>live keyboard input, cpal audio out</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ol>
-
-        <div class="pipe-end pipe-out">
-          <span class="pipe-end-k">App out</span>
-          <span class="pipe-end-v">native app</span>
-          <span class="pipe-end-note"><span class="ok-text">macOS, Linux</span>, <span class="warn-text">Windows soon</span>, Web on the horizon</span>
         </div>
       </div>
     </div>
@@ -660,11 +592,11 @@
       <a href="./how-it-works.html">How it works</a>
       <a href="https://github.com/fn64/fn64">GitHub</a>
       <a href="https://github.com/fn64/fn64/blob/main/docs/ROADMAP.md">Docs</a>
-      <a href="https://github.com/fn64/fn64/blob/main/LICENSE">Licence</a>
+      <a href="https://github.com/fn64/fn64/blob/main/Cargo.toml">Licence</a>
     </nav>
   </div>
   <div class="wrap foot-legal">
-    <p>© 2026 Magic Factory, LLC. Code licensed under <a href="https://github.com/fn64/fn64/blob/main/LICENSE">MIT OR Apache-2.0</a>.</p>
+    <p>© 2026 Magic Factory, LLC. Code licensed under <a href="https://github.com/fn64/fn64/blob/main/Cargo.toml">MIT OR Apache-2.0</a>.</p>
     <p>Not affiliated with or endorsed by Nintendo. “Nintendo&nbsp;64” and game titles are trademarks of their respective owners, used only to name what the software runs.</p>
   </div>
 </footer>
